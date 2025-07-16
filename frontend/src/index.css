@@ -1,0 +1,34 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Sora:wght@100,200,300,400,500,600,700,800&display=swap');
+
+
+
+/* Heading font */
+* {
+  font-family: "Sora", sans-serif;
+  font-weight: 700;
+}
+
+
+/* Reset and setup for full page gradient */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  /* font-weight: 600; */
+  /* color: #000; */
+  /* Remove background from body */
+}
+
+/* Apply gradient to root that covers entire page content */
+#root {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #0c8fec, #29b0ee, #5eb4ed, #d9f1ff);
+  background-attachment: scroll;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
