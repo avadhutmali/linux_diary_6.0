@@ -96,38 +96,27 @@ const TechnologiesSection = () => {
     setCurrentTechIndex(0);
   };
 
-  // Calculate trajectory based on screen size
+  // Calculate trajectory - always horizontal
   const getCannonballPosition = (progress) => {
-    if (screenSize === 'large') {
-      // Large screen: horizontal trajectory (left to right)
-      const startX = 280; // Ship cannon position
-      const startY = 320;
-      const endX = window.innerWidth - 1000; // Island position
-      const endY = 350;
-      
-      const currentX = startX + (endX - startX) * progress;
-      const arcHeight = 200;
-      const currentY = startY + (endY - startY) * progress - (4 * arcHeight * progress * (1 - progress));
-      
-      return { x: currentX, y: currentY };
-    } else {
-      // Small screen: vertical trajectory (top to bottom)
-      const startX = window.innerWidth / 2; // Center horizontally
-      const startY = 200; // Ship position (top)
-      const endX = window.innerWidth / 2; // Island center (bottom)
-      const endY = 600; // Island position
-      
-      const currentX = startX + (endX - startX) * progress;
-      const arcHeight = 100; // Smaller arc for vertical
-      const currentY = startY + (endY - startY) * progress - (4 * arcHeight * progress * (1 - progress));
-      
-      return { x: currentX, y: currentY };
-    }
+    const shipRect = shipRef.current?.getBoundingClientRect();
+    const islandRect = islandRef.current?.getBoundingClientRect();
+    
+    // Position cannonball at the ship's cannon head (right edge with small offset)
+    const startX = screenSize === 'large' ? 350 : 100; // Adjusted for small screens
+    const startY = screenSize === 'large' ? 320 : 150;
+    const endX = screenSize === 'large' ? window.innerWidth - 1000 : window.innerWidth - 150; // Adjusted for small screens
+    const endY = screenSize === 'large' ? 350 : 180;
+    
+    const currentX = startX + (endX - startX) * progress;
+    const arcHeight = screenSize === 'large' ? 200 : 80;
+    const currentY = startY + (endY - startY) * progress - (4 * arcHeight * progress * (1 - progress));
+    
+    return { x: currentX, y: currentY };
   };
 
   return (
-    <section className="py-20 relative overflow-hidden min-h-screen">
-      {/* Enhanced Ocean Background */}
+    <section className="py-12 md:py-20 relative overflow-hidden min-h-[500px] md:min-h-screen ">
+      {/* Ocean Background */}
       <div className="absolute inset-0">
         <div className="enhanced-ocean-waves"></div>
         <div className="enhanced-ocean-surface"></div>
@@ -155,97 +144,56 @@ const TechnologiesSection = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-8 md:mb-16">
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 md:mb-6">
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-3 md:mb-6">
             ⚓ Pirate Tech Arsenal ⚓
           </h2>
-          <p className="text-lg md:text-2xl text-cyan-200 max-w-4xl mx-auto">
+          <p className="text-base md:text-xl text-cyan-200 max-w-3xl mx-auto">
             Watch our pirate penguins launch technologies across the digital seas!
           </p>
         </div>
 
-        {/* Main Scene Container - Responsive Layout */}
-        <div className={`relative w-full ${screenSize === 'large' ? 'h-[600px]' : 'h-[800px]'} max-w-7xl mx-auto`}>
+        {/* Main Scene Container */}
+        <div className="relative w-full h-[300px] md:h-[500px] max-w-7xl mx-auto">
           
-          {/* Pirate Ship with PNG Image */}
+          {/* Pirate Ship */}
           <div 
             ref={shipRef}
-            className={`absolute ${
-              screenSize === 'large' 
-                ? 'left-8 md:left-16 bottom-16' 
-                : 'left-1/2 transform -translate-x-1/2 top-8'
-            }`}
+            className="absolute left-4 md:left-16 bottom-16"
           >
-            <div className={`pirate-ship-container relative ${cannonRecoil ? 'animate-recoil' : 'animate-wave'}`}>
-              {/* Ship PNG Image */}
+            <div className={`relative ${cannonRecoil ? 'animate-recoil' : 'animate-wave'}`}>
               <img 
                 src="/images/ship.png" 
                 alt="Pirate Ship"
-                className={`${
-                  screenSize === 'large' ? 'w-[25vw] h-auto' : 'w-64 h-auto'
-                } drop-shadow-2xl transition-all duration-300`}
-                style={{
-                  filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.3))'
-                }}
+                className="w-[120px] md:w-[200px] lg:w-[20vw] h-auto drop-shadow-2xl transition-all duration-300"
               />
               
-              {/* Cannon Fire Effect - Replaced with GIF */}
+              {/* Cannon Fire Effect */}
               {firingTech && (
-                <div className={`absolute ${
-                  screenSize === 'large' 
-                    ? 'right-8 top-1/2 transform -translate-y-1/2' 
-                    : 'bottom-8 left-1/2 transform -translate-x-1/2'
-                }`}>
+                <div className="absolute right-0  md:right-0 top-2/3 transform -translate-y-1/2">
                   <img 
                     src="/images/explod-animation.gif" 
                     alt="Cannon Explosion"
-                    className="w-24 h-24 object-contain z-20"
-                    style={{
-                      position: 'absolute',
-                      transform: 'translate(-50%, -50%)'
-                    }}
+                    className="w-16 h-16 md:w-24 md:h-24 object-contain z-20"
                   />
                 </div>
               )}
 
-              {/* Pirate Penguin Captain */}
-              <div className={`absolute ${
-                screenSize === 'large' 
-                  ? '-top-16 left-1/3' 
-                  : '-top-12 left-1/2 transform -translate-x-1/2'
-              }`}>
-                <div className="pirate-captain text-4xl md:text-6xl animate-bounce drop-shadow-2xl">
-                  🏴‍☠️🐧
-                </div>
-                {isLoading && (
-                  <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs md:text-sm text-white bg-gray-800 px-3 py-2 rounded-lg whitespace-nowrap shadow-lg border border-gray-600">
-                    Loading cannon...
-                  </div>
-                )}
-              </div>
-
-              {/* Loading Penguin with Current Tech */}
-              <div className={`absolute ${
-                screenSize === 'large' 
-                  ? '-top-12 right-8' 
-                  : '-top-8 right-4'
-              }`}>
-                <div className={`loading-penguin text-3xl md:text-4xl transition-all duration-500 drop-shadow-lg ${isLoading ? 'animate-bounce scale-125' : ''}`}>
+              {/* Loading Penguin */}
+              {/* <div className="absolute -top-8 right-2 md:right-8">
+                <div className={`text-2xl md:text-4xl transition-all duration-500 ${isLoading ? 'animate-bounce scale-125' : ''}`}>
                   🐧
                 </div>
                 {currentTechIndex < technologies.length && (
-                  <div className="absolute -top-8 md:-top-12 left-1/2 transform -translate-x-1/2 text-2xl md:text-4xl animate-pulse drop-shadow-lg">
+                  <div className="absolute -top-6 md:-top-10 left-1/2 transform -translate-x-1/2 text-xl md:text-3xl animate-pulse">
                     {technologies[currentTechIndex].icon}
                   </div>
                 )}
-              </div>
-
-              {/* Ship Water Reflection */}
-              <div className="absolute top-full left-0 w-full h-8 bg-gradient-to-b from-blue-400/30 to-transparent transform scale-y-[-1] opacity-50 blur-sm"></div>
+              </div> */}
             </div>
           </div>
 
-          {/* Flying Cannonballs with PNG Images */}
+          {/* Flying Cannonballs */}
           {cannonballsInFlight.map((ball) => {
             const progress = Math.min((Date.now() - ball.startTime) / 3000, 1);
             const position = getCannonballPosition(progress);
@@ -262,35 +210,18 @@ const TechnologiesSection = () => {
                 }}
               >
                 <div className="relative">
-                  {/* Cannonball PNG Image */}
-                  <div className="relative w-12 h-12 md:w-16 md:h-16">
-                    <img 
-                      src="/images/cannonball.png" 
-                      alt="Cannonball"
-                      className="w-full h-full drop-shadow-xl"
-                    />
-                    {/* Tech Icon Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center text-lg md:text-2xl">
-                      {ball.tech.icon}
-                    </div>
-                  </div>
-                  
-                  {/* Enhanced Smoke Trail */}
-                  <div className={`absolute ${
-                    screenSize === 'large' ? '-left-12' : '-top-12'
-                  } top-1/2 transform -translate-y-1/2 w-16 md:w-20 h-3 md:h-4 bg-gradient-to-l from-gray-300/80 to-transparent rounded-full animate-pulse`}></div>
-                  <div className={`absolute ${
-                    screenSize === 'large' ? '-left-16 md:-left-20' : '-top-16 md:-top-20'
-                  } top-1/2 transform -translate-y-1/2 w-12 md:w-16 h-2 md:h-3 bg-gradient-to-l from-gray-400/60 to-transparent rounded-full animate-pulse delay-100`}></div>
-                  
-                  {/* Sparks Effect */}
+                  <img 
+                    src="/images/cannonball.png" 
+                    alt="Cannonball"
+                    className="w-8 h-8 md:w-12 md:h-12 drop-shadow-xl"
+                  />
                   {[...Array(3)].map((_, i) => (
                     <div
                       key={i}
                       className="absolute w-1 h-1 bg-yellow-400 rounded-full animate-ping"
                       style={{
-                        left: `${-8 - i * 4}px`,
-                        top: `${6 + i * 2}px`,
+                        left: `${-4 - i * 2}px`,
+                        top: `${3 + i}px`,
                         animationDelay: `${i * 200}ms`
                       }}
                     ></div>
@@ -300,125 +231,66 @@ const TechnologiesSection = () => {
             );
           })}
 
-          {/* Treasure Island with PNG Image */}
+          {/* Treasure Island */}
           <div 
             ref={islandRef}
-            className={`absolute ${
-              screenSize === 'large' 
-                ? 'right-8 md:right-16 bottom-16' 
-                : 'left-1/2 transform -translate-x-1/2 bottom-8'
-            }`}
+            className="absolute right-4 md:right-16 bottom-16"
           >
-            <div className="treasure-island-container relative">
-              {/* Island PNG Image */}
+            <div className="relative">
               <img 
                 src="/images/island.png" 
                 alt="Treasure Island"
-                className={`${
-                  screenSize === 'large' ? 'w-[25vw] h-auto' : 'w-56 h-auto'
-                } drop-shadow-2xl transition-all duration-300`}
-                style={{
-                  filter: 'drop-shadow(0 15px 30px rgba(0,0,0,0.4))'
-                }}
+                className="w-[120px] md:w-[200px] lg:w-[600px] h-auto drop-shadow-2xl"
               />
 
-              {/* Landed Technologies Display */}
-              <div className={`absolute ${
-                screenSize === 'large' 
-                  ? '-top-32 left-1/2 transform -translate-x-1/2 w-64' 
-                  : '-top-24 left-1/2 transform -translate-x-1/2 w-48'
-              }`}>
-                <div className={`grid ${
-                  screenSize === 'large' ? 'grid-cols-4' : 'grid-cols-3'
-                } gap-2 md:gap-3`}>
+              {/* Landed Technologies */}
+              <div className="absolute -top-16 md:-top-24 left-1/2 transform -translate-x-1/2 w-40 md:w-64">
+                <div className="grid grid-cols-3 md:grid-cols-4 gap-1 md:gap-2">
                   {landedTechs.map((tech, index) => (
                     <div
                       key={tech.name}
-                      className="tech-treasure relative animate-bounce"
+                      className="relative animate-bounce"
                       style={{ animationDelay: `${index * 150}ms` }}
                     >
-                      <div className="w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-yellow-300 to-yellow-600 rounded-xl border-2 md:border-4 border-yellow-400 flex items-center justify-center text-sm md:text-xl shadow-2xl">
+                      <div className="w-6 h-6 md:w-10 md:h-10 bg-gradient-to-br from-yellow-300 to-yellow-600 rounded-lg border-2 border-yellow-400 flex items-center justify-center text-xs md:text-lg shadow-lg">
                         {tech.icon}
                       </div>
-                      
-                      {/* Splash Effect */}
-                      <div className="absolute -inset-2 md:-inset-3 bg-cyan-300/40 rounded-full animate-ping opacity-0 splash-effect"></div>
-                      
-                      {/* Tooltip */}
-                      <div className="absolute -bottom-8 md:-bottom-12 left-1/2 transform -translate-x-1/2 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none z-30">
-                        <div className="bg-gray-900 text-white px-2 md:px-3 py-1 md:py-2 rounded-lg text-xs md:text-sm whitespace-nowrap shadow-xl border border-gray-700">
-                          {tech.name}
-                          <div className="absolute -top-1 md:-top-2 left-1/2 transform -translate-x-1/2 w-2 md:w-3 h-2 md:h-3 bg-gray-900 rotate-45 border-l border-t border-gray-700"></div>
-                        </div>
-                      </div>
+                      {/* <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-[8px] md:text-xs font-bold text-white bg-black/70 px-1 rounded whitespace-nowrap">
+                        {tech.name}
+                      </div> */}
                     </div>
                   ))}
                 </div>
               </div>
-
-              {/* Island Penguin */}
-              {/* <div className={`absolute ${
-                screenSize === 'large' 
-                  ? '-top-8 right-8' 
-                  : '-top-6 right-6'
-              }`}>
-                <div className="island-penguin text-3xl md:text-4xl animate-bounce drop-shadow-lg">
-                  🐧
-                </div>
-              </div> */}
-
-              {/* Island Water Reflection */}
-              <div className="absolute top-full left-0 w-full h-6 bg-gradient-to-b from-cyan-400/30 to-transparent transform scale-y-[-1] opacity-40 blur-sm"></div>
             </div>
           </div>
-
-          {/* Water Splash Effects */}
-          {landedTechs.length > 0 && (
-            <div className={`absolute ${
-              screenSize === 'large' 
-                ? 'right-32 bottom-40' 
-                : 'left-1/2 transform -translate-x-1/2 bottom-32'
-            }`}>
-              {[...Array(5)].map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute w-4 h-4 md:w-6 md:h-6 bg-cyan-300/70 rounded-full animate-ping shadow-lg"
-                  style={{
-                    left: `${i * 8}px`,
-                    top: `${Math.sin(i) * 6}px`,
-                    animationDelay: `${i * 300}ms`
-                  }}
-                ></div>
-              ))}
-            </div>
-          )}
         </div>
 
-        {/* Enhanced Control Panel */}
-        <div className="text-center mt-12 md:mt-20">
-          <div className="inline-block p-6 md:p-8 bg-gradient-to-r from-amber-700/90 to-amber-900/90 backdrop-blur-sm rounded-2xl md:rounded-3xl border-2 md:border-4 border-amber-500 shadow-2xl">
-            <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8 mb-4 md:mb-6">
+        {/* Control Panel */}
+        <div className="text-center mt-8 md:mt-16">
+          <div className="inline-block p-4 md:p-6 bg-gradient-to-r from-amber-700/90 to-amber-900/90 backdrop-blur-sm rounded-xl md:rounded-2xl border-2 border-amber-500 shadow-lg">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6 mb-3 md:mb-4">
               <button
                 onClick={fireCannon}
-                className="px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-red-500 to-red-700 text-white font-bold text-base md:text-lg rounded-xl md:rounded-2xl shadow-xl hover:scale-110 transition-transform duration-200 border-2 md:border-4 border-red-400"
+                className="px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-red-500 to-red-700 text-white font-bold text-sm md:text-base rounded-lg md:rounded-xl shadow-md hover:scale-105 transition-transform duration-200 border-2 border-red-400"
               >
                 🔥 Fire Cannon!
               </button>
               
               <button
                 onClick={resetDemo}
-                className="px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-cyan-500 to-cyan-700 text-white font-bold text-base md:text-lg rounded-xl md:rounded-2xl shadow-xl hover:scale-110 transition-transform duration-200 border-2 md:border-4 border-cyan-400"
+                className="px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-cyan-500 to-cyan-700 text-white font-bold text-sm md:text-base rounded-lg md:rounded-xl shadow-md hover:scale-105 transition-transform duration-200 border-2 border-cyan-400"
               >
                 🔄 Reset Fleet
               </button>
             </div>
             
-            <div className="text-amber-100">
-              <p className="font-bold text-lg md:text-xl mb-2 md:mb-3">⚓ Captain's Log ⚓</p>
-              <p className="text-base md:text-lg mb-1 md:mb-2">
+            <div className="text-amber-100 text-sm md:text-base">
+              <p className="font-bold mb-1 md:mb-2">⚓ Captain's Log ⚓</p>
+              <p className="mb-1">
                 Technologies Captured: <span className="text-yellow-300 font-bold">{landedTechs.length}/{technologies.length}</span>
               </p>
-              <p className="text-base md:text-lg">
+              <p>
                 Next Ammunition: <span className="text-yellow-300 font-bold">{technologies[currentTechIndex]?.name || 'Reloading...'}</span>
               </p>
             </div>
