@@ -5,6 +5,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Roadmap from './components/Roadmap'
 import TechnologiesSection from './components/TechnologiesSection'
+import PrizeSection from './components/PrizeSection'
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       {/* <RoadmapSection/> */}
       <Roadmap/>
       <TechnologiesSection/>
+      <PrizeSection/>
       <Footer/>
     </div>
   )
