@@ -22,6 +22,8 @@ const TechnologiesSection = () => {
   
   const shipRef = useRef(null);
   const islandRef = useRef(null);
+  const animationRef = useRef(null);
+  const [rotationAngle, setRotationAngle] = useState(0);
 
   // Detect screen size
   useEffect(() => {
@@ -68,6 +70,24 @@ const TechnologiesSection = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Animation for revolving tech icons
+  useEffect(() => {
+    const animate = () => {
+      setRotationAngle(prev => (prev + 0.5) % 360);
+      animationRef.current = requestAnimationFrame(animate);
+    };
+    
+    if (landedTechs.length > 0) {
+      animationRef.current = requestAnimationFrame(animate);
+    }
+    
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [landedTechs.length]);
+
   const fireCannon = () => {
     const currentTech = technologies[currentTechIndex];
     setFiringTech(currentTech);
@@ -101,7 +121,6 @@ const TechnologiesSection = () => {
     const shipRect = shipRef.current?.getBoundingClientRect();
     const islandRect = islandRef.current?.getBoundingClientRect();
     
-    // Position cannonball at the ship's cannon head (right edge with small offset)
     const startX = screenSize === 'large' ? 350 : 100; // Adjusted for small screens
     const startY = screenSize === 'large' ? 320 : 150;
     const endX = screenSize === 'large' ? window.innerWidth - 1000 : window.innerWidth - 150; // Adjusted for small screens
@@ -114,6 +133,16 @@ const TechnologiesSection = () => {
     return { x: currentX, y: currentY };
   };
 
+  // Calculate positions for revolving tech icons
+  const getTechPosition = (index, total) => {
+    const radius = screenSize === 'large' ? 250 : 60;
+    const angle = (index * (360 / total) + rotationAngle) * (Math.PI / 180);
+    return {
+      x: Math.cos(angle) * radius,
+      y: Math.sin(angle) * radius
+    };
+  };
+
   return (
     <section className="py-12 md:py-20 relative overflow-hidden min-h-[500px] md:min-h-screen ">
       {/* Ocean Background */}
@@ -124,36 +153,37 @@ const TechnologiesSection = () => {
       </div>
 
       {/* Floating Clouds */}
-      <div className="absolute inset-0">
-        {[...Array(6)].map((_, i) => (
-          <div
+      <div className="absolute inset-0 my-10 pointer-events-none">
+        {[...Array(4)].map((_, i) => (
+          <img
             key={i}
-            className="absolute bg-white/20 rounded-full animate-float"
+            src="/images/clouds.png"
+            alt="Cloud"
+            className={`absolute transition-all ${screenSize === 'large' ? 'animate-bounce' : 'animate-bounce-sm'} rotate-2`}
             style={{
-              width: `${60 + i * 10}px`,
-              height: `${30 + i * 5}px`,
-              left: `${5 + i * 15}%`,
-              top: `${5 + (i % 3) * 15}%`,
+              width: screenSize === 'large' ? `${150 + i * 10}px` : `${70 + i * 6}px`,
+              height: screenSize === 'large' ? `${70 + i * 5}px` : `${30 + i * 3}px`,
+              left: screenSize === 'large' ? `${5 + i * 25}%` : `${2 + i * 26}%`,
+              top: screenSize === 'large' ? `${5 + (i % 3) * 10}%` : `${2 + (i % 3) * 7}%`,
               animationDelay: `${i * 0.8}s`,
-              animationDuration: `${6 + i * 0.5}s`
+              animationDuration: screenSize === 'large' ? `${6 + i * 0.5}s` : `${4 + i * 0.3}s`,
+              opacity: 0.9
             }}
-          >
-            <div className="absolute inset-3 bg-white/10 rounded-full"></div>
-          </div>
+          />
         ))}
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-3 md:mb-6">
-            ⚓ Pirate Tech Arsenal ⚓
-          </h2>
-          <p className="text-base md:text-xl text-cyan-200 max-w-3xl mx-auto">
-            Watch our pirate penguins launch technologies across the digital seas!
-          </p>
-        </div>
+        <div className="container mx-auto px-4 relative z-10">
+          {/* <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-3 md:mb-6">
+          ⚓ Pirate Tech Arsenal ⚓
+            </h2>
+            <p className="text-base md:text-xl text-cyan-200 max-w-3xl mx-auto">
+          Watch our pirate penguins launch technologies across the digital seas!
+            </p>
+          </div> */}
 
-        {/* Main Scene Container */}
+          {/* Main Scene Container */}
         <div className="relative w-full h-[300px] md:h-[500px] max-w-7xl mx-auto">
           
           {/* Pirate Ship */}
@@ -170,26 +200,14 @@ const TechnologiesSection = () => {
               
               {/* Cannon Fire Effect */}
               {firingTech && (
-                <div className="absolute right-0  md:right-0 top-2/3 transform -translate-y-1/2">
+                <div className="absolute right-0 md:right-0 top-2/3 transform -translate-y-1/2">
                   <img 
                     src="/images/explod-animation.gif" 
                     alt="Cannon Explosion"
-                    className="w-16 h-16 md:w-24 md:h-24 object-contain z-20"
+                    className="w-16 h-16 md:w-48 md:h-48 object-contain z-20"
                   />
                 </div>
               )}
-
-              {/* Loading Penguin */}
-              {/* <div className="absolute -top-8 right-2 md:right-8">
-                <div className={`text-2xl md:text-4xl transition-all duration-500 ${isLoading ? 'animate-bounce scale-125' : ''}`}>
-                  🐧
-                </div>
-                {currentTechIndex < technologies.length && (
-                  <div className="absolute -top-6 md:-top-10 left-1/2 transform -translate-x-1/2 text-xl md:text-3xl animate-pulse">
-                    {technologies[currentTechIndex].icon}
-                  </div>
-                )}
-              </div> */}
             </div>
           </div>
 
@@ -234,7 +252,7 @@ const TechnologiesSection = () => {
           {/* Treasure Island */}
           <div 
             ref={islandRef}
-            className="absolute right-4 md:right-16 bottom-16"
+            className="absolute right-0 md:right-16 bottom-16"
           >
             <div className="relative">
               <img 
@@ -243,32 +261,36 @@ const TechnologiesSection = () => {
                 className="w-[120px] md:w-[200px] lg:w-[600px] h-auto drop-shadow-2xl"
               />
 
-              {/* Landed Technologies */}
-              <div className="absolute -top-16 md:-top-24 left-1/2 transform -translate-x-1/2 w-40 md:w-64">
-                <div className="grid grid-cols-3 md:grid-cols-4 gap-1 md:gap-2">
-                  {landedTechs.map((tech, index) => (
-                    <div
-                      key={tech.name}
-                      className="relative animate-bounce"
-                      style={{ animationDelay: `${index * 150}ms` }}
-                    >
-                      <div className="w-6 h-6 md:w-10 md:h-10 bg-gradient-to-br from-yellow-300 to-yellow-600 rounded-lg border-2 border-yellow-400 flex items-center justify-center text-xs md:text-lg shadow-lg">
-                        {tech.icon}
+              {/* Revolving Tech Icons */}
+              {landedTechs.length > 0 && (
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  {landedTechs.map((tech, index) => {
+                    const position = getTechPosition(index, landedTechs.length);
+                    return (
+                      <div
+                        key={tech.name}
+                        className="absolute flex items-center justify-center"
+                        style={{
+                          transform: `translate(${position.x}px, ${position.y}px)`,
+                          transition: 'transform 0.3s ease-out'
+                        }}
+                      >
+                        <div className="w-8 h-8 md:w-15 md:h-15 bg-gradient-to-br from-blue-100 to-blue-300 rounded-full border-2 border-blue-400 flex items-center justify-center text-sm md:text-lg shadow-lg "
+                          style={{ animationDelay: `${index * 0.1}s` }}>
+                          {tech.icon}
+                        </div>
                       </div>
-                      {/* <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-[8px] md:text-xs font-bold text-white bg-black/70 px-1 rounded whitespace-nowrap">
-                        {tech.name}
-                      </div> */}
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Control Panel */}
         <div className="text-center mt-8 md:mt-16">
-          <div className="inline-block p-4 md:p-6 bg-gradient-to-r from-amber-700/90 to-amber-900/90 backdrop-blur-sm rounded-xl md:rounded-2xl border-2 border-amber-500 shadow-lg">
+          <div className="inline-block p-4 md:p-6 bg-white/0  rounded-xl md:rounded-2xl  ">
             <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6 mb-3 md:mb-4">
               <button
                 onClick={fireCannon}
@@ -285,7 +307,7 @@ const TechnologiesSection = () => {
               </button>
             </div>
             
-            <div className="text-amber-100 text-sm md:text-base">
+            {/* <div className="text-amber-100 text-sm md:text-base">
               <p className="font-bold mb-1 md:mb-2">⚓ Captain's Log ⚓</p>
               <p className="mb-1">
                 Technologies Captured: <span className="text-yellow-300 font-bold">{landedTechs.length}/{technologies.length}</span>
@@ -293,7 +315,7 @@ const TechnologiesSection = () => {
               <p>
                 Next Ammunition: <span className="text-yellow-300 font-bold">{technologies[currentTechIndex]?.name || 'Reloading...'}</span>
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
