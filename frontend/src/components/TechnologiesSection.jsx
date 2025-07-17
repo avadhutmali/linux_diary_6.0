@@ -126,7 +126,7 @@ const TechnologiesSection = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-blue-900 via-blue-800 to-cyan-900 relative overflow-hidden min-h-screen">
+    <section className="py-20 relative overflow-hidden min-h-screen">
       {/* Enhanced Ocean Background */}
       <div className="absolute inset-0">
         <div className="enhanced-ocean-waves"></div>
