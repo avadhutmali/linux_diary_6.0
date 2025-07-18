@@ -27,7 +27,7 @@ body {
 /* Apply gradient to root that covers entire page content */
 #root {
   min-height: 100vh;
-  background: linear-gradient(to bottom, #0c8fec, #29b0ee, #5eb4ed, #d9f1ff);
+  background: linear-gradient(to bottom, #0c8fec, #29b0ee, #3580b3, #f4f6f8);
   background-attachment: scroll;
   background-repeat: no-repeat;
   background-size: 100% 100%;
