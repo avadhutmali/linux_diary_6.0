@@ -275,7 +275,7 @@ const TechnologiesSection = () => {
                           transition: 'transform 0.3s ease-out'
                         }}
                       >
-                        <div className="w-8 h-8 md:w-15 md:h-15 bg-gradient-to-br from-blue-100 to-blue-300 rounded-full border-2 border-blue-400 flex items-center justify-center text-sm md:text-lg shadow-lg "
+                        <div className="w-8 h-8 md:w-15 md:h-15 bg-gradient-to-br from-blue-100 to-blue-300 rounded-xl border-2 border-blue-400 flex items-center justify-center text-sm md:text-lg shadow-lg "
                           style={{ animationDelay: `${index * 0.1}s` }}>
                           {tech.icon}
                         </div>
