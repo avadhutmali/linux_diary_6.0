@@ -1,14 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+import discordImg from '../assets/technologies/discord.png';
+import figmaImg from '../assets/technologies/figma.png';
+import framerImg from '../assets/technologies/framer.png';
+import notionImg from '../assets/technologies/notion.png';
+import photoshopImg from '../assets/technologies/photoshop.png';
+import protopieImg from '../assets/technologies/protopie.png';
+import raindropImg from '../assets/technologies/raindrop.png';
+import slackImg from '../assets/technologies/slack.png';
+
 const technologies = [
-  { name: 'React', icon: '⚛️', description: 'Frontend framework', color: '#61DAFB' },
-  { name: 'Node.js', icon: '🟢', description: 'Backend runtime', color: '#339933' },
-  { name: 'Docker', icon: '🐳', description: 'Containerization', color: '#2496ED' },
-  { name: 'MongoDB', icon: '🍃', description: 'Database', color: '#47A248' },
-  { name: 'Python', icon: '🐍', description: 'Programming language', color: '#3776AB' },
-  { name: 'Git', icon: '📚', description: 'Version control', color: '#F05032' },
-  { name: 'AWS', icon: '☁️', description: 'Cloud platform', color: '#FF9900' },
-  { name: 'Linux', icon: '🐧', description: 'Operating system', color: '#FCC624' }
+  { name: 'React', img: discordImg, description: 'Frontend framework', color: '#61DAFB' },
+  { name: 'Node.js', img: figmaImg, description: 'Backend runtime', color: '#339933' },
+  { name: 'Docker', img: framerImg, description: 'Containerization', color: '#2496ED' },
+  { name: 'MongoDB', img: notionImg, description: 'Database', color: '#47A248' },
+  { name: 'Python', img: photoshopImg, description: 'Programming language', color: '#3776AB' },
+  { name: 'Git', img: protopieImg, description: 'Version control', color: '#F05032' },
+  { name: 'AWS', img: raindropImg, description: 'Cloud platform', color: '#FF9900' },
+  { name: 'Linux', img: slackImg, description: 'Operating system', color: '#FCC624' }
 ];
 
 const TechnologiesSection = () => {
@@ -280,17 +289,21 @@ const TechnologiesSection = () => {
                     const position = getTechPosition(index, landedTechs.length);
                     return (
                       <div
-                        key={tech.name}
-                        className="absolute flex items-center justify-center"
-                        style={{
-                          transform: `translate(${position.x-10}px, ${position.y-10}px)`,
-                          transition: 'transform 0.5s ease-out'
-                        }}
+                      key={tech.name}
+                      className="absolute flex items-center justify-center"
+                      style={{
+                        transform: `translate(${position.x-10}px, ${position.y-10}px)`,
+                        transition: 'transform 0.5s ease-out'
+                      }}
                       >
-                        <div className="w-8 h-8 md:w-15 md:h-15 bg-gradient-to-br from-blue-100 to-blue-300 rounded-xl border-2 border-blue-400 flex items-center justify-center text-sm md:text-lg shadow-lg "
-                          style={{ animationDelay: `${index * 0.1}s` }}>
-                          {tech.icon}
-                        </div>
+                      <div className="w-8 h-8 md:w-15 md:h-15 bg-gradient-to-br from-white to-gray-400 rounded-xl border-2 border-white flex items-center justify-center text-sm md:text-lg shadow-lg"
+                        style={{ animationDelay: `${index * 0.1}s` }}>
+                        <img
+                        src={tech.img}
+                        alt={tech.name}
+                        className="w-6 h-6 md:w-10 md:h-10 object-contain"
+                        />
+                      </div>
                       </div>
                     );
                   })}
