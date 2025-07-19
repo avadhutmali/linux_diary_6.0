@@ -39,7 +39,10 @@ const TechnologiesSection = () => {
   // Auto-fire cannon every 4 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      fireCannon();
+      if(landedTechs.length<=7){
+
+        fireCannon();
+      }
     }, 4000);
 
     return () => clearInterval(interval);
@@ -123,7 +126,7 @@ const TechnologiesSection = () => {
     
     const startX = screenSize === 'large' ? 350 : 100; // Adjusted for small screens
     const startY = screenSize === 'large' ? 320 : 150;
-    const endX = screenSize === 'large' ? window.innerWidth - 1000 : window.innerWidth - 150; // Adjusted for small screens
+    const endX = screenSize === 'large' ? window.innerWidth -750 : window.innerWidth - 150; // Adjusted for small screens
     const endY = screenSize === 'large' ? 350 : 180;
     
     const currentX = startX + (endX - startX) * progress;
@@ -135,7 +138,7 @@ const TechnologiesSection = () => {
 
   // Calculate positions for revolving tech icons
   const getTechPosition = (index, total) => {
-    const radius = screenSize === 'large' ? 250 : 60;
+    const radius = screenSize === 'large' ? 250 : 75;
     const angle = (index * (360 / total) + rotationAngle) * (Math.PI / 180);
     return {
       x: Math.cos(angle) * radius,
@@ -200,7 +203,7 @@ const TechnologiesSection = () => {
               
               {/* Cannon Fire Effect */}
               {firingTech && (
-                <div className="absolute right-0 md:right-0 top-2/3 transform -translate-y-1/2">
+                <div className="absolute -right-5 md:-right-15 top-2/3 transform -translate-y-1/2">
                   <img 
                     src="/images/explod-animation.gif" 
                     alt="Cannon Explosion"
@@ -252,14 +255,23 @@ const TechnologiesSection = () => {
           {/* Treasure Island */}
           <div 
             ref={islandRef}
-            className="absolute right-0 md:right-16 bottom-16"
+            className="absolute right-5 md:right-16 bottom-16"
           >
             <div className="relative">
-              <img 
+              {landedTechs.length <= 7 && (
+                <img 
                 src="/images/island.png" 
                 alt="Treasure Island"
-                className="w-[120px] md:w-[200px] lg:w-[600px] h-auto drop-shadow-2xl"
+                className="w-[190px] md:w-[200px] lg:w-[600px] h-auto drop-shadow-2xl"
               />
+              )}
+                 {landedTechs.length > 7 && (
+                <img 
+                src="/images/wargame2.png" 
+                alt="Treasure Island"
+                className="w-[190px] md:w-[200px] lg:w-[600px] h-auto drop-shadow-2xl"
+              />
+              )}
 
               {/* Revolving Tech Icons */}
               {landedTechs.length > 0 && (
@@ -271,8 +283,8 @@ const TechnologiesSection = () => {
                         key={tech.name}
                         className="absolute flex items-center justify-center"
                         style={{
-                          transform: `translate(${position.x}px, ${position.y}px)`,
-                          transition: 'transform 0.3s ease-out'
+                          transform: `translate(${position.x-10}px, ${position.y-10}px)`,
+                          transition: 'transform 0.5s ease-out'
                         }}
                       >
                         <div className="w-8 h-8 md:w-15 md:h-15 bg-gradient-to-br from-blue-100 to-blue-300 rounded-xl border-2 border-blue-400 flex items-center justify-center text-sm md:text-lg shadow-lg "
