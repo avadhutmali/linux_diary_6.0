@@ -3,6 +3,7 @@ import img1 from '../assets/RoadMap1.png';
 import img2 from '../assets/RoadMap1.png';
 import img3 from '../assets/RoadMap1.png';
 import img4 from '../assets/RoadMap1.png';
+import poleImage from '../assets/red-pole.png'
 
 const images = [
   { id: 'one', src: img1, alt: 'Pirate Penguin 1' },
@@ -35,9 +36,16 @@ const Roadmap = () => {
   }, []);
 
   return (
-    <section className="py-20 h-[180vh] relative overflow-hidden">
+    <section className="py-20 h-[150vh] lg:h-[180vh] relative overflow-hidden">
       {/* Ice-pillar spine */}
-      <div className="absolute left-1/2  top-0 transform -translate-x-1/2 w-10 h-full ice-pillar" />
+      {/* Pole Image as Roadmap Spine */}
+<div className="absolute left-1/2 top-75 transform -translate-x-1/2 w-6 h-full z-0 overflow-hidden pointer-events-none">
+  <div className="h-full w-full bg-[repeating-linear-gradient(45deg,red_0,red_10px,white_10px,white_20px)]" />
+</div>
+
+
+
+
 
       <div className="container mx-auto px-4 relative">
         <div className="text-center mb-12">
