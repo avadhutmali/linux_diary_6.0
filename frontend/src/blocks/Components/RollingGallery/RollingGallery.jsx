@@ -162,7 +162,7 @@ const RollingGallery = ({
               <img
                 src={url}
                 alt="gallery"
-                loading="lazy"
+               
                 className="pointer-events-none h-[120px] w-[200px] rounded-[15px] border-[3px] border-white object-cover
                            transition-transform duration-300 ease-out group-hover:scale-105
                            sm:h-[200px] sm:w-[280px]"
