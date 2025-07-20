@@ -28,6 +28,7 @@ const TechnologiesSection = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [cannonRecoil, setCannonRecoil] = useState(false);
   const [screenSize, setScreenSize] = useState('large');
+  const [showLandingExplosion, setShowLandingExplosion] = useState(false);
   
   const shipRef = useRef(null);
   const islandRef = useRef(null);
@@ -69,6 +70,9 @@ const TechnologiesSection = () => {
         justLanded.forEach(ball => {
           setLandedTechs(current => {
             if (!current.find(tech => tech.name === ball.tech.name)) {
+              // Show explosion when ball lands
+              setShowLandingExplosion(true);
+              setTimeout(() => setShowLandingExplosion(false), 800);
               return [...current, ball.tech];
             }
             return current;
@@ -126,6 +130,7 @@ const TechnologiesSection = () => {
     setLandedTechs([]);
     setCannonballsInFlight([]);
     setCurrentTechIndex(0);
+    setShowLandingExplosion(false);
   };
 
   // Calculate trajectory - always horizontal
@@ -147,7 +152,7 @@ const TechnologiesSection = () => {
 
   // Calculate positions for revolving tech icons
   const getTechPosition = (index, total) => {
-    const radius = screenSize === 'large' ? 250 : 75;
+    const radius = screenSize === 'large' ? 250 : 85;
     const angle = (index * (360 / total) + rotationAngle) * (Math.PI / 180);
     return {
       x: Math.cos(angle) * radius,
@@ -267,19 +272,29 @@ const TechnologiesSection = () => {
             className="absolute right-5 md:right-16 bottom-16"
           >
             <div className="relative">
+              {/* Show explosion only when a cannonball just landed */}
+              {showLandingExplosion && (
+                <div className="absolute left-20 z-100 md:-right-15 top-2/3 transform -translate-y-1/2">
+                  <img 
+                    src="/images/explod-animation.gif" 
+                    alt="Landing Explosion"
+                    className="w-16 h-16 md:w-48 md:h-48 object-contain z-20"
+                  />
+                </div>
+              )}
               {landedTechs.length <= 7 && (
                 <img 
-                src="/images/island.avif" 
-                alt="Treasure Island"
-                className="w-[190px] md:w-[200px] lg:w-[600px] h-auto drop-shadow-2xl"
-              />
+                  src="/images/island.avif" 
+                  alt="Treasure Island"
+                  className="w-[190px] md:w-[200px] lg:w-[600px] h-auto drop-shadow-2xl"
+                />
               )}
-                 {landedTechs.length > 7 && (
+              {landedTechs.length > 7 && (
                 <img 
-                src="/images/wargame2.avif" 
-                alt="Treasure Island"
-                className="w-[190px] md:w-[200px] lg:w-[600px] h-auto drop-shadow-2xl"
-              />
+                  src="/images/wargame2.avif" 
+                  alt="Treasure Island"
+                  className="w-[190px] md:w-[200px] lg:w-[600px] h-auto drop-shadow-2xl"
+                />
               )}
 
               {/* Revolving Tech Icons */}
@@ -293,7 +308,7 @@ const TechnologiesSection = () => {
                       className="absolute flex items-center justify-center"
                       style={{
                         transform: `translate(${position.x-10}px, ${position.y-10}px)`,
-                        transition: 'transform 0.5s ease-out'
+                        transition: 'transform 1.55s ease-out',
                       }}
                       >
                       <div className="w-8 h-8 md:w-15 md:h-15 bg-gradient-to-br from-white to-gray-400 rounded-xl border-2 border-white flex items-center justify-center text-sm md:text-lg shadow-lg"
