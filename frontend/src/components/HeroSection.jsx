@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
-import heroImage from '../assets/linuxdiary-hero.png';
+import heroImage from '../assets/linuxdiary-hero.avif';
 import TrueFocus from '../blocks/TextAnimations/TrueFocus/TrueFocus';
 import SplitText from '../blocks/TextAnimations/SplitText/SplitText';
 import SplitTexts from '../blocks/TextAnimations/SplitText/SplitText';

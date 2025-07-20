@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import discordImg from '../assets/technologies/discord.png';
-import figmaImg from '../assets/technologies/figma.png';
-import framerImg from '../assets/technologies/framer.png';
-import notionImg from '../assets/technologies/notion.png';
-import photoshopImg from '../assets/technologies/photoshop.png';
-import protopieImg from '../assets/technologies/protopie.png';
-import raindropImg from '../assets/technologies/raindrop.png';
-import slackImg from '../assets/technologies/slack.png';
+import discordImg from '../assets/technologies/discord.webp';
+import figmaImg from '../assets/technologies/figma.webp';
+import framerImg from '../assets/technologies/framer.webp';
+import notionImg from '../assets/technologies/notion.webp';
+import photoshopImg from '../assets/technologies/photoshop.webp';
+import protopieImg from '../assets/technologies/protopie.webp';
+import raindropImg from '../assets/technologies/raindrop.webp';
+import slackImg from '../assets/technologies/slack.webp';
 
 const technologies = [
   { name: 'React', img: discordImg, description: 'Frontend framework', color: '#61DAFB' },
@@ -205,7 +205,7 @@ const TechnologiesSection = () => {
           >
             <div className={`relative ${cannonRecoil ? 'animate-recoil' : 'animate-wave'}`}>
               <img 
-                src="/images/ship.png" 
+                src="/images/ship.avif" 
                 alt="Pirate Ship"
                 className="w-[120px] md:w-[200px] lg:w-[20vw] h-auto drop-shadow-2xl transition-all duration-300"
               />
@@ -241,7 +241,7 @@ const TechnologiesSection = () => {
               >
                 <div className="relative">
                   <img 
-                    src="/images/cannonball.png" 
+                    src="/images/cannonball.avif" 
                     alt="Cannonball"
                     className="w-8 h-8 md:w-12 md:h-12 drop-shadow-xl"
                   />
@@ -269,14 +269,14 @@ const TechnologiesSection = () => {
             <div className="relative">
               {landedTechs.length <= 7 && (
                 <img 
-                src="/images/island.png" 
+                src="/images/island.avif" 
                 alt="Treasure Island"
                 className="w-[190px] md:w-[200px] lg:w-[600px] h-auto drop-shadow-2xl"
               />
               )}
                  {landedTechs.length > 7 && (
                 <img 
-                src="/images/wargame2.png" 
+                src="/images/wargame2.avif" 
                 alt="Treasure Island"
                 className="w-[190px] md:w-[200px] lg:w-[600px] h-auto drop-shadow-2xl"
               />
