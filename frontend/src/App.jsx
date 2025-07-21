@@ -71,7 +71,7 @@ const App = () => {
                 <text
                   x="50%"
                   y="50%"
-                  fontSize="200"
+                  fontSize="180"
                   textAnchor="middle"
                   fill="white"
                   dominantBaseline="middle"
