@@ -4,7 +4,7 @@ import logo from "../assets/wlug-logo.png"; // Replace with your logo path
 const Navbar = () => {
   return (
  
-      <div className="w-screen p-8 mx-auto flex items-center">
+      <div className="w-screen p-8 mx-auto flex items-center justify-center lg:justify-start">
         {/* Logo only */}
         <a href="/" className="focus:outline-none">
           <img 
