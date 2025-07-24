@@ -1134,7 +1134,7 @@ export default function InfiniteMenu({ items = [] }) {
       <canvas
         id="infinite-grid-menu-canvas"
         ref={canvasRef}
-        className="cursor-grab w-1/2 h-full mx-auto border-2 border-gray-300 rounded-lg"
+        className="cursor-grab w-1/2 h-full mx-auto shadow-xl shadow-gray-400 rounded-2xl"
       />
     </div>
   );
