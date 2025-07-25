@@ -688,7 +688,7 @@ class InfiniteGridMenu {
     this.gl = this.canvas.getContext("webgl2", {
       antialias: true,
       alpha: true,
-      preserveDrawingBuffer:false,
+      preserveDrawingBuffer: false,
     });
     const gl = this.gl;
     if (!gl) {
@@ -1134,7 +1134,7 @@ export default function InfiniteMenu({ items = [] }) {
       <canvas
         id="infinite-grid-menu-canvas"
         ref={canvasRef}
-        className="cursor-grab w-1/2 h-full mx-auto shadow-xl shadow-gray-400 rounded-2xl"
+        className="cursor-grab w-[90%] lg:w-1/2 h-full mx-auto border border-gray-400 shadow-xl shadow-gray-400 rounded-2xl"
       />
     </div>
   );
