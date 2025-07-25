@@ -9,6 +9,7 @@ import PrizeSection from "./components/PrizeSection";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ImageGallary from "./components/ImageGallary";
+import Register from "./components/Registration";
 
 const App = () => {
   const [showContent, setshowContent] = useState(false);
@@ -100,6 +101,7 @@ const App = () => {
           <TechnologiesSection />
           <PrizeSection />
           <ImageGallary/>
+          <Register/>
           <Footer />
         </div>
       )}
