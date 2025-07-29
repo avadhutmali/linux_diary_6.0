@@ -190,7 +190,7 @@ const TechnologiesSection = () => {
         ))}
       </div>
 
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-0 relative z-10">
           {/* <div className="text-center mb-8 md:mb-12">
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-3 md:mb-6">
           ⚓ Pirate Tech Arsenal ⚓
@@ -206,18 +206,18 @@ const TechnologiesSection = () => {
           {/* Pirate Ship */}
           <div 
             ref={shipRef}
-            className="absolute left-4 md:left-16 bottom-16"
+            className="absolute left-4 md:left-0 bottom-16"
           >
             <div className={`relative ${cannonRecoil ? 'animate-recoil' : 'animate-wave'}`}>
               <img 
-                src="/images/ship.avif" 
+                src="/images/tux-gun.png" 
                 alt="Pirate Ship"
-                className="w-[120px] md:w-[200px] lg:w-[20vw] h-auto drop-shadow-2xl transition-all duration-300"
+                className="w-[120px] md:w-[200px] lg:w-[35vw] h-auto drop-shadow-2xl transition-all duration-300"
               />
               
               {/* Cannon Fire Effect */}
               {firingTech && (
-                <div className="absolute -right-5 md:-right-15 top-2/3 transform -translate-y-1/2">
+                <div className="absolute -right-0 md:right-22 top-1/3 transform -translate-y-1/2">
                   <img 
                     src="/images/explod-animation.gif" 
                     alt="Cannon Explosion"
