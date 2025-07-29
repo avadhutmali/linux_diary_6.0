@@ -49,8 +49,8 @@ body {
 /* Expermental */
 /* Pirate Ship Animations */
 @keyframes wave {
-  0%, 100% { transform: rotate(-3deg); }
-  50% { transform: rotate(2deg); }
+  0%, 100% { transform: translateY(10px); }
+  50% { transform: translateY(5px); }
 }
 
 .animate-wave {
