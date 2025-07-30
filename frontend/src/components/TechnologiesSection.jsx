@@ -242,18 +242,22 @@ const TechnologiesSection = () => {
       </div>
 
       {/* Floating Clouds */}
-      <div className="absolute inset-0 my-10 pointer-events-none">
-        {[...Array(4)].map((_, i) => (
+      <div className="absolute flex w-full px-0 lg:px-36 justify-between inset-0   my-10 pointer-events-none">
+        {[...Array(3)].map((_, i) => (
           <img
             key={i}
             src="/images/clouds.png"
             alt="Cloud"
-            className={`absolute transition-all ${screenSize === 'large' ? 'animate-bounce' : 'animate-bounce-sm'} rotate-2`}
+            className={` ${screenSize === 'large' ? 'animate-bounce-md' : 'animate-bounce-sm'} rotate-2`}
             style={{
-              width: screenSize === 'large' ? `${150 + i * 10}px` : `${70 + i * 6}px`,
-              height: screenSize === 'large' ? `${70 + i * 5}px` : `${30 + i * 3}px`,
-              left: screenSize === 'large' ? `${5 + i * 25}%` : `${2 + i * 26}%`,
-              top: screenSize === 'large' ? `${5 + (i % 3) * 10}%` : `${2 + (i % 3) * 7}%`,
+              width: screenSize === 'large' ? `${220 + i * 10}px` : `${120 + i * 6}px`,
+              height: screenSize === 'large' ? `${120 + i * 5}px` : `${60 + i * 3}px`,
+              // left: screenSize === 'large' ? `${5 + i * 25}%` : `${2 + i * 26}%`,
+              // All clouds at same base y, with slight offset for each
+              top: screenSize === 'large'
+                ? `8%` // base y
+                : `5%`,
+              transform: `translateY(${i * 2}px)`, // slight change in y for each
               animationDelay: `${i * 0.8}s`,
               animationDuration: screenSize === 'large' ? `${6 + i * 0.5}s` : `${4 + i * 0.3}s`,
               opacity: 0.9
@@ -262,15 +266,15 @@ const TechnologiesSection = () => {
         ))}
       </div>
 
-        <div className="container mx-auto px-0 relative z-10">
-          {/* <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-3 md:mb-6">
-          ⚓ Pirate Tech Arsenal ⚓
-            </h2>
-            <p className="text-base md:text-xl text-cyan-200 max-w-3xl mx-auto">
-          Watch our pirate penguins launch technologies across the digital seas!
-            </p>
-          </div> */}
+      <div className="container mx-auto px-0 relative z-10">
+        {/* <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-3 md:mb-6">
+        ⚓ Pirate Tech Arsenal ⚓
+          </h2>
+          <p className="text-base md:text-xl text-cyan-200 max-w-3xl mx-auto">
+        Watch our pirate penguins launch technologies across the digital seas!
+          </p>
+        </div> */}
 
           {/* Main Scene Container */}
         <div className="relative w-full h-[300px] md:h-[500px]  mx-auto">
