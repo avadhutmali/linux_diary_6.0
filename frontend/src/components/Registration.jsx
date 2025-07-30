@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import MainImg from "../assets/prize-tux.png";
+import MainImg from "../assets/frozen-bg.jpg";
 // import SnowfallEffect from "./SnowfallEffect";
 import RegisterTux from "../assets/tuxRegistration.png";
 import { BiCross, BiUpload } from "react-icons/bi";
@@ -176,7 +176,7 @@ const Register = () => {
             formData.append("paymentImg", file);
             try {
                 const res = await fetch(
-                    "https://linuxdiary5-0-backend-cjli.onrender.com/user/registration",
+                    "https://linux-diary-6-0.onrender.com/user/registration",
                     {
                         method: "POST",
                         body: formData,
@@ -223,7 +223,9 @@ const Register = () => {
             id="register"
             className="px-6 md:px-14 py-24 relative flex items-center justify-center"
         >
-            <div className="bg-white/30  shadow-md rounded-lg flex flex-col-reverse md:flex-row md:space-x-4 justify-center items-center z-50 w-full min-h-72">
+            <div className="bg-white/35 backdrop-blur-2xl  shadow-md rounded-lg flex flex-col-reverse md:flex-row md:space-x-4 justify-center items-center z-50 w-full min-h-72"
+          
+            >
                 <div className="w-full p-6 h-full">
                     <h1 className="text-4xl font-[900] text-black hidden md:block">
                         Register!

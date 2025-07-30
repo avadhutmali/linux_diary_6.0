@@ -42,56 +42,7 @@ const HeroSection = () => {
   }, []);
 
   // Snowflake component
-  const Snowflake = ({ style }) => {
-    const x = useMotionValue(Math.random() * 100 - 50);
-    const rotate = useMotionValue(Math.random() * 360);
-    const left = Math.random() * 100; // percent
-    const fontSize = Math.random() * 10 + 10; // px
-    const animationDelay = Math.random() * 5; // seconds
-    const fallDuration = Math.random() * 10 + 5; // seconds
-
-    useEffect(() => {
-      const xAnimation = animate(x, Math.random() * 100 - 50, {
-        duration: fallDuration,
-        repeat: Infinity,
-        repeatType: "reverse",
-        ease: "linear"
-      });
-
-      const rotateAnimation = animate(rotate, 360, {
-        duration: Math.random() * 10 + 10,
-        repeat: Infinity,
-        ease: "linear"
-      });
-
-      return () => {
-        xAnimation.stop();
-        rotateAnimation.stop();
-      };
-    }, [fallDuration]);
-
-    return (
-      <motion.div
-        className="absolute text-blue-50 opacity-80 pointer-events-none"
-        initial={{ y: -500 }}
-        animate={{ y: "calc(100vh + 100px)" }}
-        transition={{
-          duration: fallDuration,
-          repeat: Infinity,
-          ease: "linear",
-          delay: animationDelay
-        }}
-        style={{
-          left: `${left}%`,
-          fontSize: `${fontSize}px`,
-          x,
-          rotate
-        }}
-      >
-        ❄
-      </motion.div>
-    );
-  };
+  
 
   return (
     <section 
@@ -101,9 +52,9 @@ const HeroSection = () => {
       
 
       {/* Snowflakes */}
-      {Array.from({ length: 80 }).map((_, i) => (
+      {/* {Array.from({ length: 80 }).map((_, i) => (
         <Snowflake key={i} />
-      ))}
+      ))} */}
  <div className='flex item-center gap-4 '>
           <SplitTexts
           text="LinuxDiary 6.0"

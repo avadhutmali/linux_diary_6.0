@@ -35,15 +35,28 @@ const TechnologiesSection = () => {
   const animationRef = useRef(null);
   const [rotationAngle, setRotationAngle] = useState(0);
 
-  // Detect screen size
+  // Detect screen size and handle resize for all devices
   useEffect(() => {
     const checkScreenSize = () => {
-      setScreenSize(window.innerWidth >= 768 ? 'large' : 'small');
+      const width = window.innerWidth;
+      if (width >= 1024) {
+        setScreenSize('large');
+      } else if (width >= 768) {
+        setScreenSize('medium');
+      } else {
+        setScreenSize('small');
+      }
+    };
+    
+    const handleResize = () => {
+      checkScreenSize();
+      // Force recalculation of trajectory for flying cannonballs
+      setCannonballsInFlight(prev => [...prev]);
     };
     
     checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Auto-fire cannon every 4 seconds
@@ -63,7 +76,7 @@ const TechnologiesSection = () => {
     const interval = setInterval(() => {
       setCannonballsInFlight(prev => {
         const now = Date.now();
-        const flightDuration = 3000;
+        const flightDuration = 3500;
         const stillFlying = prev.filter(ball => now - ball.startTime < flightDuration);
         const justLanded = prev.filter(ball => now - ball.startTime >= flightDuration);
         
@@ -110,10 +123,36 @@ const TechnologiesSection = () => {
     setIsLoading(true);
     setCannonRecoil(true);
 
+    // Calculate fixed trajectory positions relative to container, not viewport
+    let startX, startY, endX, endY;
+    
+    // Use container-relative positioning instead of getBoundingClientRect
+    if (screenSize === 'large') {
+      startX = 310; // Fixed position relative to container for large screens
+      startY = 175;
+      endX = window.innerWidth - 500;
+      endY = 320;
+    } else if (screenSize === 'medium') {
+      startX = 220;
+      startY = 200;
+      endX = window.innerWidth - 400;
+      endY = 260;
+    } else {
+      startX = 125;
+      startY = 110;
+      endX = window.innerWidth - 140;
+      endY = 180;
+    }
+
     const newCannonball = {
       id: Date.now(),
       tech: currentTech,
-      startTime: Date.now()
+      startTime: Date.now(),
+      // Store fixed trajectory positions (container-relative)
+      fixedStartX: startX,
+      fixedStartY: startY,
+      fixedEndX: endX,
+      fixedEndY: endY
     };
     setCannonballsInFlight(prev => [...prev, newCannonball]);
 
@@ -133,26 +172,59 @@ const TechnologiesSection = () => {
     setShowLandingExplosion(false);
   };
 
-  // Calculate trajectory - always horizontal
-  const getCannonballPosition = (progress) => {
-    const shipRect = shipRef.current?.getBoundingClientRect();
-    const islandRect = islandRef.current?.getBoundingClientRect();
+  // Calculate trajectory - completely scroll-independent positioning
+  const getCannonballPosition = (progress, ball = null) => {
+    let startX, startY, endX, endY;
     
-    const startX = screenSize === 'large' ? 350 : 100; // Adjusted for small screens
-    const startY = screenSize === 'large' ? 320 : 150;
-    const endX = screenSize === 'large' ? window.innerWidth -750 : window.innerWidth - 150; // Adjusted for small screens
-    const endY = screenSize === 'large' ? 350 : 180;
+    // Use fixed positions from the ball if available (completely scroll-independent)
+    if (ball && ball.fixedStartX !== undefined) {
+      startX = ball.fixedStartX;
+      startY = ball.fixedStartY;
+      endX = ball.fixedEndX;
+      endY = ball.fixedEndY;
+    } else {
+      // Fallback to container-relative positions (not viewport-dependent)
+      if (screenSize === 'large') {
+        startX = 320;
+        startY = 280;
+        endX = window.innerWidth - 600;
+        endY = 320;
+      } else if (screenSize === 'medium') {
+        startX = 220;
+        startY = 200;
+        endX = window.innerWidth - 400;
+        endY = 240;
+      } else {
+        startX = 140;
+        startY = 130;
+        endX = window.innerWidth - 200;
+        endY = 160;
+      }
+    }
     
+    // Calculate current position along the trajectory
     const currentX = startX + (endX - startX) * progress;
-    const arcHeight = screenSize === 'large' ? 200 : 80;
-    const currentY = startY + (endY - startY) * progress - (4 * arcHeight * progress * (1 - progress));
+    
+    // Create responsive arc trajectory
+    const distance = Math.abs(endX - startX);
+    const baseArcHeight = screenSize === 'large' ? 150 : screenSize === 'medium' ? 100 : 60;
+    const dynamicArcHeight = Math.min(distance * 0.2, baseArcHeight);
+    const currentY = startY + (endY - startY) * progress - (4 * dynamicArcHeight * progress * (1 - progress));
     
     return { x: currentX, y: currentY };
   };
 
-  // Calculate positions for revolving tech icons
+  // Calculate positions for revolving tech icons - responsive for all devices
   const getTechPosition = (index, total) => {
-    const radius = screenSize === 'large' ? 250 : 85;
+    let radius;
+    if (screenSize === 'large') {
+      radius = 260;
+    } else if (screenSize === 'medium') {
+      radius = 150;
+    } else {
+      radius = 100;
+    }
+    
     const angle = (index * (360 / total) + rotationAngle) * (Math.PI / 180);
     return {
       x: Math.cos(angle) * radius,
@@ -170,18 +242,22 @@ const TechnologiesSection = () => {
       </div>
 
       {/* Floating Clouds */}
-      <div className="absolute inset-0 my-10 pointer-events-none">
-        {[...Array(4)].map((_, i) => (
+      <div className="absolute flex w-full px-0 lg:px-36 justify-between inset-0   my-10 pointer-events-none">
+        {[...Array(3)].map((_, i) => (
           <img
             key={i}
             src="/images/clouds.png"
             alt="Cloud"
-            className={`absolute transition-all ${screenSize === 'large' ? 'animate-bounce' : 'animate-bounce-sm'} rotate-2`}
+            className={` ${screenSize === 'large' ? 'animate-bounce-md' : 'animate-bounce-sm'} rotate-2`}
             style={{
-              width: screenSize === 'large' ? `${150 + i * 10}px` : `${70 + i * 6}px`,
-              height: screenSize === 'large' ? `${70 + i * 5}px` : `${30 + i * 3}px`,
-              left: screenSize === 'large' ? `${5 + i * 25}%` : `${2 + i * 26}%`,
-              top: screenSize === 'large' ? `${5 + (i % 3) * 10}%` : `${2 + (i % 3) * 7}%`,
+              width: screenSize === 'large' ? `${220 + i * 10}px` : `${120 + i * 6}px`,
+              height: screenSize === 'large' ? `${120 + i * 5}px` : `${60 + i * 3}px`,
+              // left: screenSize === 'large' ? `${5 + i * 25}%` : `${2 + i * 26}%`,
+              // All clouds at same base y, with slight offset for each
+              top: screenSize === 'large'
+                ? `8%` // base y
+                : `5%`,
+              transform: `translateY(${i * 2}px)`, // slight change in y for each
               animationDelay: `${i * 0.8}s`,
               animationDuration: screenSize === 'large' ? `${6 + i * 0.5}s` : `${4 + i * 0.3}s`,
               opacity: 0.9
@@ -190,34 +266,35 @@ const TechnologiesSection = () => {
         ))}
       </div>
 
-        <div className="container mx-auto px-4 relative z-10">
-          {/* <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-3 md:mb-6">
-          ⚓ Pirate Tech Arsenal ⚓
-            </h2>
-            <p className="text-base md:text-xl text-cyan-200 max-w-3xl mx-auto">
-          Watch our pirate penguins launch technologies across the digital seas!
-            </p>
-          </div> */}
+      <div className="container mx-auto px-0 relative z-10">
+        {/* <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-3 md:mb-6">
+        ⚓ Pirate Tech Arsenal ⚓
+          </h2>
+          <p className="text-base md:text-xl text-cyan-200 max-w-3xl mx-auto">
+        Watch our pirate penguins launch technologies across the digital seas!
+          </p>
+        </div> */}
 
           {/* Main Scene Container */}
-        <div className="relative w-full h-[300px] md:h-[500px] max-w-7xl mx-auto">
+        <div className="relative w-full h-[300px] md:h-[500px]  mx-auto">
           
           {/* Pirate Ship */}
           <div 
             ref={shipRef}
-            className="absolute left-4 md:left-16 bottom-16"
+            className="absolute left-4 md:left-0 bottom-16 "
           >
             <div className={`relative ${cannonRecoil ? 'animate-recoil' : 'animate-wave'}`}>
               <img 
-                src="/images/ship.avif" 
+                src="/images/tux-gun2.png" 
                 alt="Pirate Ship"
-                className="w-[120px] md:w-[200px] lg:w-[20vw] h-auto drop-shadow-2xl transition-all duration-300"
+                className="w-[25vw] md:w-[20vw] lg:w-[20vw] h-auto drop-shadow-2xl transition-all duration-300"
               />
               
               {/* Cannon Fire Effect */}
               {firingTech && (
-                <div className="absolute -right-5 md:-right-15 top-2/3 transform -translate-y-1/2">
+               
+                <div className="absolute right-0  top-1/3 transform -translate-y-1/2 translate-x-1/2">
                   <img 
                     src="/images/explod-animation.gif" 
                     alt="Cannon Explosion"
@@ -231,7 +308,7 @@ const TechnologiesSection = () => {
           {/* Flying Cannonballs */}
           {cannonballsInFlight.map((ball) => {
             const progress = Math.min((Date.now() - ball.startTime) / 3000, 1);
-            const position = getCannonballPosition(progress);
+            const position = getCannonballPosition(progress, ball);
             const rotation = progress * 720;
             
             return (
@@ -274,11 +351,21 @@ const TechnologiesSection = () => {
             <div className="relative">
               {/* Show explosion only when a cannonball just landed */}
               {showLandingExplosion && (
-                <div className="absolute left-20 z-100 md:-right-15 top-2/3 transform -translate-y-1/2">
+                <div 
+                  className="absolute z-100 transform -translate-y-1/2"
+                  style={{
+                    left: screenSize === 'large' ? '100px' : screenSize === 'medium' ? '70px' : '50px',
+                    top: '50%'
+                  }}
+                >
                   <img 
                     src="/images/explod-animation.gif" 
                     alt="Landing Explosion"
-                    className="w-16 h-16 md:w-48 md:h-48 object-contain z-20"
+                    className={`object-contain z-20 ${
+                      screenSize === 'large' ? 'w-48 h-48' : 
+                      screenSize === 'medium' ? 'w-32 h-32' : 
+                      'w-16 h-16'
+                    }`}
                   />
                 </div>
               )}

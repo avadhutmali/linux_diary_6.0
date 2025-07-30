@@ -10,6 +10,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ImageGallary from "./components/ImageGallary";
 import Register from "./components/Registration";
+import Snowfall from "react-snowfall";
 
 const App = () => {
   const [showContent, setshowContent] = useState(false);
@@ -94,6 +95,9 @@ const App = () => {
       </div>
       {showContent && (
         <div className="main min-h-screen">
+          <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-1">
+              <Snowfall snowflakeCount={150} />
+            </div>
           <Navbar />
           <HeroSection />
           {/* <RoadmapSection/> */}
