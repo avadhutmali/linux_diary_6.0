@@ -223,13 +223,8 @@ const Register = () => {
             id="register"
             className="px-6 md:px-14 py-24 relative flex items-center justify-center"
         >
-            <div className="bg-white/30  shadow-md rounded-lg flex flex-col-reverse md:flex-row md:space-x-4 justify-center items-center z-50 w-full min-h-72"
-            style={{
-                backgroundImage: `url(${MainImg})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-            }}
+            <div className="bg-white/35 backdrop-blur-2xl  shadow-md rounded-lg flex flex-col-reverse md:flex-row md:space-x-4 justify-center items-center z-50 w-full min-h-72"
+          
             >
                 <div className="w-full p-6 h-full">
                     <h1 className="text-4xl font-[900] text-black hidden md:block">
