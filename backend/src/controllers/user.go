@@ -8,13 +8,15 @@ import (
 	"log"
 	"mime/multipart"
 	"net/http"
-	"net/smtp"
 	"os"
 	"sort"
 	"strings"
+  "crypto/tls"
+	"strconv"
 
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
+  mail "gopkg.in/mail.v2"
 )
 
 type UserService struct {
@@ -73,30 +75,49 @@ func (u UserService) CreateUser(ctx context.Context, r *http.Request) (models.Re
 }
 
 func (u UserService) SendEmail(user models.UserInput) bool {
-	from := os.Getenv("BACKEND_MAIL_USER")
+	fromUser := os.Getenv("BACKEND_MAIL_USER")
+	fromHeader := os.Getenv("BACKEND_MAIL_FROM")
+	if fromHeader == "" {
+		fromHeader = fromUser 
+	}
 	password := os.Getenv("BACKEND_MAIL_PASSWORD")
-	host := os.Getenv("BACKEND_MAIL_HOST")
-	to := user.Email
-
-	log.Println(from, password, host, to)
-
-	auth := smtp.PlainAuth("", from, password, host)
-
-	emailTemplate := u.GetEmail(user.Name)
-
-	msg := []byte("From: " + from + "\r\n" + "To: " + to + "\r\n" +
-		"Subject: Welcome to LinuxDiary 5.0\r\n" +
-		"MIME-Version: 1.0\r\n" +
-		"Content-Type: text/html; charset=UTF-8\r\n\r\n" +
-		emailTemplate)
-
-	err := smtp.SendMail(host+":587", auth, from, []string{to}, msg)
-
+	host := os.Getenv("BACKEND_MAIL_HOST") 
+	portStr := os.Getenv("BACKEND_MAIL_PORT")
+	if portStr == "" {
+		portStr = "587"
+	}
+	port, err := strconv.Atoi(portStr)
 	if err != nil {
-		log.Println(err)
+		log.Println("invalid BACKEND_MAIL_PORT:", err)
 		return false
 	}
 
+	to := user.Email
+	log.Println("Sending email to:", to)
+
+	emailTemplate := u.GetEmail(user.Name)
+
+	// Build message
+	m := mail.NewMessage()
+	m.SetHeader("From", fromHeader)
+	m.SetHeader("To", to)
+	m.SetHeader("Subject", "Welcome to LinuxDiary 6.0")
+	m.SetBody("text/html", emailTemplate)
+
+	// Secure dialer
+	d := mail.NewDialer(host, port, fromUser, password)
+	d.StartTLSPolicy = mail.MandatoryStartTLS
+	d.TLSConfig = &tls.Config{
+		ServerName: host,
+		MinVersion: tls.VersionTLS12,
+	}
+	// Optional: avoid hanging forever
+	// d.Timeout = 15 * time.Second
+
+	if err := d.DialAndSend(m); err != nil {
+		log.Println("Email sending failed:", err)
+		return false
+	}
 	return true
 }
 
@@ -164,7 +185,7 @@ func (u UserService) GetEmail(name string) string {
       href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
       rel="stylesheet"
     />
-    <title>LinuxDiary 4.0</title>
+    <title>LinuxDiary 6.0</title>
   </head>
 
   <body style="font-family: 'Poppins', sans-serif">
@@ -285,9 +306,9 @@ func (u UserService) GetEmail(name string) string {
                     "
                   >
                     We are pleased to inform you that your registration for
-                    <strong>LinuxDiary 5.0</strong> was successful! 🎉<br />
+                    <strong>LinuxDiary 6.0</strong> was successful! 🎉<br />
                     <!--The event will be held on
-                    <strong><em>10th & 11th of August 2024</em></strong
+                    <strong><em>16th & 17th of August 2025</em></strong
                     >, focusing on Linux Fundamentals.🐧-->
                   </p>
                   Further details of the event will be conveyed via Whatsapp
@@ -312,7 +333,7 @@ func (u UserService) GetEmail(name string) string {
                   <p></p>
                   <p>
                     <strong style="font-size: 17px">
-                      LinuxDiary 5.0 Website:</strong
+                      LinuxDiary 6.0 Website:</strong
                     >
                     <a
                       href="https://linuxdiary5.0.wcewlug.org/"
