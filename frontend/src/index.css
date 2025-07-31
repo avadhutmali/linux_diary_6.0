@@ -22,6 +22,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 body {
@@ -374,15 +375,15 @@ Ocean Effects
 }
 
 /* Hide scrollbar but keep functionality */
-html {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
+/* html {
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }
 
-html::-webkit-scrollbar { /* WebKit */
+html::-webkit-scrollbar { 
   width: 0;
   height: 0;
-}
+} */
 
 /* Smooth scrolling */
 html {
