@@ -85,7 +85,7 @@ const App = () => {
             </mask>
           </defs>
           <image
-            href="https://gta-ecru.vercel.app/bg.png"
+            href="https://linux-diary5-0-frontend.vercel.app/assets/footer2-BZ9z_upm.png"
             width="100%"
             height="100%"
             preserveAspectRatio="xMidYMid slice"
