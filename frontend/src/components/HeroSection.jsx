@@ -58,7 +58,7 @@ const HeroSection = () => {
  <div className='flex item-center gap-4 '>
           <SplitTexts
           text="LinuxDiary 6.0"
-          className="lg:text-8xl pb-4 text-5xl font-bold text-white mb-4"
+          className="header lg:text-7xl  pb-4 text-5xl font-extrabold text-white mb-2"
            />
 
          
