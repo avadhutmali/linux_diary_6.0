@@ -1,165 +1,151 @@
 import React, { useEffect, useRef, useState } from "react";
-import img1 from "../assets/RoadMap1.png";
-import img2 from "../assets/RoadMap1.png";
-import img3 from "../assets/RoadMap1.png";
-import img4 from "../assets/RoadMap1.png";
+import img1 from "../assets/Roadmaps/6.png";
+import img2 from "../assets/Roadmaps/7.png";
+import img3 from "../assets/Roadmaps/8.png";
+import img4 from "../assets/Roadmaps/9.png";
+import img5 from "../assets/Roadmaps/10.png";
+import img6 from "../assets/Roadmaps/11.png";
+import img7 from "../assets/Roadmaps/12.png";
+import img8 from "../assets/Roadmaps/13.png";
 
 const timelineData = [
   {
     id: "one",
-    title: "Phase 1: Foundation",
-    description: "ng up devee core infrastructur foundation. Setting up development environment and initial project structure",
-    image: img1,
-    // date: "Q1 2024"
+    frontTitle: "Session 1:\nBorn to Boot",
+    description: `- Open Source Software: Introduction, Applications, Advantages
+- OS & Kernel: Introduction, Kernel vs OS, System Calls
+- Linux: History, Distributions, Families, Desktop Environments`,
+    imagePrimary: img1,
+    imageSecondary: img5,
   },
   {
-    id: "two", 
-    title: "Phase 2: Growth",
-    description: "Expanding features and growing the user base. Implementing core functionality and user management systems.",
-    image: img2,
-    // date: "Q2 2024"
+    id: "two",
+    frontTitle: "Session 2:\nCommand Quest",
+    description: `- Basic & Advanced Commands
+- Booting Process: Devices, Bootloader, Sequence, BIOS vs UEFI
+- Text Editors: Types & Examples
+- Process Management: Lifecycle, PID, Zombie, Fork/Exec
+- Pipelining in Linux`,
+    imagePrimary: img2,
+    imageSecondary: img6,
   },
   {
     id: "three",
-    title: "Phase 3: Innovation", 
-    description: "Introducing advanced features and integrations. Adding cutting-edge technologies and third-party services.",
-    image: img3,
-    // date: "Q3 2024"
+    frontTitle: "Session 3:\nFileOps / File Vault / File Riot",
+    description: `- File Systems: ext4, XFS, ZFS, BtrFS
+- Directory Structure: Full Hierarchy
+- User & Group Management: Types, Permissions
+- File Permissions: Need & Management`,
+    imagePrimary: img3,
+    imageSecondary: img7,
   },
   {
     id: "four",
-    title: "Phase 4: Scale",
-    description: "Scaling to new heights and reaching milestones. Optimizing performance and preparing for large-scale deployment.",
-    image: img4,
-    // date: "Q4 2024"
+    frontTitle: "Session 4:\nNet Nexus",
+    description: `- Networking Basics: Components, IP & Ports, TCP vs UDP
+- Networking Commands & Tools
+- SSH & UFW: Introduction, Integration
+- NMAP: Intro`,
+    imagePrimary: img4,
+    imageSecondary: img8,
   }
 ];
 
-const Roadmap = () => {
+export default function Roadmap() {
   const [visible, setVisible] = useState(new Set());
-  const [expandedCards, setExpandedCards] = useState(new Set());
-  const [hoveredCard, setHoveredCard] = useState(null);
+  const [flipped, setFlipped] = useState(new Set());
   const refs = useRef({});
 
   useEffect(() => {
-    const observers = timelineData.map((item) => {
+    const observers = timelineData.map(item => {
       const obs = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
-            setVisible((prev) => new Set(prev).add(item.id));
+            setVisible(prev => new Set(prev).add(item.id));
             obs.unobserve(entry.target);
           }
-        },
-        { threshold: 0.2 }
+        }, { threshold: 0.2 }
       );
       const el = refs.current[item.id];
       if (el) obs.observe(el);
       return obs;
     });
-
-    return () => observers.forEach((o) => o.disconnect());
+    return () => observers.forEach(o => o.disconnect());
   }, []);
 
-  const toggleCard = (itemId) => {
-    setExpandedCards(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(itemId)) {
-        newSet.delete(itemId);
-      } else {
-        newSet.add(itemId);
-      }
-      return newSet;
+  const toggleFlip = id => {
+    setFlipped(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
     });
   };
 
-  const handleMouseEnter = (itemId) => {
-    setHoveredCard(itemId);
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredCard(null);
-  };
-
-  const isCardExpanded = (itemId) => {
-    // For desktop: show on hover, for mobile: show on click
-    if (window.innerWidth >= 1024) { // lg breakpoint
-      return hoveredCard === itemId;
-    } else {
-      return expandedCards.has(itemId);
-    }
-  };
-
   return (
-    <section className="py-20 relative overflow-hidden">
-      <div className="container mx-auto px-4 relative">
-        <div className="text-center mb-16">
-          <h2 className="text-5xl font-extrabold text-white mb-4 tracking-wider drop-shadow-[0_4px_8px_rgba(0,150,255,0.3)]">
-            ROADMAP
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-white to-blue-200 mx-auto rounded-full shadow-lg"></div>
-        </div>
-
-        {/* Timeline Container */}
+    <section className="py-12">
+      <div className="container mx-auto px-4">
+        <h2 className="text-4xl font-bold text-center text-white mb-12">ROADMAP</h2>
         <div className="relative max-w-4xl mx-auto">
-          {/* Central Timeline Line */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-blue-400 via-blue-500 to-blue-600 rounded-full shadow-lg"></div>
-          
-          {timelineData.map((item, index) => {
-            const isEven = index % 2 === 0;
+          <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-blue-400 via-blue-500 to-blue-600 rounded-full"></div>
+
+          {timelineData.map((item, idx) => {
             const isVisible = visible.has(item.id);
-            const isExpanded = isCardExpanded(item.id);
+            const isFlipped = flipped.has(item.id);
+            const isEven = idx % 2 === 0;
 
             return (
               <div
                 key={item.id}
-                ref={(el) => (refs.current[item.id] = el)}
-                className={`
-                  relative mb-16 flex items-center
-                  transition-all duration-1000 ease-out
-                  ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
-                `}
-                style={{ transitionDelay: `${index * 200}ms` }}
+                ref={el => (refs.current[item.id] = el)}
+                className={
+                  `flex flex-col lg:flex-row items-center mb-16 transform transition-all duration-700 ease-out ` +
+                  (isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8')
+                }
+                style={{ transitionDelay: `${idx * 200}ms` }}
               >
-                {/* Timeline Card */}
-                <div className={`flex-1 ${isEven ? 'pr-4 lg:pr-8 text-right' : 'pl-4 lg:pl-8 text-left'}`}>
-                  <div 
-                    className={`
-                      bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20
-                      hover:bg-white/15 transition-all duration-300 lg:cursor-pointer cursor-pointer
-                      shadow-xl hover:shadow-2xl max-w-sm lg:max-w-md mx-auto
-                      ${isEven ? 'mr-4 lg:mr-8' : 'ml-4 lg:ml-8'}
-                    `}
-                    onClick={() => toggleCard(item.id)}
-                    onMouseEnter={() => handleMouseEnter(item.id)}
-                    onMouseLeave={handleMouseLeave}
+                {/* Card */}
+                <div
+                  className={
+                    `relative w-full lg:w-1/2 perspective ` +
+                    (isEven ? 'lg:order-1 lg:pl-8' : 'lg:pr-8')
+                  }
+                >
+                  <div
+                    onClick={() => toggleFlip(item.id)}
+                    className={
+                      `relative w-full h-56 bg-white/10 border border-white/20 rounded-2xl transition-transform duration-600 transform-style-preserve-3d ` +
+                      (isFlipped ? 'rotate-y-180' : '')
+                    }
                   >
-                    <div className="flex-1">
-                      <div className="mb-3">
-                        <h3 className="text-lg lg:text-xl font-bold text-white">{item.title}</h3>
-                      </div>
-                      {isExpanded && (
-                        <p className="text-white leading-relaxed mt-3 animate-fadeIn text-sm lg:text-base">
-                          {item.description}
-                        </p>
-                      )}
-                      {!isExpanded && (
-                        <p className="text-white text-sm italic">
-                          {window.innerWidth >= 1024 ? 'Hover to learn more...' : 'Click to learn more...'}
-                        </p>
-                      )}
+                    {/* Front */}
+                    <div className="absolute w-full h-full backface-hidden flex items-center justify-center p-6">
+                      <h3 className="text-2xl font-extrabold text-white whitespace-pre-line text-center">
+                        {item.frontTitle}
+                      </h3>
+                    </div>
+                    {/* Back */}
+                    <div className="absolute w-full h-full backface-hidden rotate-y-180 overflow-auto p-6">
+                      <p className="text-white text-sm leading-relaxed">
+                        {item.description}
+                      </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Image positioned outside on opposite side */}
-                <div className={`absolute top-1/2 transform -translate-y-1/2 ${
-                  isEven ? 'left-0 ml-4 lg:ml-8' : 'right-0 mr-4 lg:mr-8'
-                }`}>
-                  <img 
-                    src={item.image} 
-                    alt={item.title} 
-                    className="w-20 h-20 lg:w-24 lg:h-24 rounded-lg object-cover shadow-lg"
-                  />
+                {/* Penguin Image */}
+                <div
+                  className={
+                    `w-full lg:w-1/2 flex justify-center mt-6 lg:mt-0 ` +
+                    (isEven ? 'lg:order-0' : '')
+                  }
+                >
+                  <div className="w-40 h-40 bg-transparent rounded-lg overflow-hidden transition-all duration-500">
+                    <img
+                      src={isFlipped ? item.imageSecondary : item.imagePrimary}
+                      alt={item.frontTitle}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
                 </div>
               </div>
             );
@@ -168,6 +154,4 @@ const Roadmap = () => {
       </div>
     </section>
   );
-};
-
-export default Roadmap;
+}
