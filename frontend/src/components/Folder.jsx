@@ -125,7 +125,7 @@ const Folder = ({
           ></span>
 
           {papers.map((item, i) => {
-            let sizeClasses = open ? "w-[80%] h-[110%]" : "w-[85%] h-[80%]";
+            let sizeClasses = open ? "w-[80%] h-[110%]" : "w-[85%] h-[100%]";
             const transformStyle = open
               ? `${getOpenTransform(i)} translate(${paperOffsets[i].x}px, ${paperOffsets[i].y}px)`
               : undefined;
