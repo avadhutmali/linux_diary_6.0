@@ -24,12 +24,12 @@ const WinSection = () => {
   
   return (
    <>
-   <h1 className="text-2xl font-bold text-center mb-8 text-white">Win Amazing Prizes!</h1>
+   <h1 className="text-4xl font-bold text-center mb-8 text-white">Win Amazing Prizes!</h1>
    <div className="container w-1/2 lg:w-2/3 h-auto mx-auto p-8 flex flex-col lg:flex-row items-center gap-8">
      {prizes.map((prize, index) => (
       <GlareHover
       glareColor="#ffffff"
-      background='#00CED1'
+      background='#77CFF8'
     glareOpacity={0.3}
     glareAngle={-30}
     glareSize={300}

@@ -45,8 +45,10 @@ const Roadmap = () => {
 
       <div className="container mx-auto px-4 relative">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-blue-700">ROADMAP</h2>
-          <p className="text-blue-600 mt-2"></p>
+          <h2 className="text-5xl font-extrabold text-white mb-4 tracking-wider drop-shadow-[0_4px_8px_rgba(0,150,255,0.3)]">
+            ROADMAP
+          </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-white to-blue-200 mx-auto rounded-full shadow-lg"></div>
         </div>
 
         <div className="relative max-w-xl mx-auto">
