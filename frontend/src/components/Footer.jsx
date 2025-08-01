@@ -16,8 +16,8 @@ import Sponser3 from "../assets/wlug-logo-black.png";
 const Footer = () => {
     return (
         <div id="about" className="text-black py-2  z-100 w-full">
-            <img src={FooterImg} className=" h-[30vh] md:h-[60vh] w-full"></img>
-            <div className="flex flex-col bg-white md:space-y-0 md:flex-row  md:justify-around p-6  items-center lg:px-12">
+            <img src={FooterImg} className=" h-[30vh] relative z-100 md:h-[60vh] w-full"></img>
+            <div className="flex flex-col  md:space-y-0 md:flex-row  md:justify-around p-6  items-center lg:px-12" style={{ backgroundColor: "#FDF8F7" }}>
                 <div>
                     <p className="text-3xl font-extrabold text-gray-800 mb-2 text-center md:text-left">
                         Our Sponsors</p>
