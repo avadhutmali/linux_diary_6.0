@@ -1,10 +1,8 @@
 import { useRef, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
 import heroImage from '../assets/linuxdiary-hero.avif';
-import TrueFocus from '../blocks/TextAnimations/TrueFocus/TrueFocus';
-import SplitText from '../blocks/TextAnimations/SplitText/SplitText';
 import SplitTexts from '../blocks/TextAnimations/SplitText/SplitText';
-import CountUp from '../blocks/TextAnimations/CountUp/CountUp';
+
 
 const HeroSection = () => {
   const heroRef = useRef(null);
@@ -15,7 +13,7 @@ const HeroSection = () => {
 
   // Counter animation
   const count = useMotionValue(0);
-  const rounded = useTransform(count, (latest) => Math.round(latest));
+
 
   useEffect(() => {
     const counterAnimation = animate(count, 100, { duration: 3 });
@@ -77,7 +75,7 @@ const HeroSection = () => {
           <img 
             src={heroImage} 
             alt="LinuxDiary 6.0 Penguin Mascot" 
-            className="max-w-xl lg:max-w-5xl drop-shadow-[0_25px_25px_rgba(0,60,120,0.3)]"
+            className="max-w-lg lg:max-w-5xl drop-shadow-[0_25px_25px_rgba(0,60,120,0.3)]"
           />
         </motion.div>
 
