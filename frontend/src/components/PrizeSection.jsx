@@ -1,47 +1,54 @@
-import { Gift, Award, DollarSign } from 'lucide-react';
-import GlareHover from '../blocks/Animations/GlareHover/GlareHover';
-import swags from '../assets/prizes/swags.webp'
-import merchandise from '../assets/prizes/merchandise.png';
-import cashPrize from '../assets/prizes/cashPrize.webp';
+import React from "react";
+import Folder from "./Folder";
+import swags from "../assets/prizes/swags.webp";
+import merchandise from "../assets/prizes/merchandise.png";
+import cashPrize from "../assets/prizes/cashPrize.webp";
 
-const prizes = [
-  {
-    img:swags,
-    title: 'Swags',
+const PrizeCard = ({ image, title, description }) => (
+  <div
+    className="w-full h-full flex flex-col items-center justify-end p-2 text-xs text-center"
+   
+  >
+    <img src={image} alt={title} className="w-full h-[80%] object-cover mb-2" />
+    <div className="">
+      <h3 className="font-bold text-[10px] px-1 rounded">{title}</h3>
+      <p className="text-[9px] px-1 rounded">{description}</p>
+    </div>
+  </div>
+);
 
-  },
-  {
-    img:merchandise,
-    title: 'Merchandise',
-  },
-  {
-    img:cashPrize,
-    title: 'Cash Prizes',
-  }
-];
+const PrizeSection = () => {
+  const cards = [
+    <PrizeCard
+      key="3"
+      image={cashPrize}
+      title="3rd Prize"
+      description="₹2000 + Certificate"
+    />,
+    <PrizeCard
+      key="2"
+      image={merchandise}
+      title="2nd Prize"
+      description="₹3000 + Swag"
+    />,
+    <PrizeCard
+      key="1"
+      image={swags}
+      title="1st Prize"
+      description="₹5000 + Goodies"
+    />,
+  ];
 
-const WinSection = () => {
-  
   return (
-   <>
-   <h1 className="text-4xl font-bold text-center mb-8 text-white">Win Amazing Prizes!</h1>
-   <div className="container  w-1/2 lg:w-2/3 h-auto mx-auto p-8 flex flex-col lg:flex-row items-center gap-8">
-     {prizes.map((prize, index) => (
-      <GlareHover
-      key={index}
-      glareColor="#ffffff"
-      background='#77CFF8'
-    glareOpacity={0.3}
-    glareAngle={-30}
-    glareSize={300}
-    transitionDuration={800}
-    playOnce={false}>
-       <img src={prize.img} alt={prize.title} className="w-2/3 h-2/3 object-cover" />
-      </GlareHover>
-    ))}
-   </div>
-   </>
+    <div className="h-[600px] relative flex items-center justify-center">
+      <Folder
+        size={2}
+        color="#5227FF"
+        className="custom-folder"
+        items={cards}
+      />
+    </div>
   );
 };
 
-export default WinSection;
+export default PrizeSection;
