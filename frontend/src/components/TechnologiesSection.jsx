@@ -373,7 +373,7 @@ const TechnologiesSection = () => {
           {/* Treasure Island */}
           <div 
             ref={islandRef}
-            className="absolute right-5 md:right-16 bottom-16"
+            className="absolute -right-10 md:right-0 bottom-16"
           >
             <div className="relative">
             
@@ -382,14 +382,14 @@ const TechnologiesSection = () => {
                 <img 
                   src="/images/igloo.png" 
                   alt="Treasure Island"
-                  className="w-[20vmax] md:w-[25vmax] lg:w-[30vmax] h-auto drop-shadow-2xl"
+                  className="w-[30vmax] md:w-[25vmax] lg:w-[40vmax] h-auto drop-shadow-2xl"
                 />
               )}
               {landedTechs.length > 0 && (
                 <img 
                   src="/images/igloo2.png" 
                   alt="Treasure Island with Technologies"
-                  className="w-[20vmax] md:w-[25vmax] lg:w-[35vmax] h-auto drop-shadow-2xl"
+                  className="w-[30vmax] md:w-[25vmax] lg:w-[40vmax] h-auto drop-shadow-2xl"
                 />
               )}
 
