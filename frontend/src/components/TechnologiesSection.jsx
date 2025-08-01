@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import discordImg from '../assets/technologies/discord.webp';
 import figmaImg from '../assets/technologies/figma.webp';
@@ -8,6 +10,9 @@ import photoshopImg from '../assets/technologies/photoshop.webp';
 import protopieImg from '../assets/technologies/protopie.webp';
 import raindropImg from '../assets/technologies/raindrop.webp';
 import slackImg from '../assets/technologies/slack.webp';
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
 
 const technologies = [
   { name: 'React', img: discordImg, description: 'Frontend framework', color: '#61DAFB' },
@@ -21,17 +26,17 @@ const technologies = [
 ];
 
 const TechnologiesSection = () => {
-  const [currentTechIndex, setCurrentTechIndex] = useState(0);
-  const [firingTech, setFiringTech] = useState(null);
-  const [cannonballsInFlight, setCannonballsInFlight] = useState([]);
+  const [cannonballInFlight, setCannonballInFlight] = useState(null);
   const [landedTechs, setLandedTechs] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [cannonRecoil, setCannonRecoil] = useState(false);
   const [screenSize, setScreenSize] = useState('large');
   const [showLandingExplosion, setShowLandingExplosion] = useState(false);
+  const [animationTriggered, setAnimationTriggered] = useState(false);
   
   const shipRef = useRef(null);
   const islandRef = useRef(null);
+  const containerRef = useRef(null);
+  const sectionRef = useRef(null);
   const animationRef = useRef(null);
   const [rotationAngle, setRotationAngle] = useState(0);
 
@@ -50,8 +55,6 @@ const TechnologiesSection = () => {
     
     const handleResize = () => {
       checkScreenSize();
-      // Force recalculation of trajectory for flying cannonballs
-      setCannonballsInFlight(prev => [...prev]);
     };
     
     checkScreenSize();
@@ -59,45 +62,61 @@ const TechnologiesSection = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Auto-fire cannon every 4 seconds
+  // GSAP ScrollTrigger setup
   useEffect(() => {
-    const interval = setInterval(() => {
-      if(landedTechs.length<=7){
+    const section = sectionRef.current;
+    
+    if (!section || animationTriggered) return;
 
-        fireCannon();
+    const scrollTrigger = ScrollTrigger.create({
+      trigger: section,
+      start: "top 70%",
+      end: "bottom 30%",
+      onEnter: () => {
+        if (!animationTriggered) {
+          setAnimationTriggered(true);
+          setTimeout(() => {
+            fireCannon();
+          }, 500); // Small delay for better UX
+        }
       }
-    }, 4000);
+    });
 
-    return () => clearInterval(interval);
-  }, [currentTechIndex]);
+    return () => {
+      scrollTrigger.kill();
+    };
+  }, [animationTriggered]);
 
-  // Handle cannonball flight animation
+  // Handle cannonball flight animation with smooth updates
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCannonballsInFlight(prev => {
-        const now = Date.now();
-        const flightDuration = 3500;
-        const stillFlying = prev.filter(ball => now - ball.startTime < flightDuration);
-        const justLanded = prev.filter(ball => now - ball.startTime >= flightDuration);
-        
-        justLanded.forEach(ball => {
-          setLandedTechs(current => {
-            if (!current.find(tech => tech.name === ball.tech.name)) {
-              // Show explosion when ball lands
-              setShowLandingExplosion(true);
-              setTimeout(() => setShowLandingExplosion(false), 800);
-              return [...current, ball.tech];
-            }
-            return current;
-          });
-        });
+    if (!cannonballInFlight) return;
 
-        return stillFlying;
+    const interval = setInterval(() => {
+      setCannonballInFlight(prev => {
+        if (!prev) return null;
+        
+        const now = Date.now();
+        const flightDuration = 3000;
+        const progress = (now - prev.startTime) / flightDuration;
+        
+        if (progress >= 1) {
+          // Cannonball has landed - show all technologies
+          setLandedTechs(technologies);
+          setShowLandingExplosion(true);
+          setTimeout(() => setShowLandingExplosion(false), 800);
+          return null; // Remove cannonball
+        }
+        
+        // Return updated cannonball with current progress
+        return {
+          ...prev,
+          currentProgress: progress
+        };
       });
-    }, 100);
+    }, 16); // 60fps for smooth animation
 
     return () => clearInterval(interval);
-  }, []);
+  }, [cannonballInFlight]);
 
   // Animation for revolving tech icons
   useEffect(() => {
@@ -117,99 +136,88 @@ const TechnologiesSection = () => {
     };
   }, [landedTechs.length]);
 
-  const fireCannon = () => {
-    const currentTech = technologies[currentTechIndex];
-    setFiringTech(currentTech);
-    setIsLoading(true);
-    setCannonRecoil(true);
-
-    // Calculate fixed trajectory positions relative to container, not viewport
-    let startX, startY, endX, endY;
-    
-    // Use container-relative positioning instead of getBoundingClientRect
-    if (screenSize === 'large') {
-      startX = 310; // Fixed position relative to container for large screens
-      startY = 175;
-      endX = window.innerWidth - 500;
-      endY = 320;
-    } else if (screenSize === 'medium') {
-      startX = 220;
-      startY = 200;
-      endX = window.innerWidth - 400;
-      endY = 260;
-    } else {
-      startX = 125;
-      startY = 110;
-      endX = window.innerWidth - 140;
-      endY = 180;
+  // Get dynamic positions of ship cannon and island center
+  const getDynamicPositions = () => {
+    if (!shipRef.current || !islandRef.current || !containerRef.current) {
+      return null;
     }
 
-    const newCannonball = {
-      id: Date.now(),
-      tech: currentTech,
-      startTime: Date.now(),
-      // Store fixed trajectory positions (container-relative)
-      fixedStartX: startX,
-      fixedStartY: startY,
-      fixedEndX: endX,
-      fixedEndY: endY
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const shipRect = shipRef.current.getBoundingClientRect();
+    const islandRect = islandRef.current.getBoundingClientRect();
+
+    // Calculate cannon position (right side of ship, middle height)
+    const cannonX = shipRect.right - containerRect.left;
+    const cannonY = shipRect.top + (shipRect.height / 2) - containerRect.top - (screenSize === 'large' ? 100 : 30);
+
+    // Calculate island landing position (center of island)
+    const landingX = islandRect.left + (islandRect.width / 2) - containerRect.left;
+    const landingY = islandRect.top + (islandRect.height / 2) - containerRect.top;
+
+    return {
+      startX: cannonX,
+      startY: cannonY,
+      endX: landingX,
+      endY: landingY
     };
-    setCannonballsInFlight(prev => [...prev, newCannonball]);
+  };
 
-    setTimeout(() => {
-      setFiringTech(null);
-      setIsLoading(false);
-      setCannonRecoil(false);
-    }, 800);
+  const fireCannon = () => {
+    if (animationTriggered && !cannonballInFlight && landedTechs.length === 0) {
+      const positions = getDynamicPositions();
+      
+      if (!positions) {
+        console.warn('Could not calculate positions for cannonball trajectory');
+        return;
+      }
 
-    setCurrentTechIndex((prev) => (prev + 1) % technologies.length);
+      setCannonRecoil(true);
+
+      const newCannonball = {
+        id: Date.now(),
+        startTime: Date.now(),
+        // Store dynamic trajectory positions
+        startX: positions.startX,
+        startY: positions.startY,
+        endX: positions.endX,
+        endY: positions.endY
+      };
+      setCannonballInFlight(newCannonball);
+
+      setTimeout(() => {
+        setCannonRecoil(false);
+      }, 800);
+    }
   };
 
   const resetDemo = () => {
     setLandedTechs([]);
-    setCannonballsInFlight([]);
-    setCurrentTechIndex(0);
+    setCannonballInFlight(null);
     setShowLandingExplosion(false);
+    setAnimationTriggered(false);
+    
+    // Refresh ScrollTrigger
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
   };
 
-  // Calculate trajectory - completely scroll-independent positioning
-  const getCannonballPosition = (progress, ball = null) => {
-    let startX, startY, endX, endY;
+  // Calculate trajectory with dynamic positions - completely smooth arc
+  const getCannonballPosition = (progress, ball) => {
+    if (!ball) return { x: 0, y: 0 };
+
+    const { startX, startY, endX, endY } = ball;
     
-    // Use fixed positions from the ball if available (completely scroll-independent)
-    if (ball && ball.fixedStartX !== undefined) {
-      startX = ball.fixedStartX;
-      startY = ball.fixedStartY;
-      endX = ball.fixedEndX;
-      endY = ball.fixedEndY;
-    } else {
-      // Fallback to container-relative positions (not viewport-dependent)
-      if (screenSize === 'large') {
-        startX = 320;
-        startY = 280;
-        endX = window.innerWidth - 600;
-        endY = 320;
-      } else if (screenSize === 'medium') {
-        startX = 220;
-        startY = 200;
-        endX = window.innerWidth - 400;
-        endY = 240;
-      } else {
-        startX = 140;
-        startY = 130;
-        endX = window.innerWidth - 200;
-        endY = 160;
-      }
-    }
-    
-    // Calculate current position along the trajectory
+    // Linear interpolation for X position
     const currentX = startX + (endX - startX) * progress;
     
-    // Create responsive arc trajectory
+    // Create a single smooth parabolic arc with proper height
     const distance = Math.abs(endX - startX);
-    const baseArcHeight = screenSize === 'large' ? 150 : screenSize === 'medium' ? 100 : 60;
-    const dynamicArcHeight = Math.min(distance * 0.2, baseArcHeight);
-    const currentY = startY + (endY - startY) * progress - (4 * dynamicArcHeight * progress * (1 - progress));
+    const arcHeight = Math.min(distance * 0.25, screenSize === 'large' ? 150 : screenSize === 'medium' ? 100 : 60);
+    
+    // Enhanced parabolic equation for smooth trajectory
+    const verticalOffset = -arcHeight * Math.sin(progress * Math.PI);
+    const currentY = startY + (endY - startY) * progress + verticalOffset;
     
     return { x: currentX, y: currentY };
   };
@@ -232,8 +240,29 @@ const TechnologiesSection = () => {
     };
   };
 
+  // Get dynamic explosion position for landing
+  const getLandingExplosionPosition = () => {
+    if (!islandRef.current || !containerRef.current) {
+      return { left: '50%', top: '50%' };
+    }
+
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const islandRect = islandRef.current.getBoundingClientRect();
+
+    const explosionX = islandRect.left + (islandRect.width / 2) - containerRect.left;
+    const explosionY = islandRect.top + (islandRect.height / 2) - containerRect.top;
+
+    return {
+      left: `${explosionX}px`,
+      top: `${explosionY}px`
+    };
+  };
+
   return (
-    <section className="py-12 md:py-20 relative overflow-hidden min-h-[500px] md:min-h-screen ">
+    <section 
+      ref={sectionRef}
+      className="py-12 md:py-20 relative  overflow-hidden min-h-[500px] md:min-h-screen"
+    >
       {/* Ocean Background */}
       <div className="absolute inset-0">
         <div className="enhanced-ocean-waves"></div>
@@ -242,7 +271,7 @@ const TechnologiesSection = () => {
       </div>
 
       {/* Floating Clouds */}
-      <div className="absolute flex w-full px-0 lg:px-36 justify-between inset-0   my-10 pointer-events-none">
+      <div className="absolute flex w-full px-0 lg:px-36 justify-between inset-0 my-10 pointer-events-none">
         {[...Array(3)].map((_, i) => (
           <img
             key={i}
@@ -252,12 +281,8 @@ const TechnologiesSection = () => {
             style={{
               width: screenSize === 'large' ? `${220 + i * 10}px` : `${120 + i * 6}px`,
               height: screenSize === 'large' ? `${120 + i * 5}px` : `${60 + i * 3}px`,
-              // left: screenSize === 'large' ? `${5 + i * 25}%` : `${2 + i * 26}%`,
-              // All clouds at same base y, with slight offset for each
-              top: screenSize === 'large'
-                ? `8%` // base y
-                : `5%`,
-              transform: `translateY(${i * 2}px)`, // slight change in y for each
+              top: screenSize === 'large' ? `8%` : `5%`,
+              transform: `translateY(${i * 2}px)`,
               animationDelay: `${i * 0.8}s`,
               animationDuration: screenSize === 'large' ? `${6 + i * 0.5}s` : `${4 + i * 0.3}s`,
               opacity: 0.9
@@ -267,22 +292,14 @@ const TechnologiesSection = () => {
       </div>
 
       <div className="container mx-auto px-0 relative z-10">
-        {/* <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-3 md:mb-6">
-        ⚓ Pirate Tech Arsenal ⚓
-          </h2>
-          <p className="text-base md:text-xl text-cyan-200 max-w-3xl mx-auto">
-        Watch our pirate penguins launch technologies across the digital seas!
-          </p>
-        </div> */}
 
-          {/* Main Scene Container */}
-        <div className="relative w-full h-[300px] md:h-[500px]  mx-auto">
+        {/* Main Scene Container */}
+        <div ref={containerRef} className="relative w-full h-[300px] md:h-[500px] mx-auto">
           
           {/* Pirate Ship */}
           <div 
             ref={shipRef}
-            className="absolute left-4 md:left-0 bottom-16 "
+            className="absolute left-4 md:left-0 bottom-16"
           >
             <div className={`relative ${cannonRecoil ? 'animate-recoil' : 'animate-wave'}`}>
               <img 
@@ -291,57 +308,53 @@ const TechnologiesSection = () => {
                 className="w-[25vw] md:w-[20vw] lg:w-[20vw] h-auto drop-shadow-2xl transition-all duration-300"
               />
               
-              {/* Cannon Fire Effect */}
-              {firingTech && (
-               
-                <div className="absolute right-0  top-1/3 transform -translate-y-1/2 translate-x-1/2">
-                  <img 
-                    src="/images/explod-animation.gif" 
-                    alt="Cannon Explosion"
-                    className="w-16 h-16 md:w-48 md:h-48 object-contain z-20"
-                  />
-                </div>
-              )}
+            
             </div>
           </div>
 
-          {/* Flying Cannonballs */}
-          {cannonballsInFlight.map((ball) => {
-            const progress = Math.min((Date.now() - ball.startTime) / 3000, 1);
-            const position = getCannonballPosition(progress, ball);
-            const rotation = progress * 720;
+          {/* Flying Cannonball with smooth animation */}
+          {cannonballInFlight && (() => {
+            const now = Date.now();
+            const progress = Math.min((now - cannonballInFlight.startTime) / 3000, 1);
+            const position = getCannonballPosition(progress, cannonballInFlight);
+            const rotation = progress * 360;
+            const scale = 1.2 - progress * 0.4;
             
             return (
               <div
-                key={ball.id}
-                className="absolute transition-none pointer-events-none z-20"
+                key={cannonballInFlight.id}
+                className="absolute pointer-events-none z-20"
                 style={{
                   left: `${position.x}px`,
                   top: `${position.y}px`,
-                  transform: `scale(${1.2 - progress * 0.4}) rotate(${rotation}deg)`
+                  transform: `translate(-50%, -50%) scale(${scale}) rotate(${rotation}deg)`,
+                  transition: 'none'
                 }}
               >
                 <div className="relative">
                   <img 
                     src="/images/cannonball.avif" 
                     alt="Cannonball"
-                    className="w-8 h-8 md:w-12 md:h-12 drop-shadow-xl"
+                    className="w-8 h-8 md:w-16 md:h-16 drop-shadow-2xl"
                   />
-                  {[...Array(3)].map((_, i) => (
+                  
+                  {/* Enhanced sparkling trail */}
+                  {[...Array(6)].map((_, i) => (
                     <div
                       key={i}
-                      className="absolute w-1 h-1 bg-yellow-400 rounded-full animate-ping"
+                      className="absolute w-2 h-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-ping opacity-80"
                       style={{
-                        left: `${-4 - i * 2}px`,
-                        top: `${3 + i}px`,
-                        animationDelay: `${i * 200}ms`
+                        left: `${-8 - i * 4}px`,
+                        top: `${4 + Math.sin(i) * 3}px`,
+                        animationDelay: `${i * 100}ms`,
+                        animationDuration: '0.8s'
                       }}
                     ></div>
                   ))}
                 </div>
               </div>
             );
-          })}
+          })()}
 
           {/* Treasure Island */}
           <div 
@@ -349,37 +362,19 @@ const TechnologiesSection = () => {
             className="absolute right-5 md:right-16 bottom-16"
           >
             <div className="relative">
-              {/* Show explosion only when a cannonball just landed */}
-              {showLandingExplosion && (
-                <div 
-                  className="absolute z-100 transform -translate-y-1/2"
-                  style={{
-                    left: screenSize === 'large' ? '100px' : screenSize === 'medium' ? '70px' : '50px',
-                    top: '50%'
-                  }}
-                >
-                  <img 
-                    src="/images/explod-animation.gif" 
-                    alt="Landing Explosion"
-                    className={`object-contain z-20 ${
-                      screenSize === 'large' ? 'w-48 h-48' : 
-                      screenSize === 'medium' ? 'w-32 h-32' : 
-                      'w-16 h-16'
-                    }`}
-                  />
-                </div>
-              )}
-              {landedTechs.length <= 7 && (
+            
+              
+              {landedTechs.length <= 0 && (
                 <img 
                   src="/images/island.avif" 
                   alt="Treasure Island"
                   className="w-[190px] md:w-[200px] lg:w-[600px] h-auto drop-shadow-2xl"
                 />
               )}
-              {landedTechs.length > 7 && (
+              {landedTechs.length > 0 && (
                 <img 
                   src="/images/wargame2.avif" 
-                  alt="Treasure Island"
+                  alt="Treasure Island with Technologies"
                   className="w-[190px] md:w-[200px] lg:w-[600px] h-auto drop-shadow-2xl"
                 />
               )}
@@ -391,21 +386,29 @@ const TechnologiesSection = () => {
                     const position = getTechPosition(index, landedTechs.length);
                     return (
                       <div
-                      key={tech.name}
-                      className="absolute flex items-center justify-center"
-                      style={{
-                        transform: `translate(${position.x-10}px, ${position.y-10}px)`,
-                        transition: 'transform 1.55s ease-out',
-                      }}
+                        key={tech.name}
+                        className="absolute flex items-center justify-center"
+                        style={{
+                          transform: `translate(${position.x-10}px, ${position.y-10}px)`,
+                          transition: 'transform 1.55s ease-out',
+                          animationDelay: `${index * 100}ms`
+                        }}
                       >
-                      <div className="w-8 h-8 md:w-15 md:h-15 bg-gradient-to-br from-white to-gray-400 rounded-xl border-2 border-white flex items-center justify-center text-sm md:text-lg shadow-lg"
-                        style={{ animationDelay: `${index * 0.1}s` }}>
-                        <img
-                        src={tech.img}
-                        alt={tech.name}
-                        className="w-6 h-6 md:w-10 md:h-10 object-contain"
-                        />
-                      </div>
+                        <div 
+                          className="w-8 h-8 md:w-16 md:h-16 bg-gradient-to-br from-white to-gray-400 rounded-xl border-2 border-white flex items-center justify-center text-sm md:text-lg shadow-lg"
+                          style={{ 
+                            animationDelay: `${index * 0.1}s`,
+                            backgroundColor: tech.color + '20',
+                           
+                          }}
+                        >
+                          <img
+                            src={tech.img}
+                            alt={tech.name}
+                            className="w-6 h-6 md:w-10 md:h-10 object-contain"
+                            title={tech.name}
+                          />
+                        </div>
                       </div>
                     );
                   })}
@@ -417,32 +420,28 @@ const TechnologiesSection = () => {
 
         {/* Control Panel */}
         <div className="text-center mt-8 md:mt-16">
-          <div className="inline-block p-4 md:p-6 bg-white/0  rounded-xl md:rounded-2xl  ">
+          <div className="inline-block p-4 md:p-6 ">
             <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6 mb-3 md:mb-4">
               <button
                 onClick={fireCannon}
-                className="px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-red-500 to-red-700 text-white font-bold text-sm md:text-base rounded-lg md:rounded-xl shadow-md hover:scale-105 transition-transform duration-200 border-2 border-red-400"
+                disabled={cannonballInFlight || landedTechs.length > 0}
+                className={`px-4 md:px-6 py-2 md:py-3 font-bold text-sm md:text-base rounded-lg md:rounded-xl shadow-md transition-all duration-200 border-2 ${
+                  cannonballInFlight || landedTechs.length > 0
+                    ? 'bg-gray-500 text-gray-300 border-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-red-500 to-red-700 text-white border-red-400 hover:scale-105'
+                }`}
               >
-                🔥 Fire Cannon!
+                {cannonballInFlight ? '🚀 Firing...' : landedTechs.length > 0 ? 'Mission Complete!' : '🔥 Fire Mega Cannon!'}
               </button>
               
               <button
                 onClick={resetDemo}
-                className="px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-cyan-500 to-cyan-700 text-white font-bold text-sm md:text-base rounded-lg md:rounded-xl shadow-md hover:scale-105 transition-transform duration-200 border-2 border-cyan-400"
+                className="px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-green-500 to-green-700 text-white font-bold text-sm md:text-base rounded-lg md:rounded-xl shadow-md hover:scale-105 transition-transform duration-200 border-2 border-cyan-400"
               >
-                🔄 Reset Fleet
+                🔄 Reset Mission
               </button>
             </div>
-            
-            {/* <div className="text-amber-100 text-sm md:text-base">
-              <p className="font-bold mb-1 md:mb-2">⚓ Captain's Log ⚓</p>
-              <p className="mb-1">
-                Technologies Captured: <span className="text-yellow-300 font-bold">{landedTechs.length}/{technologies.length}</span>
-              </p>
-              <p>
-                Next Ammunition: <span className="text-yellow-300 font-bold">{technologies[currentTechIndex]?.name || 'Reloading...'}</span>
-              </p>
-            </div> */}
+           
           </div>
         </div>
       </div>

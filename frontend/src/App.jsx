@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import HeroSection from "./components/HeroSection";
-import RoadmapSection from "./components/RoadmapSection";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Roadmap from "./components/Roadmap";
@@ -64,7 +63,7 @@ const App = () => {
 
   return (
     <>
-      <div className="svg flex items-center justify-center fixed top-0 left-0 z-[100] w-full h-screen overflow-hidden bg-[#000]">
+      <div className="svg flex items-center justify-center fixed top-0 left-0 z-[100] w-full h-screen overflow-hidden bg-[#000] ">
         <svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
           <defs>
             <mask id="viMask">
@@ -95,12 +94,11 @@ const App = () => {
       </div>
       {showContent && (
         <div className="main min-h-screen">
-          <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-1">
+          <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
               <Snowfall snowflakeCount={150} />
             </div>
           <Navbar />
           <HeroSection />
-          {/* <RoadmapSection/> */}
           <Roadmap />
           <TechnologiesSection />
           <PrizeSection />

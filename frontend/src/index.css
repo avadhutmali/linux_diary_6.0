@@ -1,11 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Sora:wght@100,200,300,400,500,600,700,800&display=swap');
+
 @import "tailwindcss";
+@font-face {
+  font-family: header;
+  src: url('/fonts/NBInternationalProBoo.woff2');
+}
 
-
+.header{
+  font-family: header;
+  font-weight: 900;
+}
 
 /* Heading font */
 * {
-  font-family: "Sora", sans-serif;
+  /* font-family: "Sora", sans-serif; */
   font-weight: 700;
 }
 
@@ -15,6 +22,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 body {
@@ -367,15 +375,15 @@ Ocean Effects
 }
 
 /* Hide scrollbar but keep functionality */
-html {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
+/* html {
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }
 
-html::-webkit-scrollbar { /* WebKit */
+html::-webkit-scrollbar { 
   width: 0;
   height: 0;
-}
+} */
 
 /* Smooth scrolling */
 html {
