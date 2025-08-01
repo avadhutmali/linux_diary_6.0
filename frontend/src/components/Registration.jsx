@@ -7,6 +7,8 @@ import { RxCrossCircled } from "react-icons/rx";
 import Dropdown from "./DropDown";
 import Swal from "sweetalert2";
 import { CgSearchLoading } from "react-icons/cg";
+
+import imgQr from "../assets/Roadmaps/Qr tux.png";
 const Input = ({
     label,
     type,
@@ -368,7 +370,7 @@ const Register = () => {
                     <p className="my-2 mb-4 text-sm sm:text-base text-black block md:hidden text-left w-full">
                         Fill the details below to secure your seat.
                     </p>
-                    <img src={RegisterTux} className="lg:w-[80%] w-full "></img>
+                    <img src={imgQr} className="lg:w-[80%] w-full "></img>
                     <div
                         className="bg-white w-full cursor-pointer shadow-lg rounded-xl p-4 flex-col space-y-2 items-center justify-center hidden md:flex"
                         onClick={() =>
