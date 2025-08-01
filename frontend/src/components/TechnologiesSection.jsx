@@ -31,7 +31,8 @@ const TechnologiesSection = () => {
   const [cannonRecoil, setCannonRecoil] = useState(false);
   const [screenSize, setScreenSize] = useState('large');
   const [showLandingExplosion, setShowLandingExplosion] = useState(false);
-  const [animationTriggered, setAnimationTriggered] = useState(false);
+  const [animationTriggered, setAnimationTriggered] = useState(true);
+  const [islandDestroyed, setIslandDestroyed] = useState(false);
   
   const shipRef = useRef(null);
   const islandRef = useRef(null);
@@ -103,6 +104,7 @@ const TechnologiesSection = () => {
           // Cannonball has landed - show all technologies
           setLandedTechs(technologies);
           setShowLandingExplosion(true);
+          setIslandDestroyed(true); 
           setTimeout(() => setShowLandingExplosion(false), 800);
           return null; // Remove cannonball
         }
@@ -195,6 +197,7 @@ const TechnologiesSection = () => {
     setCannonballInFlight(null);
     setShowLandingExplosion(false);
     setAnimationTriggered(false);
+    setIslandDestroyed(false);
     
     // Refresh ScrollTrigger
     setTimeout(() => {
@@ -297,6 +300,8 @@ const TechnologiesSection = () => {
         <div ref={containerRef} className="relative w-full h-[300px] md:h-[500px] mx-auto">
           
           {/* Pirate Ship */}
+
+          {!islandDestroyed ? (
           <div 
             ref={shipRef}
             className="absolute left-4 md:left-0 bottom-16"
@@ -307,10 +312,19 @@ const TechnologiesSection = () => {
                 alt="Pirate Ship"
                 className="w-[25vw] md:w-[20vw] lg:w-[20vw] h-auto drop-shadow-2xl transition-all duration-300"
               />
-              
-            
             </div>
           </div>
+        ) : (
+          <div className="absolute left-4 md:left-12 bottom-0 md:bottom-16 w-[25vmax] md:w-[20vmax] lg:w-[20vmax]">
+            <div className="text-white  p-4 rounded-xl backdrop-blur-sm animate-fadeIn">
+              <h2 className="text-3xl md:text-4xl font-bold mb-2">Wargames</h2>
+              <p className="text-sm md:text-base">
+                Dive into our thrilling Wargames competition! Tackle challenging puzzles, 
+                showcase your skills and compete with the best. Are you ready to be the champion?
+              </p>
+            </div>
+          </div>
+        )}
 
           {/* Flying Cannonball with smooth animation */}
           {cannonballInFlight && (() => {
@@ -366,54 +380,66 @@ const TechnologiesSection = () => {
               
               {landedTechs.length <= 0 && (
                 <img 
-                  src="/images/island.avif" 
+                  src="/images/igloo.png" 
                   alt="Treasure Island"
-                  className="w-[190px] md:w-[200px] lg:w-[600px] h-auto drop-shadow-2xl"
+                  className="w-[20vmax] md:w-[25vmax] lg:w-[30vmax] h-auto drop-shadow-2xl"
                 />
               )}
               {landedTechs.length > 0 && (
                 <img 
-                  src="/images/wargame2.avif" 
+                  src="/images/igloo2.png" 
                   alt="Treasure Island with Technologies"
-                  className="w-[190px] md:w-[200px] lg:w-[600px] h-auto drop-shadow-2xl"
+                  className="w-[20vmax] md:w-[25vmax] lg:w-[35vmax] h-auto drop-shadow-2xl"
                 />
               )}
 
               {/* Revolving Tech Icons */}
-              {landedTechs.length > 0 && (
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  {landedTechs.map((tech, index) => {
-                    const position = getTechPosition(index, landedTechs.length);
-                    return (
-                      <div
-                        key={tech.name}
-                        className="absolute flex items-center justify-center"
-                        style={{
-                          transform: `translate(${position.x-10}px, ${position.y-10}px)`,
-                          transition: 'transform 1.55s ease-out',
-                          animationDelay: `${index * 100}ms`
-                        }}
-                      >
-                        <div 
-                          className="w-8 h-8 md:w-16 md:h-16 bg-gradient-to-br from-white to-gray-400 rounded-xl border-2 border-white flex items-center justify-center text-sm md:text-lg shadow-lg"
-                          style={{ 
-                            animationDelay: `${index * 0.1}s`,
-                            backgroundColor: tech.color + '20',
-                           
-                          }}
-                        >
-                          <img
-                            src={tech.img}
-                            alt={tech.name}
-                            className="w-6 h-6 md:w-10 md:h-10 object-contain"
-                            title={tech.name}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
+
+
+              
+             {landedTechs.length > 0 && (
+  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    {landedTechs.map((tech, index) => {
+      const position = getTechPosition(index, landedTechs.length);
+      
+      return (
+        <div
+          key={tech.name}
+          className="absolute flex items-center justify-center"
+          style={{
+            transform: `translate(${position.x-10}px, ${position.y-10}px)`,
+            transition: 'transform 1.55s ease-out',
+            // Add animation delay for each item
+            animationDelay: `${index * 0.2}s`,
+            // Set initial opacity to 0 and animate to 1
+            opacity: 0,
+            animation: 'fadeIn 2.5s forwards'
+          }}
+        >
+          <div 
+            className="w-8 h-8 md:w-16 md:h-16 bg-gradient-to-br from-white to-gray-400 rounded-xl border-2 border-white flex items-center justify-center text-sm md:text-lg shadow-lg"
+            style={{ 
+              backgroundColor: tech.color + '20',
+              // Add delay for each tech icon
+              animationDelay: `${index * 0.2 + 2}s`,
+              animation: 'zoomIn 0.5s forwards'
+            }}
+          >
+            <img
+              src={tech.img}
+              alt={tech.name}
+              className="w-6 h-6 md:w-10 md:h-10 object-contain"
+              title={tech.name}
+            />
+          </div>
+        </div>
+      );
+    })}
+  </div>
+)}
+
+
+
             </div>
           </div>
         </div>
