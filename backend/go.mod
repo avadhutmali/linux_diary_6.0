@@ -7,6 +7,7 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/rs/cors v1.11.0
 	go.mongodb.org/mongo-driver v1.16.0
+	gopkg.in/mail.v2 v2.3.1
 )
 
 require (
@@ -25,5 +26,4 @@ require (
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
-	gopkg.in/mail.v2 v2.3.1 // indirect
 )
