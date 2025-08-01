@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import HeroSection from "./components/HeroSection";
-import RoadmapSection from "./components/RoadmapSection";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Roadmap from "./components/Roadmap";
@@ -100,7 +99,6 @@ const App = () => {
             </div>
           <Navbar />
           <HeroSection />
-          {/* <RoadmapSection/> */}
           <Roadmap />
           <TechnologiesSection />
           <PrizeSection />
