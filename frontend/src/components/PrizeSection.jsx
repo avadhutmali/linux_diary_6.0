@@ -25,7 +25,7 @@ const WinSection = () => {
   return (
    <>
    <h1 className="text-4xl font-bold text-center mb-8 text-white">Win Amazing Prizes!</h1>
-   <div className="container w-1/2 lg:w-2/3 h-auto mx-auto p-8 flex flex-col lg:flex-row items-center gap-8">
+   <div className="container  w-1/2 lg:w-2/3 h-auto mx-auto p-8 flex flex-col lg:flex-row items-center gap-8">
      {prizes.map((prize, index) => (
       <GlareHover
       key={index}
