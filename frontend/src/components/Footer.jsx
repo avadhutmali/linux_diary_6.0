@@ -1,6 +1,8 @@
 import React from "react";
 import FooterImg from "/images/footer1.png";
 import WlugImg from "../assets/wlug-logo-black.png";
+import openSuse from "../assets/OpenSUSE.png"
+import potoba from "../assets/potoba.png";
 // import { navigation } from "../constants";
 import {
     FaGithub,
@@ -9,9 +11,7 @@ import {
     FaXTwitter,
     FaDiscord,
 } from "react-icons/fa6";
-import Sponser1 from "../assets/wlug-logo-black.png";
-import Sponser2 from "../assets/wlug-logo-black.png";
-import Sponser3 from "../assets/wlug-logo-black.png";
+
 
 const Footer = () => {
     return (
@@ -22,9 +22,8 @@ const Footer = () => {
                     <p className="text-3xl font-extrabold text-gray-800 mb-2 text-center md:text-left">
                         Our Sponsors</p>
                     <div className="flex flex-col justify-center items-center md:flex-row md:space-x-3 space-y-3 md:space-y-0">
-                        <img src={Sponser1} className="h-20"></img>
-                        <img src={Sponser2} className="h-20"></img>
-                        <img src={Sponser3} className="h-20"></img>
+                        <img src={openSuse} className="h-20 mix-blend-multiply"></img>
+                        <img src={potoba} className="h-20 mix-blend-multiply"></img>
                     </div>
                 </div>
                 <div className="space-y-2">

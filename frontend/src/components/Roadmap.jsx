@@ -133,44 +133,33 @@ const Roadmap = () => {
                     onMouseEnter={() => handleMouseEnter(item.id)}
                     onMouseLeave={handleMouseLeave}
                   >
-                    <div className="flex items-start gap-3 lg:gap-4">
-                      {!isEven && (
-                        <div className="flex-shrink-0">
-                          <img 
-                            src={item.image} 
-                            alt={item.title} 
-                            className="w-16 h-16 lg:w-20 lg:h-20 rounded-lg object-cover shadow-lg"
-                          />
-                        </div>
-                      )}
-                      
-                      <div className="flex-1">
-                        <div className="mb-3">
-                          <h3 className="text-lg lg:text-xl font-bold text-white">{item.title}</h3>
-                        </div>
-                        {isExpanded && (
-                          <p className="text-white leading-relaxed mt-3 animate-fadeIn text-sm lg:text-base">
-                            {item.description}
-                          </p>
-                        )}
-                        {!isExpanded && (
-                          <p className="text-white text-sm italic">
-                            {window.innerWidth >= 1024 ? 'Hover to learn more...' : 'Click to learn more...'}
-                          </p>
-                        )}
+                    <div className="flex-1">
+                      <div className="mb-3">
+                        <h3 className="text-lg lg:text-xl font-bold text-white">{item.title}</h3>
                       </div>
-                      
-                      {isEven && (
-                        <div className="flex-shrink-0">
-                          <img 
-                            src={item.image} 
-                            alt={item.title} 
-                            className="w-16 h-16 lg:w-20 lg:h-20 rounded-lg object-cover shadow-lg"
-                          />
-                        </div>
+                      {isExpanded && (
+                        <p className="text-white leading-relaxed mt-3 animate-fadeIn text-sm lg:text-base">
+                          {item.description}
+                        </p>
+                      )}
+                      {!isExpanded && (
+                        <p className="text-white text-sm italic">
+                          {window.innerWidth >= 1024 ? 'Hover to learn more...' : 'Click to learn more...'}
+                        </p>
                       )}
                     </div>
                   </div>
+                </div>
+
+                {/* Image positioned outside on opposite side */}
+                <div className={`absolute top-1/2 transform -translate-y-1/2 ${
+                  isEven ? 'left-0 ml-4 lg:ml-8' : 'right-0 mr-4 lg:mr-8'
+                }`}>
+                  <img 
+                    src={item.image} 
+                    alt={item.title} 
+                    className="w-20 h-20 lg:w-24 lg:h-24 rounded-lg object-cover shadow-lg"
+                  />
                 </div>
               </div>
             );
