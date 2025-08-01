@@ -230,7 +230,7 @@ const TechnologiesSection = () => {
     } else if (screenSize === 'medium') {
       radius = 150;
     } else {
-      radius = 85;
+      radius = 100;
     }
     
     const angle = (index * (360 / total) + rotationAngle) * (Math.PI / 180);
@@ -335,7 +335,7 @@ const TechnologiesSection = () => {
                   <img 
                     src="/images/cannonball.avif" 
                     alt="Cannonball"
-                    className="w-12 h-12 md:w-16 md:h-16 drop-shadow-2xl"
+                    className="w-8 h-8 md:w-16 md:h-16 drop-shadow-2xl"
                   />
                   
                   {/* Enhanced sparkling trail */}
