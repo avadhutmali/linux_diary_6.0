@@ -95,7 +95,7 @@ const App = () => {
       </div>
       {showContent && (
         <div className="main min-h-screen">
-          <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-1">
+          <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
               <Snowfall snowflakeCount={150} />
             </div>
           <Navbar />
