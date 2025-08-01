@@ -53,7 +53,6 @@ const timelineData = [
 
 export default function Roadmap() {
   const [visible, setVisible] = useState(new Set());
-  const [flipped, setFlipped] = useState(new Set());
   const refs = useRef({});
 
   useEffect(() => {
@@ -73,14 +72,6 @@ export default function Roadmap() {
     return () => observers.forEach(o => o.disconnect());
   }, []);
 
-  const toggleFlip = id => {
-    setFlipped(prev => {
-      const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
-  };
-
   return (
     <section className="py-12">
       <div className="container mx-auto px-4">
@@ -90,7 +81,6 @@ export default function Roadmap() {
 
           {timelineData.map((item, idx) => {
             const isVisible = visible.has(item.id);
-            const isFlipped = flipped.has(item.id);
             const isEven = idx % 2 === 0;
 
             return (
@@ -98,7 +88,7 @@ export default function Roadmap() {
                 key={item.id}
                 ref={el => (refs.current[item.id] = el)}
                 className={
-                  `flex flex-col lg:flex-row items-center mb-16 transform transition-all duration-700 ease-out ` +
+                  `group flex flex-col lg:flex-row items-center mb-16 transform transition-all duration-700 ease-out ` +
                   (isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8')
                 }
                 style={{ transitionDelay: `${idx * 200}ms` }}
@@ -111,11 +101,7 @@ export default function Roadmap() {
                   }
                 >
                   <div
-                    onClick={() => toggleFlip(item.id)}
-                    className={
-                      `relative w-full h-56 bg-white/10 border border-white/20 rounded-2xl transition-transform duration-600 transform-style-preserve-3d ` +
-                      (isFlipped ? 'rotate-y-180' : '')
-                    }
+                    className="relative w-full h-56 bg-white/10 border border-white/20 rounded-2xl transition-transform duration-600 transform-style-preserve-3d group-hover:rotate-y-180"
                   >
                     {/* Front */}
                     <div className="absolute w-full h-full backface-hidden flex items-center justify-center p-6">
@@ -139,11 +125,16 @@ export default function Roadmap() {
                     (isEven ? 'lg:order-0' : '')
                   }
                 >
-                  <div className="w-40 h-40 bg-transparent rounded-lg overflow-hidden transition-all duration-500">
+                  <div className="w-40 h-40 bg-transparent rounded-lg overflow-hidden transition-all duration-500 group-hover:scale-110">
                     <img
-                      src={isFlipped ? item.imageSecondary : item.imagePrimary}
+                      src={item.imagePrimary}
                       alt={item.frontTitle}
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-contain group-hover:hidden"
+                    />
+                    <img
+                      src={item.imageSecondary}
+                      alt={`${item.frontTitle} details`}
+                      className="w-full h-full object-contain hidden group-hover:block"
                     />
                   </div>
                 </div>
@@ -152,6 +143,35 @@ export default function Roadmap() {
           })}
         </div>
       </div>
+      
+      <style jsx global>{`
+        .perspective {
+          perspective: 1000px;
+        }
+        .transform-style-preserve-3d {
+          transform-style: preserve-3d;
+        }
+        .backface-hidden {
+          backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+          transform: rotateY(180deg);
+        }
+        @media (hover: none) {
+          .group-hover\:rotate-y-180 {
+            transform: rotateY(0deg);
+          }
+          .group-hover\:hidden {
+            display: block;
+          }
+          .group-hover\:block {
+            display: none;
+          }
+          .group-hover\:scale-110 {
+            transform: scale(1);
+          }
+        }
+      `}</style>
     </section>
   );
 }
