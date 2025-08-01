@@ -28,6 +28,7 @@ const WinSection = () => {
    <div className="container w-1/2 lg:w-2/3 h-auto mx-auto p-8 flex flex-col lg:flex-row items-center gap-8">
      {prizes.map((prize, index) => (
       <GlareHover
+      key={index}
       glareColor="#ffffff"
       background='#00CED1'
     glareOpacity={0.3}
