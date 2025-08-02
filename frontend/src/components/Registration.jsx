@@ -93,6 +93,22 @@ const Register = () => {
     const [touched, setTouched] = useState({});
     const [isValid, setIsValid] = useState({});
 
+    // Auto-validate fields when they change
+    useEffect(() => {
+        const newErrors = {};
+        const newIsValid = {};
+
+        Object.keys(validationRules).forEach(fieldName => {
+            const value = getFieldValue(fieldName);
+            const error = validateField(fieldName, value);
+            newErrors[fieldName] = error;
+            newIsValid[fieldName] = !error;
+        });
+
+        setErrors(newErrors);
+        setIsValid(newIsValid);
+    }, [name, email, phone, college, year, branch, transaction, referral]);
+
     // Validation patterns
     const patterns = {
         email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
@@ -226,13 +242,21 @@ const Register = () => {
 
     // Check if form is valid
     const isFormValid = () => {
-        const hasErrors = Object.values(errors).some(error => error !== "");
+        // Check if all required fields are filled
         const hasRequiredFields = Object.keys(validationRules).every(fieldName => {
             const rules = validationRules[fieldName];
             const value = getFieldValue(fieldName);
             return !rules.required || (value && value.trim() !== "");
         });
-        return !hasErrors && hasRequiredFields && isDualBooted !== "Do you have Linux installed?" && file !== null;
+
+        // Check if there are any validation errors
+        const hasErrors = Object.values(errors).some(error => error !== "");
+
+        // Check other required conditions
+        const hasDualBootSelection = isDualBooted === "Yes" || isDualBooted === "No";
+        const hasFileUpload = file !== null;
+
+        return hasRequiredFields && !hasErrors && hasDualBootSelection && hasFileUpload;
     };
 
     const showAlert = (icon, title, text) => {
