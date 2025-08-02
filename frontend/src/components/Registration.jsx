@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import MainImg from "../assets/frozen-bg.jpg";
+// import MainImg from "../assets/frozen-bg.jpg";
 // import SnowfallEffect from "./SnowfallEffect";
 // import RegisterTux from "../assets/Payement.png";
 import { BiCross, BiUpload } from "react-icons/bi";
