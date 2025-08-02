@@ -3,10 +3,10 @@ package db
 import (
 	"backend/src/models"
 	"context"
+	"fmt"
 	"log/slog"
 	"os"
 	"time"
-	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -19,7 +19,20 @@ type DbAdapter struct {
 }
 
 func NewDbAdapter(ctx context.Context) (*DbAdapter, error) {
-	uri := os.Getenv("BACKEND_MONGO_PROTOCOL") + "://" + os.Getenv("BACKEND_MONGO_USER") + ":" + os.Getenv("BACKEND_MONGO_PASS") + "@" + os.Getenv("BACKEND_MONGO_HOST") + "/" + os.Getenv("BACKEND_MONGO_DB") + "?retryWrites=true&w=majority"
+	protocol := os.Getenv("BACKEND_MONGO_PROTOCOL")
+	user := os.Getenv("BACKEND_MONGO_USER")
+	pass := os.Getenv("BACKEND_MONGO_PASS")
+	host := os.Getenv("BACKEND_MONGO_HOST")
+	dbName := os.Getenv("BACKEND_MONGO_DB")
+
+	var uri string
+	if user != "" && pass != "" {
+		uri = protocol + "://" + user + ":" + pass + "@" + host + "/" + dbName + "?retryWrites=true&w=majority"
+		print(uri)
+	} else {
+		uri = protocol + "://" + host + "/" + dbName + "?retryWrites=true&w=majority"
+	}
+
 	fmt.Println("Mongo URI:", uri)
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
 	if err != nil {
@@ -33,9 +46,9 @@ func NewDbAdapter(ctx context.Context) (*DbAdapter, error) {
 		return nil, err
 	}
 
-	db := client.Database("LinuxDiary6")
+	database := client.Database("LinuxDiary6")
 
-	_, err = db.Collection("users").Indexes().CreateOne(ctx, mongo.IndexModel{
+	_, err = database.Collection("users").Indexes().CreateOne(ctx, mongo.IndexModel{
 		Keys:    bson.D{{Key: "email", Value: 1}, {Key: "phone", Value: 1}, {Key: "transactionId", Value: 1}},
 		Options: options.Index().SetUnique(true),
 	})
@@ -45,7 +58,7 @@ func NewDbAdapter(ctx context.Context) (*DbAdapter, error) {
 		return nil, err
 	}
 
-	return &DbAdapter{Db: db}, nil
+	return &DbAdapter{Db: database}, nil
 }
 
 func (d DbAdapter) Close(ctx context.Context) error {
@@ -143,4 +156,16 @@ func (d DbAdapter) GetUsers(ctx context.Context) ([]models.User, error) {
 		users = append(users, user)
 	}
 	return users, nil
+}
+
+func (d DbAdapter) GetRegistrationCount(ctx context.Context) (int64, error) {
+	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	count, err := d.Db.Collection("users").CountDocuments(ctx, bson.D{})
+	if err != nil {
+		slog.Error("Error counting registrations", err)
+		return 0, err
+	}
+	return count, nil
 }

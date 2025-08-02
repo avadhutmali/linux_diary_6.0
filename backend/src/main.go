@@ -11,15 +11,15 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	"github.com/rs/cors"
-	// "github.com/joho/godotenv"
 )
 
 func main() {
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	log.Fatal("❌ Error loading .env file")
-	// }
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("⚠️ Warning: .env file not found, using system environment variables")
+	}
 
 	port := os.Getenv("BACKEND_PORT")
 
@@ -40,7 +40,7 @@ func main() {
 		w.Write([]byte(`{"message": "Welcome to LinuxDiary6.0"}`))
 	}).Methods("GET")
 
-	muxRouter.HandleFunc("/user/registration", func(w http.ResponseWriter, r *http.Request) {
+	muxRouter.HandleFunc("/registration", func(w http.ResponseWriter, r *http.Request) {
 		response, _ := userService.CreateUser(context.Background(), r)
 
 		// response := map[string]interface{}{
@@ -82,6 +82,25 @@ func main() {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(jsonResponse)
 	})
+
+	muxRouter.HandleFunc("/user/registrationCount", func(w http.ResponseWriter, r *http.Request) {
+		response, err := userService.GetRegistrationCount(context.Background())
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		jsonResponse, err := json.Marshal(response)
+		log.Println(response)
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(jsonResponse)
+	}).Methods("GET")
 
 	corsOptions := cors.New(
 		cors.Options{

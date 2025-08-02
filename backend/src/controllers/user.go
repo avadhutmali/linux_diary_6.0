@@ -4,19 +4,19 @@ import (
 	"backend/src/db"
 	"backend/src/models"
 	"context"
+	"crypto/tls"
 	"fmt"
 	"log"
 	"mime/multipart"
 	"net/http"
 	"os"
 	"sort"
-	"strings"
-  "crypto/tls"
 	"strconv"
+	"strings"
 
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
-  mail "gopkg.in/mail.v2"
+	mail "gopkg.in/mail.v2"
 )
 
 type UserService struct {
@@ -78,10 +78,10 @@ func (u UserService) SendEmail(user models.UserInput) bool {
 	fromUser := os.Getenv("BACKEND_MAIL_USER")
 	fromHeader := os.Getenv("BACKEND_MAIL_FROM")
 	if fromHeader == "" {
-		fromHeader = fromUser 
+		fromHeader = fromUser
 	}
 	password := os.Getenv("BACKEND_MAIL_PASSWORD")
-	host := os.Getenv("BACKEND_MAIL_HOST") 
+	host := os.Getenv("BACKEND_MAIL_HOST")
 	portStr := os.Getenv("BACKEND_MAIL_PORT")
 	if portStr == "" {
 		portStr = "587"
@@ -309,6 +309,21 @@ func (u UserService) FileUpload(ctx context.Context, file multipart.File) (strin
 
 	return uploadResult.SecureURL, true
 
+}
+
+func (u UserService) GetRegistrationCount(ctx context.Context) (models.Response, error) {
+	count, err := u.DbAdapter.GetRegistrationCount(ctx)
+	if err != nil {
+		return models.Response{Message: "Error getting registration count", Success: false, Error: err.Error()}, err
+	}
+
+	return models.Response{
+		Message: "Registration count retrieved successfully",
+		Data: map[string]interface{}{
+			"count": count,
+		},
+		Success: true,
+	}, nil
 }
 
 func (u UserService) GetReferralLeaderboard(ctx context.Context, r *http.Request) ([]models.ReferralScore, error) {
