@@ -1,24 +1,33 @@
+// src/App.jsx
+
 import React, { useState, useEffect } from "react";
 import HeroSection from "./components/HeroSection";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Roadmap from "./components/Roadmap";
 import TechnologiesSection from "./components/TechnologiesSection";
-import PrizeSection from "./components/PrizeSection";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
+// import PrizeSection from "./components/PrizeSection";
+import TreasureBox from "./components/Treasurebox";
 import ImageGallary from "./components/ImageGallary";
 import Register from "./components/Registration";
+
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import Snowfall from "react-snowfall";
-import TreasureBox from "./components/Treasurebox";
 
 const App = () => {
-  const [showContent, setshowContent] = useState(false);
+  const [showContent, setShowContent] = useState(false);
 
+  // initial mask animation
   useGSAP(() => {
-    const timeline1 = gsap.timeline();
+    const timeline = gsap.timeline({
+      onComplete: () => {
+        document.querySelector(".svg")?.remove();
+        setShowContent(true);
+      },
+    });
 
-    timeline1
+    timeline
       .to(".vi-mask-group", {
         rotate: 10,
         duration: 2,
@@ -32,31 +41,22 @@ const App = () => {
         ease: "Expo.easeInOut",
         transformOrigin: "50% 50%",
         opacity: 0,
-        onUpdate: function () {
-          if (this.progress() >= 0.9) {
-            document.querySelector(".svg")?.remove();
-            setshowContent(true);
-            this.kill();
-          }
-        },
       });
   });
 
+  // parallax on main text
   useEffect(() => {
     if (!showContent) return;
 
     const main = document.querySelector(".main");
-
     const handleMouseMove = (e) => {
       const xMove = (e.clientX / window.innerWidth - 0.5) * 40;
       gsap.to(".main .text", {
         x: `${xMove * 0.4}%`,
       });
-
     };
 
     main?.addEventListener("mousemove", handleMouseMove);
-
     return () => {
       main?.removeEventListener("mousemove", handleMouseMove);
     };
@@ -64,7 +64,10 @@ const App = () => {
 
   return (
     <>
-      <div className="svg flex items-center justify-center fixed top-0 left-0 z-[100] w-full h-screen overflow-hidden bg-[#000] ">
+      {/* FULL-SCREEN MASK */}
+      <div
+        className="svg pointer-events-none fixed inset-0 z-[100] flex items-center justify-center bg-black"
+      >
         <svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
           <defs>
             <mask id="viMask">
@@ -93,19 +96,23 @@ const App = () => {
           />
         </svg>
       </div>
+
+      {/* MAIN CONTENT */}
       {showContent && (
-        <div className="main min-h-screen">
-          <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
-              <Snowfall snowflakeCount={150} />
-            </div>
+        <div className="main min-h-screen relative z-0">
+          {/* Snow behind everything */}
+          <div className="fixed inset-0 pointer-events-none z-0">
+            <Snowfall snowflakeCount={150} />
+          </div>
+
           <Navbar />
           <HeroSection />
           <Roadmap />
           <TechnologiesSection />
           {/* <PrizeSection /> */}
-          <TreasureBox/>
-          <ImageGallary/>
-          <Register/>
+          <TreasureBox />
+          {/* <ImageGallary /> */}
+          <Register />
           <Footer />
         </div>
       )}

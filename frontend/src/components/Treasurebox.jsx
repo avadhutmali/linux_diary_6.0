@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import chestClosed  from '../assets/Chest/chest_closed.png';
-import chestOpen   from '../assets/Chest/chest_open.png';
+import chestClosed  from '../assets/Chest/chest_closed.svg';
+import chestOpen   from '../assets/Chest/chest_open.svg';
 
 import swags       from '../assets/prizes/swags.webp';
 import merchandise from '../assets/prizes/merchandise.png';
@@ -42,7 +42,7 @@ export default function TreasureBox() {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  const scaleFactor = isMobile ? 1 : 1.8;
+  const scaleFactor = isMobile ? 1 : 1.5;
   const positions   = isMobile ? positionsMobile : positionsDesktop;
 
   // prize data
@@ -54,7 +54,7 @@ export default function TreasureBox() {
 
   return (
     <>
-    <h2 className="text-4xl font-bold text-center text-white mb-12">PRIZES</h2>
+    <h2 className="text-4xl font-bold text-center text-white">PRIZES</h2>
     <div className="relative flex flex-col items-center justify-center h-[600px]">
       {/* CHEST (no animation, just swap) */}
       <img

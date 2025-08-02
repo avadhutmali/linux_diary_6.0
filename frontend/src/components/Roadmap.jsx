@@ -157,7 +157,7 @@ export default function Roadmap() {
                   }
                 >
                   <div 
-                    className={`w-40 h-40 bg-transparent rounded-lg overflow-hidden transition-all duration-500 cursor-pointer ${
+                    className={`w-50 h-50 bg-transparent rounded-lg overflow-hidden transition-all duration-500 cursor-pointer ${
                       isImageFlipped ? 'scale-110' : ''
                     } group-hover:scale-110`}
                     onClick={() => handleImageClick(item.id)}

@@ -6,8 +6,9 @@
 }
 
 .header{
-  font-family: header;
-  font-weight: 900;
+ font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  color: white;
 }
 
 /* Heading font */
@@ -433,3 +434,23 @@ html {
   .spin-slow {
     animation: spin 20s linear infinite;
  }
+
+ /* Fire Mega Cannon */
+.btn-fire {
+  background-color: #E2A800;
+  color: white;
+  box-shadow: 0 2px 6px rgba(226,168,0,0.5);
+}
+.btn-fire:hover {
+  background-color: #C68E00;
+}
+
+/* Reset Mission */
+.btn-reset {
+  background-color: #1E2A47;
+  color: #A7C8FF;
+  box-shadow: 0 2px 6px rgba(30,42,71,0.5);
+}
+.btn-reset:hover {
+  background-color: #16203A;
+}
