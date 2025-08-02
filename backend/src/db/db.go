@@ -33,7 +33,7 @@ func NewDbAdapter(ctx context.Context) (*DbAdapter, error) {
 		return nil, err
 	}
 
-	db := client.Database("LinuxDiary5")
+	db := client.Database("LinuxDiary6")
 
 	_, err = db.Collection("users").Indexes().CreateOne(ctx, mongo.IndexModel{
 		Keys:    bson.D{{Key: "email", Value: 1}, {Key: "phone", Value: 1}, {Key: "transactionId", Value: 1}},
