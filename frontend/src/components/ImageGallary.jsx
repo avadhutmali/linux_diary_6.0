@@ -309,7 +309,7 @@ const SnowSlider = () => {
         <div className="flex flex-col items-center">
           <div className="  p-4 md:p-8 w-full max-w-sm">
             <h2 className="text-lg md:text-xl font-semibold text-white text-center mb-3 md:mb-4">
-              🚢 Navigate with the Ship Wheel
+               Navigate with the Ship Wheel
             </h2>
             <div className="relative flex justify-center">
               <canvas

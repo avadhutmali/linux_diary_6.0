@@ -467,10 +467,10 @@ const TechnologiesSection = () => {
               className={`px-4 md:px-6 py-2 md:py-3 font-bold text-sm md:text-base hover:scale-105 cursor-pointer rounded-lg md:rounded-xl shadow-md transition-all duration-200 border-2 border-white`}
             >
               {cannonballInFlight
-                ? '🚀 Firing...'
+                ? 'Firing...'
                 : landedTechs.length > 0
                 ? 'Register Now!'
-                : '🔥 Fire Cannon!'}
+                : 'Fire Cannon!'}
               </button>
 
               
@@ -478,7 +478,7 @@ const TechnologiesSection = () => {
                 onClick={resetDemo}
                 className="px-4 md:px-6 py-2 md:py-3 bg-[#AED9E0] hover:bg-[#9ccdd5] cursor-pointer text-black font-bold text-sm md:text-base rounded-lg md:rounded-xl shadow-md hover:scale-105 transition-transform duration-200 border-2 border-cyan-600"
               >
-                🔄 Reset Mission
+                Reset Mission
               </button>
             </div>
            
