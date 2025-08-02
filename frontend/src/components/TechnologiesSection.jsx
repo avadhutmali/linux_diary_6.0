@@ -261,6 +261,18 @@ const TechnologiesSection = () => {
     };
   };
 
+  const handleButtonClick = () => {
+  if (cannonballInFlight) return;
+
+  if (landedTechs.length > 0) {
+    const formEl = document.getElementById('register');
+    formEl?.scrollIntoView({ behavior: 'smooth' });
+  } else {
+    fireCannon();
+  }
+};
+
+
   return (
     <section 
       ref={sectionRef}
@@ -315,10 +327,10 @@ const TechnologiesSection = () => {
             </div>
           </div>
         ) : (
-          <div className="absolute left-4 md:left-12 bottom-0 md:bottom-16 w-[25vmax] md:w-[20vmax] lg:w-[20vmax]">
+          <div className="absolute left-4 md:left-32 bottom-0 md:bottom-24 w-[25vmax] md:w-[30vmax] lg:w-[35vmax]">
             <div className="text-white  p-4 rounded-xl backdrop-blur-sm animate-fadeIn">
-              <h2 className="text-3xl md:text-4xl font-bold mb-2">Wargames</h2>
-              <p className="text-sm md:text-base">
+              <h2 className="text-3xl md:text-5xl font-bold mb-2">Wargames</h2>
+              <p className="text-sm md:text-xl">
                 Dive into our thrilling Wargames competition! Tackle challenging puzzles, 
                 showcase your skills and compete with the best. Are you ready to be the champion?
               </p>
@@ -449,20 +461,22 @@ const TechnologiesSection = () => {
           <div className="inline-block p-4 md:p-6 ">
             <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6 mb-3 md:mb-4">
               <button
-                onClick={fireCannon}
-                disabled={cannonballInFlight || landedTechs.length > 0}
-                className={`px-4 md:px-6 py-2 md:py-3 font-bold text-sm md:text-base rounded-lg md:rounded-xl shadow-md transition-all duration-200 border-2 ${
-                  cannonballInFlight || landedTechs.length > 0
-                    ? 'bg-gray-500 text-gray-300 border-gray-400 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-red-500 to-red-700 text-white border-red-400 hover:scale-105'
-                }`}
-              >
-                {cannonballInFlight ? '🚀 Firing...' : landedTechs.length > 0 ? 'Mission Complete!' : '🔥 Fire Mega Cannon!'}
+              onClick={handleButtonClick}
+              disabled={cannonballInFlight}
+              style={{backgroundColor: '#DEC67A'}}
+              className={`px-4 md:px-6 py-2 md:py-3 font-bold text-sm md:text-base hover:scale-105 cursor-pointer rounded-lg md:rounded-xl shadow-md transition-all duration-200 border-2 border-white`}
+            >
+              {cannonballInFlight
+                ? '🚀 Firing...'
+                : landedTechs.length > 0
+                ? 'Register Now!'
+                : '🔥 Fire Cannon!'}
               </button>
+
               
               <button
                 onClick={resetDemo}
-                className="px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-green-500 to-green-700 text-white font-bold text-sm md:text-base rounded-lg md:rounded-xl shadow-md hover:scale-105 transition-transform duration-200 border-2 border-cyan-400"
+                className="px-4 md:px-6 py-2 md:py-3 bg-[#AED9E0] hover:bg-[#9ccdd5] cursor-pointer text-black font-bold text-sm md:text-base rounded-lg md:rounded-xl shadow-md hover:scale-105 transition-transform duration-200 border-2 border-cyan-600"
               >
                 🔄 Reset Mission
               </button>
