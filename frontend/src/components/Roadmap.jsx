@@ -53,6 +53,8 @@ const timelineData = [
 
 export default function Roadmap() {
   const [visible, setVisible] = useState(new Set());
+  const [flipped, setFlipped] = useState(new Set());
+  const [imageFlipped, setImageFlipped] = useState(new Set());
   const refs = useRef({});
 
   useEffect(() => {
@@ -72,6 +74,30 @@ export default function Roadmap() {
     return () => observers.forEach(o => o.disconnect());
   }, []);
 
+  const handleCardClick = (itemId) => {
+    setFlipped(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(itemId)) {
+        newSet.delete(itemId);
+      } else {
+        newSet.add(itemId);
+      }
+      return newSet;
+    });
+  };
+
+  const handleImageClick = (itemId) => {
+    setImageFlipped(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(itemId)) {
+        newSet.delete(itemId);
+      } else {
+        newSet.add(itemId);
+      }
+      return newSet;
+    });
+  };
+
   return (
     <section className="py-12">
       <div className="container mx-auto px-4">
@@ -82,6 +108,8 @@ export default function Roadmap() {
           {timelineData.map((item, idx) => {
             const isVisible = visible.has(item.id);
             const isEven = idx % 2 === 0;
+            const isCardFlipped = flipped.has(item.id);
+            const isImageFlipped = imageFlipped.has(item.id);
 
             return (
               <div
@@ -101,7 +129,10 @@ export default function Roadmap() {
                   }
                 >
                   <div
-                    className="relative w-full h-56 bg-white/10 border border-white/20 rounded-2xl transition-transform duration-600 transform-style-preserve-3d group-hover:rotate-y-180"
+                    className={`relative w-full h-56 bg-white/10 border border-white/20 rounded-2xl transition-transform duration-600 transform-style-preserve-3d cursor-pointer ${
+                      isCardFlipped ? 'rotate-y-180' : ''
+                    } hover:rotate-y-180`}
+                    onClick={() => handleCardClick(item.id)}
                   >
                     {/* Front */}
                     <div className="absolute w-full h-full backface-hidden flex items-center justify-center p-6">
@@ -125,16 +156,16 @@ export default function Roadmap() {
                     (isEven ? 'lg:order-0' : '')
                   }
                 >
-                  <div className="w-40 h-40 bg-transparent rounded-lg overflow-hidden transition-all duration-500 group-hover:scale-110">
+                  <div 
+                    className={`w-40 h-40 bg-transparent rounded-lg overflow-hidden transition-all duration-500 cursor-pointer ${
+                      isImageFlipped ? 'scale-110' : ''
+                    } hover:scale-110`}
+                    onClick={() => handleImageClick(item.id)}
+                  >
                     <img
-                      src={item.imagePrimary}
-                      alt={item.frontTitle}
-                      className="w-full h-full object-contain group-hover:hidden"
-                    />
-                    <img
-                      src={item.imageSecondary}
-                      alt={`${item.frontTitle} details`}
-                      className="w-full h-full object-contain hidden group-hover:block"
+                      src={isImageFlipped ? item.imageSecondary : item.imagePrimary}
+                      alt={isImageFlipped ? `${item.frontTitle} details` : item.frontTitle}
+                      className="w-full h-full object-contain transition-opacity duration-300"
                     />
                   </div>
                 </div>
@@ -157,18 +188,14 @@ export default function Roadmap() {
         .rotate-y-180 {
           transform: rotateY(180deg);
         }
-        @media (hover: none) {
-          .group-hover\:rotate-y-180 {
-            transform: rotateY(0deg);
+        
+        /* Ensure hover effects work on desktop while click works on mobile */
+        @media (hover: hover) and (pointer: fine) {
+          .group:hover .hover\\:rotate-y-180 {
+            transform: rotateY(180deg);
           }
-          .group-hover\:hidden {
-            display: block;
-          }
-          .group-hover\:block {
-            display: none;
-          }
-          .group-hover\:scale-110 {
-            transform: scale(1);
+          .group:hover .hover\\:scale-110 {
+            transform: scale(1.1);
           }
         }
       `}</style>
