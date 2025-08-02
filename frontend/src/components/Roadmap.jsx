@@ -159,13 +159,22 @@ export default function Roadmap() {
                   <div 
                     className={`w-40 h-40 bg-transparent rounded-lg overflow-hidden transition-all duration-500 cursor-pointer ${
                       isImageFlipped ? 'scale-110' : ''
-                    } hover:scale-110`}
+                    } group-hover:scale-110`}
                     onClick={() => handleImageClick(item.id)}
                   >
                     <img
-                      src={isImageFlipped ? item.imageSecondary : item.imagePrimary}
-                      alt={isImageFlipped ? `${item.frontTitle} details` : item.frontTitle}
-                      className="w-full h-full object-contain transition-opacity duration-300"
+                      src={item.imagePrimary}
+                      alt={item.frontTitle}
+                      className={`w-full h-full object-contain transition-opacity duration-300 ${
+                        isImageFlipped ? 'hidden' : 'block'
+                      } group-hover:hidden`}
+                    />
+                    <img
+                      src={item.imageSecondary}
+                      alt={`${item.frontTitle} details`}
+                      className={`w-full h-full object-contain transition-opacity duration-300 ${
+                        isImageFlipped ? 'block' : 'hidden'
+                      } hidden group-hover:block`}
                     />
                   </div>
                 </div>
@@ -175,7 +184,7 @@ export default function Roadmap() {
         </div>
       </div>
       
-      <style jsx global>{`
+      <style>{`
         .perspective {
           perspective: 1000px;
         }
