@@ -16,9 +16,9 @@ const PrizeCard = ({ image, title, description }) => (
 
 export default function PrizeSection() {
   const cards = [
-    <PrizeCard key="3" image={cashPrize} title="3rd Prize" description="₹2000 + Certificate" />,
-    <PrizeCard key="2" image={merchandise} title="2nd Prize" description="₹3000 + Swag" />,
-    <PrizeCard key="1" image={swags} title="1st Prize" description="₹5000 + Goodies" />,
+    <PrizeCard key="3" image={cashPrize} title="" description="" />,
+    <PrizeCard key="2" image={merchandise} title="" description="" />,
+    <PrizeCard key="1" image={swags} title="" description="" />,
   ];
 
   return (

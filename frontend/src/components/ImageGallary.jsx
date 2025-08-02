@@ -109,12 +109,19 @@ const SnowSlider = () => {
     if (distance <= wheelRadius) {
       setIsDragging(true);
       setLastAngle(getAngleFromPointer(e, canvas));
+      
+      // Add pointer capture to the canvas element only
+      if (e.type === 'touchstart') {
+        canvas.setPointerCapture && canvas.setPointerCapture(e.pointerId);
+      }
     }
   }, [getAngleFromPointer]);
 
   const handlePointerMove = useCallback((e) => {
     if (!isDragging) return;
-    e.preventDefault();
+    e.preventDefault(); // Prevent scrolling on touch
+    e.stopPropagation(); // Stop event from bubbling
+    
     const canvas = canvasRef.current;
     if (!canvas) return;
     const currentAngle = getAngleFromPointer(e, canvas);
@@ -133,10 +140,19 @@ const SnowSlider = () => {
   }, [isDragging, lastAngle, wheelRotation, images.length, getAngleFromPointer]);
 
   const handlePointerUp = useCallback((e) => {
+    if (!isDragging) return;
     e.preventDefault();
+    e.stopPropagation();
     setIsDragging(false);
-  }, []);
+    
+    // Release pointer capture
+    const canvas = canvasRef.current;
+    if (canvas && e.type === 'touchend') {
+      canvas.releasePointerCapture && canvas.releasePointerCapture(e.pointerId);
+    }
+  }, [isDragging]);
 
+  // Canvas drawing effect
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -153,24 +169,62 @@ const SnowSlider = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    
+    // Handle mouse move and up only when dragging
+    const handleDocumentMouseMove = (e) => {
+      if (isDragging) {
+        handlePointerMove(e);
+      }
+    };
+    
+    const handleDocumentMouseUp = (e) => {
+      if (isDragging) {
+        handlePointerUp(e);
+      }
+    };
+    
+    const handleDocumentTouchMove = (e) => {
+      if (isDragging) {
+        handlePointerMove(e);
+      }
+    };
+    
+    const handleDocumentTouchEnd = (e) => {
+      if (isDragging) {
+        handlePointerUp(e);
+      }
+    };
+    
+    // Mouse events - only mousedown on canvas, move and up on document when dragging
     canvas.addEventListener('mousedown', handlePointerDown);
-    document.addEventListener('mousemove', handlePointerMove);
-    document.addEventListener('mouseup', handlePointerUp);
+    
+    // Touch events - only touchstart on canvas, move and end on document when dragging
     canvas.addEventListener('touchstart', handlePointerDown, { passive: false });
-    document.addEventListener('touchmove', handlePointerMove, { passive: false });
-    document.addEventListener('touchend', handlePointerUp, { passive: false });
+    
+    // Only add document listeners when dragging
+    if (isDragging) {
+      document.addEventListener('mousemove', handleDocumentMouseMove);
+      document.addEventListener('mouseup', handleDocumentMouseUp);
+      document.addEventListener('touchmove', handleDocumentTouchMove, { passive: false });
+      document.addEventListener('touchend', handleDocumentTouchEnd, { passive: false });
+    }
+    
     return () => {
       canvas.removeEventListener('mousedown', handlePointerDown);
-      document.removeEventListener('mousemove', handlePointerMove);
-      document.removeEventListener('mouseup', handlePointerUp);
       canvas.removeEventListener('touchstart', handlePointerDown);
-      document.removeEventListener('touchmove', handlePointerMove);
-      document.removeEventListener('touchend', handlePointerUp);
+      
+      // Clean up document listeners
+      document.removeEventListener('mousemove', handleDocumentMouseMove);
+      document.removeEventListener('mouseup', handleDocumentMouseUp);
+      document.removeEventListener('touchmove', handleDocumentTouchMove);
+      document.removeEventListener('touchend', handleDocumentTouchEnd);
     };
-  }, [handlePointerDown, handlePointerMove, handlePointerUp]);
+  }, [handlePointerDown, handlePointerMove, handlePointerUp, isDragging]);
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
+    <div className="min-h-1/2  p-4 md:p-8">
+      {/* Falling snow animation */}
+
       <div className="max-w-6xl mx-auto">
         <h1 className="text-2xl md:text-4xl font-bold text-white text-center mb-6 md:mb-8 tracking-wide">
           ❄️ Linux Diary 5.0 ❄️
@@ -193,15 +247,25 @@ const SnowSlider = () => {
               ))}
             </div>
           </div>
+          
+          {/* Image indicators */}
+          {/* <div className="flex justify-center mt-3 md:mt-4 space-x-2">
+            {images.map((_, index) => (
+              <div
+                key={index}
+                className={`w-2 h-2 rounded-full transition-colors ${
+                  index === currentImageIndex ? 'bg-blue-400' : 'bg-white/30'
+                }`}
+              />
+            ))}
+          </div> */}
         </div>
         <div className="flex flex-col items-center">
-          <div className="bg-transparent backdrop-blur-sm rounded-2xl w-full max-w-sm px-4 py-2">
-            <div className="flex items-center justify-center space-x-4 relative">
-              <img
-                src="/images/divider.png"
-                alt="golden ornament"
-                className="h-6 md:h-[10vh] object-contain"
-              />
+          <div className="  p-4 md:p-8 w-full max-w-sm">
+            <h2 className="text-lg md:text-xl font-semibold text-white text-center mb-3 md:mb-4">
+            Navigate with the Ship Wheel
+            </h2>
+            <div className="relative flex justify-center">
               <canvas
                 ref={canvasRef}
                 className="cursor-grab active:cursor-grabbing "
@@ -228,6 +292,8 @@ const SnowSlider = () => {
             </div>
           </div>
         </div>
+
+        
       </div>
     </div>
   );

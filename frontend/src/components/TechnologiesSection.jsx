@@ -261,10 +261,22 @@ const TechnologiesSection = () => {
     };
   };
 
+  const handleButtonClick = () => {
+  if (cannonballInFlight) return;
+
+  if (landedTechs.length > 0) {
+    const formEl = document.getElementById('register');
+    formEl?.scrollIntoView({ behavior: 'smooth' });
+  } else {
+    fireCannon();
+  }
+};
+
+
   return (
     <section 
       ref={sectionRef}
-      className="py-12 md:py-20 relative overflow-hidden min-h-[500px] md:min-h-screen"
+      className="py-12 md:py-20 relative  overflow-hidden min-h-[500px] md:min-h-screen"
     >
       {/* Ocean Background */}
       <div className="absolute inset-0">
@@ -273,7 +285,29 @@ const TechnologiesSection = () => {
         <div className="ocean-foam"></div>
       </div>
 
+      {/* Floating Clouds */}
+      <div className="absolute flex w-full px-0 lg:px-36 justify-between inset-0 my-10 pointer-events-none">
+        {[...Array(3)].map((_, i) => (
+          <img
+            key={i}
+            src="/images/clouds.png"
+            alt="Cloud"
+            className={` ${screenSize === 'large' ? 'animate-bounce-md' : 'animate-bounce-sm'} rotate-2`}
+            style={{
+              width: screenSize === 'large' ? `${220 + i * 10}px` : `${120 + i * 6}px`,
+              height: screenSize === 'large' ? `${120 + i * 5}px` : `${60 + i * 3}px`,
+              top: screenSize === 'large' ? `8%` : `5%`,
+              transform: `translateY(${i * 2}px)`,
+              animationDelay: `${i * 0.8}s`,
+              animationDuration: screenSize === 'large' ? `${6 + i * 0.5}s` : `${4 + i * 0.3}s`,
+              opacity: 0.9
+            }}
+          />
+        ))}
+      </div>
+
       <div className="container mx-auto px-0 relative z-10">
+
         {/* Main Scene Container */}
         <div ref={containerRef} className="relative w-full h-[300px] md:h-[500px] mx-auto">
           
@@ -293,11 +327,10 @@ const TechnologiesSection = () => {
             </div>
           </div>
         ) : (
-          <div className="absolute left-4 md:left-12 bottom-0 md:bottom-36 w-[25vmax] md:w-[30vw] lg:w-[50vw]">
-            <div className="text-white p-4 rounded-xl backdrop-blur-sm animate-fadeIn">
-              <h2 className="text-3xl md:text-7xl font-bold mb-2">Wargames</h2>
-              <br />
-              <p className="text-sm md:text-2xl">
+          <div className="absolute left-4 md:left-32 bottom-0 md:bottom-24 w-[25vmax] md:w-[30vmax] lg:w-[35vmax]">
+            <div className="text-white  p-4 rounded-xl backdrop-blur-sm animate-fadeIn">
+              <h2 className="text-3xl md:text-5xl font-bold mb-2">Wargames</h2>
+              <p className="text-sm md:text-xl">
                 Dive into our thrilling Wargames competition! Tackle challenging puzzles, 
                 showcase your skills and compete with the best. Are you ready to be the champion?
               </p>
@@ -355,6 +388,7 @@ const TechnologiesSection = () => {
             className="absolute -right-10 md:right-0 bottom-16"
           >
             <div className="relative">
+            
               
               {landedTechs.length <= 0 && (
                 <img 
@@ -372,6 +406,8 @@ const TechnologiesSection = () => {
               )}
 
               {/* Revolving Tech Icons */}
+
+
               
              {landedTechs.length > 0 && (
   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -385,7 +421,9 @@ const TechnologiesSection = () => {
           style={{
             transform: `translate(${position.x-10}px, ${position.y-10}px)`,
             transition: 'transform 1.55s ease-out',
+            // Add animation delay for each item
             animationDelay: `${index * 0.2}s`,
+            // Set initial opacity to 0 and animate to 1
             opacity: 0,
             animation: 'fadeIn 2.5s forwards'
           }}
@@ -394,6 +432,7 @@ const TechnologiesSection = () => {
             className="w-8 h-8 md:w-16 md:h-16 bg-gradient-to-br from-white to-gray-400 rounded-xl border-2 border-white flex items-center justify-center text-sm md:text-lg shadow-lg"
             style={{ 
               backgroundColor: tech.color + '20',
+              // Add delay for each tech icon
               animationDelay: `${index * 0.2 + 2}s`,
               animation: 'zoomIn 0.5s forwards'
             }}
@@ -410,6 +449,9 @@ const TechnologiesSection = () => {
     })}
   </div>
 )}
+
+
+
             </div>
           </div>
         </div>
@@ -419,24 +461,27 @@ const TechnologiesSection = () => {
           <div className="inline-block p-4 md:p-6 ">
             <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6 mb-3 md:mb-4">
               <button
-                onClick={fireCannon}
-                disabled={cannonballInFlight || landedTechs.length > 0}
-                className={`btn-fire px-4 md:px-6 py-2 md:py-3 font-bold text-sm md:text-base rounded-lg md:rounded-xl shadow-md transition-all duration-200 border-2 ${
-                  cannonballInFlight || landedTechs.length > 0
-                    ? 'bg-gray-700 text-gray-300 border-gray-500 cursor-not-allowed'
-                    : 'bg-gray-900 text-white border-cyan-400 hover:border-cyan-300 hover:shadow-[0_0_15px_#0ff] hover:scale-105'
-                }`}
-              >
-                {cannonballInFlight ? 'Firing...' : landedTechs.length > 0 ? 'Mission Complete!' : 'Fire Mega Cannon!'}
+              onClick={handleButtonClick}
+              disabled={cannonballInFlight}
+              style={{backgroundColor: '#DEC67A'}}
+              className={`px-4 md:px-6 py-2 md:py-3 font-bold text-sm md:text-base hover:scale-105 cursor-pointer rounded-lg md:rounded-xl shadow-md transition-all duration-200 border-2 border-white`}
+            >
+              {cannonballInFlight
+                ? 'Firing...'
+                : landedTechs.length > 0
+                ? 'Register Now!'
+                : 'Fire Cannon!'}
               </button>
+
               
-              {/* <button
+              <button
                 onClick={resetDemo}
-                className="btn-reset px-4 md:px-6 py-2 md:py-3  text-white font-bold text-sm md:text-base rounded-lg md:rounded-xl shadow-md border-2 border-cyan-400 hover:border-cyan-300 hover:shadow-[0_0_15px_#0ff] hover:scale-105 transition-all duration-200"
+                className="px-4 md:px-6 py-2 md:py-3 bg-[#AED9E0] hover:bg-[#9ccdd5] cursor-pointer text-black font-bold text-sm md:text-base rounded-lg md:rounded-xl shadow-md hover:scale-105 transition-transform duration-200 border-2 border-cyan-600"
               >
                 Reset Mission
-              </button> */}
+              </button>
             </div>
+           
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ import merchandise from '../assets/prizes/merchandise.png';
 import cashPrize   from '../assets/prizes/cashPrize.webp';
 
 const PrizeCard = ({ image, title, description }) => (
-  <div className="flex flex-col items-center justify-end p-3 text-xs text-center bg-white shadow-lg rounded-lg w-[120px] h-[160px]">
+  <div className="flex flex-col items-center justify-end p-3 text-xs text-center bg-white shadow-lg rounded-lg w-[120px] h-[140px]">
     <img src={image} alt={title} className="w-full h-[70%] object-cover mb-2 rounded" />
     <h3 className="font-bold text-[12px]">{title}</h3>
     <p className="text-[10px]">{description}</p>
@@ -47,9 +47,9 @@ export default function TreasureBox() {
 
   // prize data
   const cards = [
-    { id:1, image: swags,       title:'1st Prize', desc:'Goodies'    },
-    { id:2, image: merchandise, title:'2nd Prize', desc:'Swag'       },
-    { id:3, image: cashPrize,   title:'3rd Prize', desc:'Certificate'},
+    { id:1, image: swags,       title:'', desc:''    },
+    { id:2, image: merchandise, title:'', desc:''       },
+    { id:3, image: cashPrize,   title:'', desc:''},
   ];
 
   return (
