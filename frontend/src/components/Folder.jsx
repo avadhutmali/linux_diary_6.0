@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
+// darkenColor helper (you already had this)
 const darkenColor = (hex, percent) => {
   let color = hex.startsWith("#") ? hex.slice(1) : hex;
   if (color.length === 3) {
@@ -28,10 +29,9 @@ const Folder = ({
   className = "",
 }) => {
   const maxItems = 3;
+  // ensure exactly 3 slots
   const papers = items.slice(0, maxItems);
-  while (papers.length < maxItems) {
-    papers.push(null);
-  }
+  while (papers.length < maxItems) papers.push(null);
 
   const [open, setOpen] = useState(false);
   const [paperOffsets, setPaperOffsets] = useState(
@@ -46,6 +46,7 @@ const Folder = ({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  // Colors
   const folderBackColor = darkenColor(color, 0.08);
   const paper1 = darkenColor("#ffffff", 0.1);
   const paper2 = darkenColor("#ffffff", 0.05);
@@ -53,12 +54,13 @@ const Folder = ({
 
   const handleClick = () => {
     setOpen((prev) => !prev);
+    // reset offsets when closing
     if (open) {
       setPaperOffsets(Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })));
     }
   };
 
-  const handlePaperMouseMove = (e, index) => {
+  const handlePaperMouseMove = (e, idx) => {
     if (!open) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -66,41 +68,35 @@ const Folder = ({
     const offsetX = (e.clientX - centerX) * 0.15;
     const offsetY = (e.clientY - centerY) * 0.15;
     setPaperOffsets((prev) => {
-      const newOffsets = [...prev];
-      newOffsets[index] = { x: offsetX, y: offsetY };
-      return newOffsets;
+      const copy = [...prev];
+      copy[idx] = { x: offsetX, y: offsetY };
+      return copy;
     });
   };
 
-  const handlePaperMouseLeave = (e, index) => {
+  const handlePaperMouseLeave = (_e, idx) => {
     setPaperOffsets((prev) => {
-      const newOffsets = [...prev];
-      newOffsets[index] = { x: 0, y: 0 };
-      return newOffsets;
+      const copy = [...prev];
+      copy[idx] = { x: 0, y: 0 };
+      return copy;
     });
   };
 
-  const getOpenTransform = (index) => {
+  // Where each paper moves when open
+  const getOpenTransform = (i) => {
     if (isMobile) {
-      if (index === 0) return "translate(-100%, -70%) rotate(-10deg)";
-      if (index === 1) return "translate(0%, -80%) rotate(10deg)";
-      if (index === 2) return "translate(-50%, -95%) rotate(0deg)";
+      if (i === 0) return "translate(-120%, -70%) rotate(-10deg)";
+      if (i === 1) return "translate(0%,  -80%) rotate(10deg)";
+      if (i === 2) return "translate(-50%, -95%) rotate(0deg)";
     } else {
-      if (index === 0) return "translate(100%, -60%) rotate(0deg)";
-      if (index === 1) return "translate(-50%, -60%) rotate(0deg)";
-      if (index === 2) return "translate(-200%, -60%) rotate(0deg)";
+      if (i === 0) return "translate(120%, -60%) rotate(0deg)";
+      if (i === 1) return "translate(-50%, -60%) rotate(0deg)";
+      if (i === 2) return "translate(-200%, -60%) rotate(0deg)";
     }
     return "";
   };
 
-  const folderStyle = {
-    "--folder-color": color,
-    "--folder-back-color": folderBackColor,
-    "--paper-1": paper1,
-    "--paper-2": paper2,
-    "--paper-3": paper3,
-  };
-
+  // scale for size prop
   const scaleStyle = { transform: `scale(${size})` };
 
   return (
@@ -110,23 +106,25 @@ const Folder = ({
           !open ? "hover:-translate-y-2" : ""
         }`}
         style={{
-          ...folderStyle,
           transform: open ? "translateY(40px)" : undefined,
         }}
         onClick={handleClick}
       >
+        {/* back of folder */}
         <div
           className="relative w-[150px] h-[120px] sm:w-[200px] sm:h-[160px] md:w-[200px] md:h-[150px] rounded-tl-0 rounded-tr-[10px] rounded-br-[10px] rounded-bl-[10px]"
           style={{ backgroundColor: folderBackColor }}
         >
+          {/* little tab */}
           <span
             className="absolute z-0 bottom-[98%] left-0 w-[30px] h-[10px] rounded-tl-[5px] rounded-tr-[5px]"
             style={{ backgroundColor: folderBackColor }}
           ></span>
 
+          {/* papers/cards */}
           {papers.map((item, i) => {
-            let sizeClasses = open ? "w-[80%] h-[110%]" : "w-[85%] h-[100%]";
-            const transformStyle = open
+            const sizeClasses = open ? "w-[80%] h-[110%]" : "w-[85%] h-[100%]";
+            const transform = open
               ? `${getOpenTransform(i)} translate(${paperOffsets[i].x}px, ${paperOffsets[i].y}px)`
               : undefined;
 
@@ -141,9 +139,9 @@ const Folder = ({
                     : "hover:scale-105"
                 } ${sizeClasses}`}
                 style={{
-                  ...(!open ? {} : { transform: transformStyle }),
                   backgroundColor: i === 0 ? paper1 : i === 1 ? paper2 : paper3,
                   borderRadius: "10px",
+                  transform,
                 }}
               >
                 {item}
@@ -151,6 +149,7 @@ const Folder = ({
             );
           })}
 
+          {/* front flaps */}
           <div
             className={`absolute z-30 w-full h-full origin-bottom transition-all duration-300 ease-in-out ${
               !open ? "group-hover:[transform:skew(15deg)_scaleY(0.6)]" : ""
