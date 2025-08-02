@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MainImg from "../assets/frozen-bg.jpg";
 // import SnowfallEffect from "./SnowfallEffect";
-import RegisterTux from "../assets/Payement.png";
+// import RegisterTux from "../assets/Payement.png";
 import { BiCross, BiUpload } from "react-icons/bi";
 import { RxCrossCircled } from "react-icons/rx";
 import Dropdown from "./DropDown";
