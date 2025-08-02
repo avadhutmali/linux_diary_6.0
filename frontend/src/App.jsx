@@ -10,6 +10,7 @@ import gsap from "gsap";
 import ImageGallary from "./components/ImageGallary";
 import Register from "./components/Registration";
 import Snowfall from "react-snowfall";
+import TreasureBox from "./components/Treasurebox";
 
 const App = () => {
   const [showContent, setshowContent] = useState(false);
@@ -101,7 +102,8 @@ const App = () => {
           <HeroSection />
           <Roadmap />
           <TechnologiesSection />
-          <PrizeSection />
+          {/* <PrizeSection /> */}
+          <TreasureBox/>
           <ImageGallary/>
           <Register/>
           <Footer />
