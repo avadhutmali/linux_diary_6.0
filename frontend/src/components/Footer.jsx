@@ -17,7 +17,7 @@ const Footer = () => {
     return (
         <div id="about" className="text-black py-2  z-100 w-full">
             <img src={FooterImg} className=" h-[22vh] relative z-100 sm:h-[22vh] md:h-[78vh] w-full"></img>
-            <div className="flex flex-col  md:space-y-0 md:flex-row  md:justify-around p-6  items-center lg:px-12" style={{ backgroundColor: "#FDF8F7" }}>
+            <div className="flex flex-col relative md:space-y-0 md:flex-row  md:justify-around p-6  items-center lg:px-12" style={{ backgroundColor: "#FDF8F7" }}>
                 <div>
                     <p className="text-3xl font-extrabold text-gray-800 mb-2 text-center md:text-left">
                         Our Sponsors</p>
