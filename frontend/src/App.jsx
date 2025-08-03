@@ -103,7 +103,7 @@ const App = () => {
         <div className="main min-h-screen relative z-0">
           {/* Snow behind everything */}
           <div className="fixed inset-0 pointer-events-none z-0">
-            <Snowfall snowflakeCount={150} />
+            <Snowfall snowflakeCount={100} />
           </div>
 
           <Navbar />
