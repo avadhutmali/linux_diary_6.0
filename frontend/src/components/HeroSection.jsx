@@ -56,7 +56,7 @@ const HeroSection = () => {
  <div className='flex item-center gap-4 '>
           <SplitTexts
           text="LinuxDiary 6.0"
-          className="header lg:text-7xl  pb-4 text-5xl font-extrabold text-white mb-2"
+          className="header tracking-wide lg:text-7xl  pb-4 text-5xl font-extrabold text-white mb-2"
            />
 
          
@@ -75,7 +75,7 @@ const HeroSection = () => {
           <img 
             src={heroImage} 
             alt="LinuxDiary 6.0 Penguin Mascot" 
-            className="max-w-lg lg:max-w-5xl drop-shadow-[0_25px_25px_rgba(0,60,120,0.3)]"
+            className="max-w-lg lg:max-w-4xl drop-shadow-[0_25px_25px_rgba(0,60,120,0.3)]"
           />
         </motion.div>
 

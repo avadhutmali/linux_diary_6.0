@@ -14,6 +14,7 @@ import Register from "./components/Registration";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Snowfall from "react-snowfall";
+import loaderimg from "/images/12.png"
 
 const App = () => {
   const [showContent, setShowContent] = useState(false);
@@ -88,7 +89,7 @@ const App = () => {
             </mask>
           </defs>
           <image
-            href="https://gta-ecru.vercel.app/bg.png"
+            href={loaderimg}
             width="100%"
             height="100%"
             preserveAspectRatio="xMidYMid slice"
@@ -102,7 +103,7 @@ const App = () => {
         <div className="main min-h-screen relative z-0">
           {/* Snow behind everything */}
           <div className="fixed inset-0 pointer-events-none z-0">
-            <Snowfall snowflakeCount={150} />
+            <Snowfall snowflakeCount={100} />
           </div>
 
           <Navbar />
@@ -121,3 +122,4 @@ const App = () => {
 };
 
 export default App;
+
