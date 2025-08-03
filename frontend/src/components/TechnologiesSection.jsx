@@ -474,12 +474,12 @@ const TechnologiesSection = () => {
               </button>
 
               
-              <button
+              {/* <button
                 onClick={resetDemo}
                 className="px-4 md:px-6 py-2 md:py-3 bg-[#AED9E0] hover:bg-[#9ccdd5] cursor-pointer text-black font-bold text-sm md:text-base rounded-lg md:rounded-xl shadow-md hover:scale-105 transition-transform duration-200 border-2 border-cyan-600"
               >
                 Reset Mission
-              </button>
+              </button> */}
             </div>
            
           </div>
