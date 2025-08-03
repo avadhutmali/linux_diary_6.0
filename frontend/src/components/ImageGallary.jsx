@@ -206,7 +206,7 @@ const ImageGallary = () => {
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-2xl md:text-4xl font-bold text-white text-center mb-6 md:mb-8 tracking-wide">
-          ❄️ Linux Diary 5.0 ❄️
+          Linux Diary 5.0
         </h1>
         <div className="relative mb-8 md:mb-12 bg-transparent backdrop-blur-sm rounded-2xl p-3 md:p-6">
           <div className="relative h-48 md:h-96 overflow-hidden rounded-xl">
