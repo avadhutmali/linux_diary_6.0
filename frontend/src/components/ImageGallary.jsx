@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 
-const SnowSlider = () => {
+const ImageGallary = () => {
   const canvasRef = useRef(null);
   const wheelImageRef = useRef(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -116,7 +116,7 @@ const SnowSlider = () => {
   const handlePointerMove = useCallback((e) => {
     if (!isDragging) return;
     e.preventDefault();
-    e.stopPropagation(); // Stop event from bubbling
+    e.stopPropagation();
     const canvas = canvasRef.current;
     if (!canvas) return;
     const currentAngle = getAngleFromPointer(e, canvas);
@@ -135,9 +135,11 @@ const SnowSlider = () => {
   }, [isDragging, lastAngle, wheelRotation, images.length, getAngleFromPointer]);
 
   const handlePointerUp = useCallback((e) => {
+    if (!isDragging) return;
     e.preventDefault();
+    e.stopPropagation();
     setIsDragging(false);
-  }, []);
+  }, [isDragging]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -155,21 +157,50 @@ const SnowSlider = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    
+    const handleDocumentMouseMove = (e) => {
+      if (isDragging) {
+        handlePointerMove(e);
+      }
+    };
+    
+    const handleDocumentMouseUp = (e) => {
+      if (isDragging) {
+        handlePointerUp(e);
+      }
+    };
+    
+    const handleDocumentTouchMove = (e) => {
+      if (isDragging) {
+        handlePointerMove(e);
+      }
+    };
+    
+    const handleDocumentTouchEnd = (e) => {
+      if (isDragging) {
+        handlePointerUp(e);
+      }
+    };
+    
     canvas.addEventListener('mousedown', handlePointerDown);
-    document.addEventListener('mousemove', handlePointerMove);
-    document.addEventListener('mouseup', handlePointerUp);
     canvas.addEventListener('touchstart', handlePointerDown, { passive: false });
-    document.addEventListener('touchmove', handlePointerMove, { passive: false });
-    document.addEventListener('touchend', handlePointerUp, { passive: false });
+    
+    if (isDragging) {
+      document.addEventListener('mousemove', handleDocumentMouseMove);
+      document.addEventListener('mouseup', handleDocumentMouseUp);
+      document.addEventListener('touchmove', handleDocumentTouchMove, { passive: false });
+      document.addEventListener('touchend', handleDocumentTouchEnd, { passive: false });
+    }
+    
     return () => {
       canvas.removeEventListener('mousedown', handlePointerDown);
-      document.removeEventListener('mousemove', handlePointerMove);
-      document.removeEventListener('mouseup', handlePointerUp);
       canvas.removeEventListener('touchstart', handlePointerDown);
-      document.removeEventListener('touchmove', handlePointerMove);
-      document.removeEventListener('touchend', handlePointerUp);
+      document.removeEventListener('mousemove', handleDocumentMouseMove);
+      document.removeEventListener('mouseup', handleDocumentMouseUp);
+      document.removeEventListener('touchmove', handleDocumentTouchMove);
+      document.removeEventListener('touchend', handleDocumentTouchEnd);
     };
-  }, [handlePointerDown, handlePointerMove, handlePointerUp]);
+  }, [handlePointerDown, handlePointerMove, handlePointerUp, isDragging]);
 
   return (
     <div className="min-h-screen p-4 md:p-8">
@@ -217,11 +248,6 @@ const SnowSlider = () => {
                 alt="golden ornament"
                 className="h-6 md:h-[10vh] object-contain transform rotate-180"
               />
-              {/* {isDragging && (
-                <div className="absolute  text-white text-xs md:text-sm bg-black/50 rounded">
-                  Steering...
-                </div>
-              )} */}
               {!wheelImageLoaded && (
                 <div className="absolute top-1/2 transform -translate-y-1/2 text-white/50 text-xs">
                   Loading wheel...
@@ -235,4 +261,4 @@ const SnowSlider = () => {
   );
 };
 
-export default SnowSlider;
+export default ImageGallary;

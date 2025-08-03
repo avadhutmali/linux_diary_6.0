@@ -111,7 +111,7 @@ const App = () => {
           <TechnologiesSection />
           {/* <PrizeSection /> */}
           <TreasureBox />
-          {/* <ImageGallary /> */}
+          <ImageGallary />
           <Register />
           <Footer />
         </div>
