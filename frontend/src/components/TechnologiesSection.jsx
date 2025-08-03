@@ -225,15 +225,15 @@ const TechnologiesSection = () => {
     return { x: currentX, y: currentY };
   };
 
-  // Calculate positions for revolving tech icons - responsive for all devices
+  // Calculate positions for revolving tech icons - responsive for all devices with proper gap
   const getTechPosition = (index, total) => {
     let radius;
     if (screenSize === 'large') {
-      radius = 260;
+      radius = 320; // Increased from 260 to create gap around igloo
     } else if (screenSize === 'medium') {
-      radius = 150;
+      radius = 200; // Increased from 150 to create gap around igloo
     } else {
-      radius = 100;
+      radius = 130; 
     }
     
     const angle = (index * (360 / total) + rotationAngle) * (Math.PI / 180);
@@ -309,34 +309,36 @@ const TechnologiesSection = () => {
       <div className="container mx-auto px-0 relative z-10">
 
         {/* Main Scene Container */}
-        <div ref={containerRef} className="relative w-full h-[300px] md:h-[500px] mx-auto">
+        <div ref={containerRef} className={`relative w-full mx-auto ${islandDestroyed && screenSize === 'small' ? 'h-[50px]' : 'h-[300px] md:h-[200px] lg:h-[550px]'}`}>
           
-          {/* Pirate Ship */}
+          {/* Pirate Ship - Only show when island is not destroyed */}
+          {!islandDestroyed && (
+            <div 
+              ref={shipRef}
+              className="absolute left-4 md:left-15 bottom-16"
+            >
+              <div className={`relative ${cannonRecoil ? 'animate-recoil' : 'animate-wave'}`}>
+                <img 
+                  src="/images/tux-gun2.png" 
+                  alt="Pirate Ship"
+                  className="w-[25vw] md:w-[20vw] lg:w-[20vw] h-auto drop-shadow-2xl transition-all duration-300"
+                />
+              </div>
+            </div>
+          )}
 
-          {!islandDestroyed ? (
-          <div 
-            ref={shipRef}
-            className="absolute left-4 md:left-0 bottom-16"
-          >
-            <div className={`relative ${cannonRecoil ? 'animate-recoil' : 'animate-wave'}`}>
-              <img 
-                src="/images/tux-gun2.png" 
-                alt="Pirate Ship"
-                className="w-[25vw] md:w-[20vw] lg:w-[20vw] h-auto drop-shadow-2xl transition-all duration-300"
-              />
+          {/* Wargames Content - Only show on medium and large screens when island is destroyed */}
+          {islandDestroyed && (screenSize !== 'small' && screenSize!=='medium') && (
+            <div className="absolute left-4 md:left-32 bottom-0 md:bottom-24 w-[25vmax] md:w-[30vmax] lg:w-[35vmax]">
+              <div className="text-white  p-4 rounded-xl  animate-fadeIn">
+                <h2 className="text-3xl md:text-5xl font-bold mb-2">Wargames</h2>
+                <p className="text-sm md:text-xl">
+                  Dive into our thrilling Wargames competition! Tackle challenging puzzles, 
+                  showcase your skills and compete with the best. Are you ready to be the champion?
+                </p>
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="absolute left-4 md:left-32 bottom-0 md:bottom-24 w-[25vmax] md:w-[30vmax] lg:w-[35vmax]">
-            <div className="text-white  p-4 rounded-xl backdrop-blur-sm animate-fadeIn">
-              <h2 className="text-3xl md:text-5xl font-bold mb-2">Wargames</h2>
-              <p className="text-sm md:text-xl">
-                Dive into our thrilling Wargames competition! Tackle challenging puzzles, 
-                showcase your skills and compete with the best. Are you ready to be the champion?
-              </p>
-            </div>
-          </div>
-        )}
+          )}
 
           {/* Flying Cannonball with smooth animation */}
           {cannonballInFlight && (() => {
@@ -382,10 +384,10 @@ const TechnologiesSection = () => {
             );
           })()}
 
-          {/* Treasure Island */}
+          {/* Treasure Island - Hide on mobile when destroyed */}
           <div 
             ref={islandRef}
-            className="absolute -right-10 md:right-0 bottom-16"
+            className={`absolute -right-10 md:right-15 bottom-16 ${islandDestroyed && (screenSize === 'small'||screenSize==='medium') ? 'hidden' : ''}`}
           >
             <div className="relative">
             
@@ -450,21 +452,79 @@ const TechnologiesSection = () => {
   </div>
 )}
 
-
-
             </div>
           </div>
         </div>
 
+        {/* Mobile Layout - Flex Column for Small Screens */}
+        {islandDestroyed && (screenSize === 'small'||screenSize==='medium') && (
+          <div className="flex flex-col items-center justify-center mt-8 space-y-6">
+            {/* Igloo with Tech Icons - Mobile */}
+            <div className="relative">
+              <img 
+                src="/images/igloo2.png" 
+                alt="Treasure Island with Technologies"
+                className="w-[60vw] h-auto drop-shadow-2xl"
+              />
+              
+              {/* Tech Icons for Mobile */}
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                {landedTechs.map((tech, index) => {
+                  const position = getTechPosition(index, landedTechs.length);
+                  
+                  return (
+                    <div
+                      key={tech.name}
+                      className="absolute flex items-center justify-center"
+                      style={{
+                        transform: `translate(${position.x-10}px, ${position.y-10}px)`,
+                        transition: 'transform 1.55s ease-out',
+                        animationDelay: `${index * 0.2}s`,
+                        opacity: 0,
+                        animation: 'fadeIn 2.5s forwards'
+                      }}
+                    >
+                      <div 
+                        className="w-8 h-8 bg-gradient-to-br from-white to-gray-400 rounded-xl border-2 border-white flex items-center justify-center text-sm shadow-lg"
+                        style={{ 
+                          backgroundColor: tech.color + '20',
+                          animationDelay: `${index * 0.2 + 2}s`,
+                          animation: 'zoomIn 0.5s forwards'
+                        }}
+                      >
+                        <img
+                          src={tech.img}
+                          alt={tech.name}
+                          className="w-6 h-6 object-contain"
+                          title={tech.name}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Wargames Content - Mobile */}
+            <div className="text-white p-4 rounded-xl mt-10 animate-fadeIn text-center max-w-sm">
+              <h2 className="text-4xl font-bold mb-2">Wargames</h2>
+              <p className="text-md">
+                Dive into our thrilling Wargames competition! Tackle challenging puzzles, 
+                showcase your skills and compete with the best. Are you ready to be the champion?
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Control Panel */}
-        <div className="text-center mt-8 md:mt-16">
+        <div className="text-center">
           <div className="inline-block p-4 md:p-6 ">
             <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6 mb-3 md:mb-4">
               <button
               onClick={handleButtonClick}
               disabled={cannonballInFlight}
               style={{backgroundColor: '#DEC67A'}}
-              className={`px-4 md:px-6 py-2 md:py-3 font-bold text-sm md:text-base hover:scale-105 cursor-pointer rounded-lg md:rounded-xl shadow-md transition-all duration-200 border-2 border-white`}
+              className={`px-4 md:px-6 py-2 md:py-3 mt-0 lg:mt-8 font-bold text-sm md:text-base hover:scale-105 cursor-pointer rounded-lg md:rounded-xl shadow-md transition-all duration-200 border-2 border-white`}
             >
               {cannonballInFlight
                 ? 'Firing...'
