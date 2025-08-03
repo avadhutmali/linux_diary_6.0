@@ -265,8 +265,58 @@ const TechnologiesSection = () => {
   if (cannonballInFlight) return;
 
   if (landedTechs.length > 0) {
-    const formEl = document.getElementById('register');
-    formEl?.scrollIntoView({ behavior: 'smooth' });
+    // Try multiple methods to find and navigate to the registration form
+    const findAndScrollToForm = () => {
+      // Method 1: Try getElementById
+      let formEl = document.getElementById('register');
+      
+      // Method 2: Try querySelector with different selectors
+      if (!formEl) {
+        formEl = document.querySelector('#register');
+      }
+      
+      // Method 3: Try finding by class name or other attributes
+      if (!formEl) {
+        formEl = document.querySelector('[id="register"]');
+      }
+      
+      // Method 4: Try finding form elements
+      if (!formEl) {
+        formEl = document.querySelector('form[id*="register"]');
+      }
+      
+      // Method 5: Try case-insensitive search
+      if (!formEl) {
+        const allElements = document.querySelectorAll('*[id]');
+        formEl = Array.from(allElements).find(el => 
+          el.id.toLowerCase().includes('register')
+        );
+      }
+      
+      if (formEl) {
+        // Add a small delay for mobile devices
+        setTimeout(() => {
+          formEl.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start',
+            inline: 'nearest'
+          });
+        }, 100);
+        return true;
+      }
+      return false;
+    };
+
+    // Try immediately, then retry after short delays if not found
+    if (!findAndScrollToForm()) {
+      setTimeout(() => {
+        if (!findAndScrollToForm()) {
+          setTimeout(() => {
+            findAndScrollToForm();
+          }, 500);
+        }
+      }, 200);
+    }
   } else {
     fireCannon();
   }
