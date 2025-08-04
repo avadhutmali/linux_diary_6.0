@@ -1,8 +1,8 @@
 import React from "react";
 import Folder from "./Folder";
-import swags from "../assets/prizes/swags.webp";
-import merchandise from "../assets/prizes/merchandise.png";
-import cashPrize from "../assets/prizes/cashPrize.webp";
+import swags from "../assets/prizes/img1.png";
+import merchandise from "../assets/prizes/img2.png";
+import cashPrize from "../assets/prizes/img3.png";
 
 const PrizeCard = ({ image, title, description }) => (
   <div className="flex flex-col items-center justify-end p-2 text-xs text-center">

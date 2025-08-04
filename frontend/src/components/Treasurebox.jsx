@@ -4,12 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import chestClosed  from '../assets/Chest/chest_closed.svg';
 import chestOpen   from '../assets/Chest/chest_open.svg';
 
-import swags       from '../assets/prizes/swags.webp';
-import merchandise from '../assets/prizes/merchandise.png';
-import cashPrize   from '../assets/prizes/cashPrize.webp';
+import swags from "../assets/prizes/img1.png";
+import merchandise from "../assets/prizes/img2.png";
+import cashPrize from "../assets/prizes/img3.png";
 
 const PrizeCard = ({ image, title, description }) => (
-  <div className="flex flex-col items-center justify-end p-3 text-xs text-center bg-white shadow-lg rounded-lg w-[120px] h-[140px]">
+  <div className="flex flex-col items-center justify-end p-3 text-xs text-center bg-white shadow-lg rounded-lg w-[120px] h-[130px]">
     <img src={image} alt={title} className="w-full h-[70%] object-cover mb-2 rounded" />
     <h3 className="font-bold text-[12px]">{title}</h3>
     <p className="text-[10px]">{description}</p>

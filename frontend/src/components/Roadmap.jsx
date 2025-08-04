@@ -12,40 +12,28 @@ const timelineData = [
   {
     id: "one",
     frontTitle: "Session 1:\nBorn to Boot",
-    description: `- Open Source Software: Introduction, Applications, Advantages
-- OS & Kernel: Introduction, Kernel vs OS, System Calls
-- Linux: History, Distributions, Families, Desktop Environments`,
+    description: `New to Linux or Open Source? Don’t worry—we’re starting from scratch! This session covers the basics of open-source software, OS vs Kernel, system calls and Linux distributions. Perfect for beginners looking to build a solid foundation.`,
     imagePrimary: img1,
     imageSecondary: img5,
   },
   {
     id: "two",
     frontTitle: "Session 2:\nCommand Quest",
-    description: `- Basic & Advanced Commands
-- Booting Process: Devices, Bootloader, Sequence, BIOS vs UEFI
-- Text Editors: Types & Examples
-- Process Management: Lifecycle, PID, Zombie, Fork/Exec
-- Pipelining in Linux`,
+    description: `Dive deeper into the Linux system with a hands-on session covering essential commands, the booting process, and process management. Learn how Linux starts, the role of BIOS/UEFI, explore powerful text editors, and master concepts like forking, zombies and pipelining—equipping you with practical skills to navigate Linux like a pro.`,
     imagePrimary: img2,
     imageSecondary: img6,
   },
   {
     id: "three",
-    frontTitle: "Session 3:\nFileOps / File Vault / File Riot",
-    description: `- File Systems: ext4, XFS, ZFS, BtrFS
-- Directory Structure: Full Hierarchy
-- User & Group Management: Types, Permissions
-- File Permissions: Need & Management`,
+    frontTitle: "Session 3:\nFile Forge",
+    description: `This session offers a clear dive into Linux’s file systems, directory structure, and user management. You'll learn about different file system types, how Linux organizes its directories, manages multiple users and groups and controls access through file permissions—essential skills for any aspiring Linux user.`,
     imagePrimary: img3,
     imageSecondary: img7,
   },
   {
     id: "four",
-    frontTitle: "Session 4:\nNet Nexus",
-    description: `- Networking Basics: Components, IP & Ports, TCP vs UDP
-- Networking Commands & Tools
-- SSH & UFW: Introduction, Integration
-- NMAP: Intro`,
+    frontTitle: "Session 4:\nNet Navigators",
+    description: `Start from the ground up and progress to advanced concepts in this power-packed session on networking. You'll explore everything from network components and protocols to essential commands. A live demo will show how these tools come together in real scenarios—perfect for building both foundational and practical knowledge.`,
     imagePrimary: img4,
     imageSecondary: img8,
   }
