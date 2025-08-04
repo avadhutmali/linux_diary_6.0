@@ -1,51 +1,39 @@
 import React, { useEffect, useRef, useState } from "react";
-import img1 from "../assets/Roadmaps/6.png";
-import img2 from "../assets/Roadmaps/7.png";
-import img3 from "../assets/Roadmaps/8.png";
-import img4 from "../assets/Roadmaps/9.png";
-import img5 from "../assets/Roadmaps/10.png";
-import img6 from "../assets/Roadmaps/11.png";
-import img7 from "../assets/Roadmaps/12.png";
-import img8 from "../assets/Roadmaps/13.png";
+import img1 from "../assets/Roadmaps/3.svg";
+import img2 from "../assets/Roadmaps/4.svg";
+import img3 from "../assets/Roadmaps/5.svg";
+import img4 from "../assets/Roadmaps/6.svg";
+import img5 from "../assets/Roadmaps/7.svg";
+import img6 from "../assets/Roadmaps/8.svg";
+import img7 from "../assets/Roadmaps/9.svg";
+import img8 from "../assets/Roadmaps/10.svg";
 
 const timelineData = [
   {
     id: "one",
     frontTitle: "Session 1:\nBorn to Boot",
-    description: `- Open Source Software: Introduction, Applications, Advantages
-- OS & Kernel: Introduction, Kernel vs OS, System Calls
-- Linux: History, Distributions, Families, Desktop Environments`,
+    description: `New to Linux or Open Source? Don’t worry—we’re starting from scratch! This session covers the basics of open-source software, OS vs Kernel, system calls and Linux distributions. Perfect for beginners looking to build a solid foundation.`,
     imagePrimary: img1,
     imageSecondary: img5,
   },
   {
     id: "two",
     frontTitle: "Session 2:\nCommand Quest",
-    description: `- Basic & Advanced Commands
-- Booting Process: Devices, Bootloader, Sequence, BIOS vs UEFI
-- Text Editors: Types & Examples
-- Process Management: Lifecycle, PID, Zombie, Fork/Exec
-- Pipelining in Linux`,
+    description: `Dive deeper into the Linux system with a hands-on session covering essential commands, the booting process, and process management. Learn how Linux starts, the role of BIOS/UEFI, explore powerful text editors, and master concepts like forking, zombies and pipelining—equipping you with practical skills to navigate Linux like a pro.`,
     imagePrimary: img2,
     imageSecondary: img6,
   },
   {
     id: "three",
-    frontTitle: "Session 3:\nFileOps / File Vault / File Riot",
-    description: `- File Systems: ext4, XFS, ZFS, BtrFS
-- Directory Structure: Full Hierarchy
-- User & Group Management: Types, Permissions
-- File Permissions: Need & Management`,
+    frontTitle: "Session 3:\nFile Forge",
+    description: `This session offers a clear dive into Linux’s file systems, directory structure, and user management. You'll learn about different file system types, how Linux organizes its directories, manages multiple users-groups and controls access through file permissions—essential skills for any aspiring Linux user.`,
     imagePrimary: img3,
     imageSecondary: img7,
   },
   {
     id: "four",
-    frontTitle: "Session 4:\nNet Nexus",
-    description: `- Networking Basics: Components, IP & Ports, TCP vs UDP
-- Networking Commands & Tools
-- SSH & UFW: Introduction, Integration
-- NMAP: Intro`,
+    frontTitle: "Session 4:\nNet Navigators",
+    description: `Dive into a power-packed session on Linux networking starting from core concepts like network components and protocols to essential commands, Nmap, SSH, and UFW. A live demo ties it all together, making it ideal for building both foundational and hands-on skills.`,
     imagePrimary: img4,
     imageSecondary: img8,
   }

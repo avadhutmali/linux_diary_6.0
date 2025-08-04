@@ -504,10 +504,7 @@ const TechnologiesSection = () => {
 
             </div>
           </div>
-        </div>
-
-        {/* Mobile Layout - Flex Column for Small Screens */}
-        {islandDestroyed && (screenSize === 'small'||screenSize==='medium') && (
+          {islandDestroyed && (screenSize === 'small'||screenSize==='medium') && (
           <div className="flex flex-col items-center justify-center mt-8 space-y-6">
             {/* Igloo with Tech Icons - Mobile */}
             <div className="relative">
@@ -565,9 +562,17 @@ const TechnologiesSection = () => {
             </div>
           </div>
         )}
+        </div>
+
+        {/* Mobile Layout - Flex Column for Small Screens */}
+        
 
         {/* Control Panel */}
-        <div className="text-center">
+        <div className={`text-center ${
+              landedTechs.length === 0
+                ? 'mt-0 md:mt-0'
+                : 'mt-96 md:mt-0'
+            }`}>
           <div className="inline-block p-4 md:p-6 ">
             <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6 mb-3 md:mb-4">
               <button

@@ -180,6 +180,7 @@ func (u UserService) GetEmail(name string) string {
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LinuxDiary 6.0 Registration</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     /* RESET */
     body, table, td, a { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
@@ -187,8 +188,19 @@ func (u UserService) GetEmail(name string) string {
     img { -ms-interpolation-mode:bicubic; border:0; height:auto; line-height:100%; outline:none; text-decoration:none; max-width:100%; }
 
     /* OUTER WRAPPER */
-    body { margin:0; padding:0; width:100% !important; background:#f4f4f4; }
-    .wrapper { width:100%; table-layout:fixed; background:#f4f4f4; padding:40px 0; }
+    body { 
+      margin:0; 
+      padding:0; 
+      width:100% !important; 
+      background:#f4f4f4; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .wrapper { 
+      width:100%; 
+      table-layout:fixed; 
+      background:#f4f4f4; 
+      padding:40px 0; 
+    }
 
     /* CARD CONTAINER */
     .container {
@@ -196,51 +208,184 @@ func (u UserService) GetEmail(name string) string {
       max-width:600px;
       margin:0 auto;
       background:#ffffff;
-      border-radius:12px;
-      box-shadow:0 4px 12px rgba(0,0,0,0.15);
+      border-radius:0px;
+      box-shadow:0 8px 24px rgba(0,0,0,0.12);
       overflow:hidden;
     }
 
     /* BANNER */
-    .banner img { display:block; width:100%; height:auto; }
+
 
     /* MAIN CONTENT */
     .content {
-      padding:30px;
-      font-family:"Times New Roman", Times, Baskerville, Georgia, serif;
-      color:#757575;
-      font-size:17px;
-      line-height:1.5;
+      padding: 35px 40px;
+      color: #555;
+      font-size: 17px;
+      line-height: 1.6;
+      text-align: center;
     }
     .content h1 {
-      font-size:22px;
-      margin:0 0 20px;
-      color:#222222;
-      font-family:Helvetica, Arial, sans-serif;
+      font-size: 26px;
+      margin: 0 0 25px;
+      color: #2c3e50;
+      font-weight: 600;
     }
-    .content p { margin:10px 0; }
-    .content ul { margin:10px 0 20px 20px; padding:0; }
-    .content ul li { margin-bottom:8px; }
-    .content a { color:#007C89; text-decoration:underline; }
-    .content strong { color:#333333; }
+    .content p { 
+      margin: 15px 0; 
+    }
+    .content a { 
+      color: #3498db; 
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .content a:hover {
+      color: #2980b9;
+      text-decoration: underline;
+    }
+    .content strong { 
+      color: #2c3e50; 
+      font-weight: 600;
+    }
+
+    /* EVENT DETAILS SECTION */
+    .event-details {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 25px;
+      margin: 30px 0;
+      text-align: center;
+      border: 1px solid #eaeaea;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .event-details h2 {
+      font-size: 22px;
+      margin: 0 0 20px;
+      color: #2c3e50;
+      position: relative;
+      padding-bottom: 12px;
+    }
+    .event-details h2:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #3498db, #2ecc71);
+      border-radius: 3px;
+    }
+    .detail-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .detail-card {
+      flex: 1;
+      min-width: 100px;
+      max-width: 180px;
+      padding: 20px 15px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      border: 1px solid #eee;
+    }
+    .detail-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+    }
+    .detail-card i {
+      font-size: 28px;
+      margin-bottom: 15px;
+      display: block;
+    }
+    .detail-card .icon-calendar { color: #e74c3c; }
+    .detail-card .icon-clock { color: #3498db; }
+    .detail-card .icon-location { color: #2ecc71; }
+    .detail-card h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      color: #2c3e50;
+    }
+    .detail-card p {
+      margin: 0;
+      font-size: 20px;
+      color: #7f8c8d;
+    }
+
+    /* REGISTRATION BADGE */
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #3498db, #2c3e50);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-weight: 600;
+      margin: 15px 0;
+      font-size: 16px;
+      box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+    }
 
     /* FOOTER */
     .footer {
-      background:#333333;
-      padding:20px 30px;
-      font-family:Helvetica, Arial, sans-serif;
-      font-size:12px;
-      color:#ffffff;
-      text-align:center;
+      background: #2c3e50;
+      padding: 25px 30px;
+      font-size: 14px;
+      color: #ecf0f1;
+      text-align: center;
+      border-top: 4px solid #3498db;
     }
-    .footer a { color:#ffffff; text-decoration:none; margin:0 8px; }
+    .footer p {
+      margin: 5px 0;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: #3498db;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+    .footer-links a:hover {
+      color: #1abc9c;
+      transform: translateY(-2px);
+    }
+    .footer-links i {
+      margin-right: 8px;
+      font-size: 16px;
+    }
+    .copyright {
+      font-size: 13px;
+      color: #bdc3c7;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
 
     /* RESPONSIVE */
-    @media only screen and (max-width:480px) {
-      .content { padding:20px; font-size:16px; }
-      .content h1 { font-size:20px; }
-      .footer { padding:15px 20px; font-size:11px; }
-      .wrapper { padding:20px 0; }
+    @media only screen and (max-width: 600px) {
+      .content { padding: 25px; }
+      .banner h1 { font-size: 26px; }
+      .banner p { font-size: 16px; }
+      .detail-grid { flex-direction: column; }
+      .detail-card { max-width: 100%; }
+      .footer { padding: 20px; }
+    }
+    @media only screen and (max-width: 480px) {
+      .content { padding: 20px; font-size: 16px; }
+      .content h1 { font-size: 22px; }
+      .event-details { padding: 20px 15px; }
+      .wrapper { padding: 20px 0; }
     }
   </style>
 </head>
@@ -250,45 +395,78 @@ func (u UserService) GetEmail(name string) string {
 
       <!-- TOP BANNER -->
       <div class="banner">
-        <img
-          src="https://res.cloudinary.com/dakz3a0zq/image/upload/v1754077964/Pink_and_Blue_Light_Gradient_Aesthetic_Minimalist_Album_Cover_qxrszk.png"
-          alt="LinuxDiary 6.0 Banner" />
+		<img src="https://res.cloudinary.com/dakz3a0zq/image/upload/v1754223086/LD_website_Images_txwfc2.png" alt="">
       </div>
 
       <!-- MAIN CONTENT -->
       <div class="content">
-        <h1>Hola Linux Enthusiast! 🐧</h1>
+        <h1>Hola Linux Enthusiasts! 🐧</h1>
+        
+        <div class="badge">
+          <i class="fas fa-check-circle"></i> Registration Confirmed
+        </div>
+        
         <p>We are <strong>pleased to inform you</strong> that your registration for <strong>LinuxDiary 6.0</strong> was successful! 🎉</p>
-        <p>The event will be held on <strong>16th &amp; 17th of August 2025</strong>, focusing on <strong>Linux Fundamentals</strong>. 🐧</p>
-        <p>You will have access to all the sessions and activities we have scheduled for the event as a registered participant.</p>
+        <p>The event will be held on <strong>16th &amp; 17th of August 2025</strong>, focusing on <strong>Linux Fundamentals</strong>.</p>
+        <p>You will have access to all sessions and activities as a registered participant.</p>
 
-        <p><strong>Event Details:</strong></p>
-        <ul>
-          <li>📅 <strong>Date:</strong> 16th &amp; 17th of August 2025</li>
-          <li>⏰ <strong>Time:</strong> 9:00 AM</li>
-          <li>📍 <strong>Venue:</strong> Main &amp; Mini CCF, WCE</li>
-        </ul>
+        <!-- ENHANCED EVENT DETAILS SECTION -->
+        <div class="event-details">
+          <h2>Event Details</h2>
+          <div class="detail-grid">
+            <div class="detail-card">
+              <i class="fas fa-calendar-alt icon-calendar"></i>
+              <h3>Date</h3>
+              <p>16th & 17th August 2025</p>
+            </div>
+            
+            <div class="detail-card">
+              <i class="fas fa-clock icon-clock"></i>
+              <h3>Time</h3>
+              <p>9:00 AM onwards</p>
+            </div>
+            
+            <div class="detail-card">
+              <i class="fas fa-map-marker-alt icon-location"></i>
+              <h3>Venue</h3>
+              <p>Main & Mini CCF, WCE</p>
+            </div>
+          </div>
+        </div>
 
-        <p>Please do not hesitate to contact us if you have any queries about the event. We will be happy to assist you in any way we can.</p>
-        <p>🔗 <strong>LinuxDiary 6.0 Website:</strong> <a href="https://linuxdiary6.0.wcewlug.org">linuxdiary6.0.wcewlug.org</a><br>
-        Do share this with your friends and join us for an exciting journey!</p>
+        <p>Please don't hesitate to contact us if you have any questions about the event. We're happy to assist you!</p>
+        <p>🔗 <strong>LinuxDiary 6.0 Website:</strong> <a href="https://linuxdiary6.0.wcewlug.org">linuxdiary6.0.wcewlug.org</a></p>
+        <p>Share this with your friends and join us for an exciting Linux journey!</p>
+        
         <p><i>We look forward to seeing you there!</i></p>
 
         <p>Thanks and regards,<br>
-        <strong>Walchand Linux Users' Group</strong></p>
+        <strong>Walchand Linux Users' Group</strong> <br> <strong>Community | Knowledge | Share</strong> </p>
       </div>
 
-      <!-- FOOTER INSIDE CARD -->
+      <!-- FOOTER -->
       <div class="footer">
-        <p>Empowering through Open Source • © 2025 WCE WLUG</p>
-        <p>
-          <a href="https://wcewlug.org">Website</a>|
-          <a href="https://linkedin.com/company/wlug-club">LinkedIn</a>|
-          <a href="https://instagram.com/wcewlug">Instagram</a>|
-          <a href="https://twitter.com/wcewlug">Twitter</a>
-        </p>
+        
+        <div class="footer-links">
+          <a href="https://wcewlug.org">
+            <i class="fas fa-globe"></i> Website
+          </a>
+          <a href="https://linkedin.com/company/wlug-club">
+            <i class="fab fa-linkedin"></i> LinkedIn
+          </a>
+          <a href="https://instagram.com/wcewlug">
+            <i class="fab fa-instagram"></i> Instagram
+          </a>
+          <a href="https://twitter.com/wcewlug">
+            <i class="fab fa-twitter"></i> Twitter
+          </a>
+          <a href="mailto:contact@wcewlug.org">
+            <i class="fas fa-envelope"></i> Email
+          </a>
+        </div>
+        
+        <p class="copyright">© 2025 WCE WLUG • Walchand College of Engineering, Sangli</p>
       </div>
-
     </div>
   </div>
 </body>
