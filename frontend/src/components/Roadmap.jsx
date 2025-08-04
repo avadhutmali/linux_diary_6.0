@@ -26,14 +26,14 @@ const timelineData = [
   {
     id: "three",
     frontTitle: "Session 3:\nFile Forge",
-    description: `This session offers a clear dive into Linux’s file systems, directory structure, and user management. You'll learn about different file system types, how Linux organizes its directories, manages multiple users and groups and controls access through file permissions—essential skills for any aspiring Linux user.`,
+    description: `This session offers a clear dive into Linux’s file systems, directory structure, and user management. You'll learn about different file system types, how Linux organizes its directories, manages multiple users-groups and controls access through file permissions—essential skills for any aspiring Linux user.`,
     imagePrimary: img3,
     imageSecondary: img7,
   },
   {
     id: "four",
     frontTitle: "Session 4:\nNet Navigators",
-    description: `Start from the ground up and progress to advanced concepts in this power-packed session on networking. You'll explore everything from network components and protocols to essential commands. A live demo will show how these tools come together in real scenarios—perfect for building both foundational and practical knowledge.`,
+    description: `Dive into a power-packed session on Linux networking starting from core concepts like network components and protocols to essential commands, Nmap, SSH, and UFW. A live demo ties it all together, making it ideal for building both foundational and hands-on skills.`,
     imagePrimary: img4,
     imageSecondary: img8,
   }
