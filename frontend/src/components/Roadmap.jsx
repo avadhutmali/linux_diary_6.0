@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import img1 from "../assets/Roadmaps/6.png";
-import img2 from "../assets/Roadmaps/7.png";
-import img3 from "../assets/Roadmaps/8.png";
-import img4 from "../assets/Roadmaps/9.png";
-import img5 from "../assets/Roadmaps/10.png";
-import img6 from "../assets/Roadmaps/11.png";
-import img7 from "../assets/Roadmaps/12.png";
-import img8 from "../assets/Roadmaps/13.png";
+import img1 from "../assets/Roadmaps/3.svg";
+import img2 from "../assets/Roadmaps/4.svg";
+import img3 from "../assets/Roadmaps/5.svg";
+import img4 from "../assets/Roadmaps/6.svg";
+import img5 from "../assets/Roadmaps/7.svg";
+import img6 from "../assets/Roadmaps/8.svg";
+import img7 from "../assets/Roadmaps/9.svg";
+import img8 from "../assets/Roadmaps/10.svg";
 
 const timelineData = [
   {
