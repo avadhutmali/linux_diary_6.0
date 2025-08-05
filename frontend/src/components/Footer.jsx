@@ -2,7 +2,7 @@ import React from "react";
 import FooterImg from "/images/footer1.png";
 import WlugImg from "../assets/wlug-logo-black.png";
 import openSuse from "../assets/OpenSUSE.png"
-import potoba from "../assets/potoba.png";
+
 // import { navigation } from "../constants";
 import {
     FaGithub,
@@ -16,14 +16,14 @@ import {
 const Footer = () => {
     return (
         <div id="about" className="text-black py-2  z-100 w-full">
-            <img src={FooterImg} className=" h-[22vh] relative z-100 sm:h-[22vh] md:h-[78vh] w-full"></img>
+            <img src={FooterImg} className=" h-[22vh] scale-105 relative z-100 sm:h-[22vh] md:h-[78vh] w-full"></img>
             <div className="flex flex-col space-y-14 pt-10 relative md:space-y-0 md:flex-row  md:justify-around p-6  items-center lg:px-12" style={{ backgroundColor: "#FDF8F7" }}>
                 <div>
                     <p className="text-3xl font-extrabold text-gray-800 mb-6 text-center md:text-left">
                         Our Sponsors</p>
                     <div className="flex flex-col justify-center items-center md:flex-row md:space-x-3 space-y-6 md:space-y-0">
                         <img src={openSuse} className="h-20 mix-blend-multiply"></img>
-                        <img src={potoba} className="h-20 mix-blend-multiply"></img>
+                        
                     </div>
                 </div>
                 <div className="space-y-2">

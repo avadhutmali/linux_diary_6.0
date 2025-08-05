@@ -130,7 +130,7 @@ export default function Roadmap() {
                     </div>
                     {/* Back */}
                     <div className="absolute w-full h-full backface-hidden rotate-y-180 overflow-auto p-6">
-                      <p className="text-white text-sm leading-relaxed">
+                      <p className="text-white text-sm leading-relaxed text-center">
                         {item.description}
                       </p>
                     </div>

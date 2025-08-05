@@ -11,11 +11,12 @@ const ImageGallary = () => {
   const [wheelImageLoaded, setWheelImageLoaded] = useState(false);
 
   const images = [
-    '/images/diary/Img1.jpg',
-    '/images/diary/Img2.jpg',
-    '/images/diary/Img3.jpg',
-    '/images/diary/Img4.jpg',
-    '/images/diary/Img5.jpg'
+    '/images/diary/img1.jpeg',
+    '/images/diary/img2.jpeg',
+    '/images/diary/img3.jpeg',
+    '/images/diary/img4.jpeg',
+    '/images/diary/img5.jpeg',
+    '/images/diary/img6.jpeg'
   ];
 
   const wheelImageUrl = '/images/Wheel.svg';
@@ -209,7 +210,7 @@ const ImageGallary = () => {
           Linux Diary 5.0
         </h1>
         <div className="relative mb-8 md:mb-12 bg-transparent backdrop-blur-sm rounded-2xl p-3 md:p-6">
-          <div className="relative h-48 md:h-96 overflow-hidden rounded-xl">
+          <div className="relative h-48 md:h-[35vmax] overflow-hidden rounded-xl">
             <div 
               className="flex transition-transform duration-200 ease-out h-full"
               style={{
