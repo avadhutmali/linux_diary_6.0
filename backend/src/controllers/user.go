@@ -174,303 +174,93 @@ func (u UserService) ValidateUserInput(userInput models.UserInput) (bool, string
 
 func (u UserService) GetEmail(name string) string {
 	return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>LinuxDiary 6.0 Registration</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    /* RESET */
-    body, table, td, a { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
-    table { border-collapse:collapse !important; }
-    img { -ms-interpolation-mode:bicubic; border:0; height:auto; line-height:100%; outline:none; text-decoration:none; max-width:100%; }
-
-    /* OUTER WRAPPER */
-    body { 
-      margin:0; 
-      padding:0; 
-      width:100% !important; 
-      background:#f4f4f4; 
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    .wrapper { 
-      width:100%; 
-      table-layout:fixed; 
-      background:#f4f4f4; 
-      padding:40px 0; 
-    }
-
-    /* CARD CONTAINER */
-    .container {
-      width:100% !important;
-      max-width:600px;
-      margin:0 auto;
-      background:#ffffff;
-      border-radius:0px;
-      box-shadow:0 8px 24px rgba(0,0,0,0.12);
-      overflow:hidden;
-    }
-
-    /* BANNER */
-
-
-    /* MAIN CONTENT */
-    .content {
-      padding: 35px 40px;
-      color: #555;
-      font-size: 17px;
-      line-height: 1.6;
-      text-align: center;
-    }
-    .content h1 {
-      font-size: 26px;
-      margin: 0 0 25px;
-      color: #2c3e50;
-      font-weight: 600;
-    }
-    .content p { 
-      margin: 15px 0; 
-    }
-    .content a { 
-      color: #3498db; 
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-    .content a:hover {
-      color: #2980b9;
-      text-decoration: underline;
-    }
-    .content strong { 
-      color: #2c3e50; 
-      font-weight: 600;
-    }
-
-    /* EVENT DETAILS SECTION */
-    .event-details {
-      background: #f8f9fa;
-      border-radius: 10px;
-      padding: 25px;
-      margin: 30px 0;
-      text-align: center;
-      border: 1px solid #eaeaea;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    .event-details h2 {
-      font-size: 22px;
-      margin: 0 0 20px;
-      color: #2c3e50;
-      position: relative;
-      padding-bottom: 12px;
-    }
-    .event-details h2:after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 3px;
-      background: linear-gradient(90deg, #3498db, #2ecc71);
-      border-radius: 3px;
-    }
-    .detail-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 20px;
-    }
-    .detail-card {
-      flex: 1;
-      min-width: 100px;
-      max-width: 180px;
-      padding: 20px 15px;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-      transition: all 0.3s ease;
-      border: 1px solid #eee;
-    }
-    .detail-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
-    }
-    .detail-card i {
-      font-size: 28px;
-      margin-bottom: 15px;
-      display: block;
-    }
-    .detail-card .icon-calendar { color: #e74c3c; }
-    .detail-card .icon-clock { color: #3498db; }
-    .detail-card .icon-location { color: #2ecc71; }
-    .detail-card h3 {
-      margin: 0 0 8px;
-      font-size: 20px;
-      color: #2c3e50;
-    }
-    .detail-card p {
-      margin: 0;
-      font-size: 20px;
-      color: #7f8c8d;
-    }
-
-    /* REGISTRATION BADGE */
-    .badge {
-      display: inline-block;
-      background: linear-gradient(135deg, #3498db, #2c3e50);
-      color: white;
-      padding: 8px 20px;
-      border-radius: 30px;
-      font-weight: 600;
-      margin: 15px 0;
-      font-size: 16px;
-      box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
-    }
-
-    /* FOOTER */
-    .footer {
-      background: #2c3e50;
-      padding: 25px 30px;
-      font-size: 14px;
-      color: #ecf0f1;
-      text-align: center;
-      border-top: 4px solid #3498db;
-    }
-    .footer p {
-      margin: 5px 0;
-    }
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin: 20px 0;
-      flex-wrap: wrap;
-    }
-    .footer-links a {
-      color: #3498db;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      transition: all 0.3s ease;
-    }
-    .footer-links a:hover {
-      color: #1abc9c;
-      transform: translateY(-2px);
-    }
-    .footer-links i {
-      margin-right: 8px;
-      font-size: 16px;
-    }
-    .copyright {
-      font-size: 13px;
-      color: #bdc3c7;
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-    }
-
-    /* RESPONSIVE */
-    @media only screen and (max-width: 600px) {
-      .content { padding: 25px; }
-      .banner h1 { font-size: 26px; }
-      .banner p { font-size: 16px; }
-      .detail-grid { flex-direction: column; }
-      .detail-card { max-width: 100%; }
-      .footer { padding: 20px; }
-    }
-    @media only screen and (max-width: 480px) {
-      .content { padding: 20px; font-size: 16px; }
-      .content h1 { font-size: 22px; }
-      .event-details { padding: 20px 15px; }
-      .wrapper { padding: 20px 0; }
-    }
-  </style>
-</head>
-<body>
-  <div class="wrapper">
-    <div class="container">
-
-      <!-- TOP BANNER -->
-      <div class="banner">
-		<img src="https://res.cloudinary.com/dakz3a0zq/image/upload/v1754223086/LD_website_Images_txwfc2.png" alt="">
-      </div>
-
-      <!-- MAIN CONTENT -->
-      <div class="content">
-        <h1>Hola Linux Enthusiasts! 🐧</h1>
-        
-        <div class="badge">
-          <i class="fas fa-check-circle"></i> Registration Confirmed
-        </div>
-        
-        <p>We are <strong>pleased to inform you</strong> that your registration for <strong>LinuxDiary 6.0</strong> was successful! 🎉</p>
-        <p>The event will be held on <strong>16th &amp; 17th of August 2025</strong>, focusing on <strong>Linux Fundamentals</strong>.</p>
-        <p>You will have access to all sessions and activities as a registered participant.</p>
-
-        <!-- ENHANCED EVENT DETAILS SECTION -->
-        <div class="event-details">
-          <h2>Event Details</h2>
-          <div class="detail-grid">
-            <div class="detail-card">
-              <i class="fas fa-calendar-alt icon-calendar"></i>
-              <h3>Date</h3>
-              <p>16th & 17th August 2025</p>
-            </div>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>LinuxDiary 6.0 Registration</title>
+  </head>
+  <body style="margin:0;padding:0;width:100%!important;background:#f4f4f4;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:40px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:0px;box-shadow:0 8px 24px rgba(0,0,0,0.12);overflow:hidden;">
             
-            <div class="detail-card">
-              <i class="fas fa-clock icon-clock"></i>
-              <h3>Time</h3>
-              <p>9:00 AM onwards</p>
-            </div>
-            
-            <div class="detail-card">
-              <i class="fas fa-map-marker-alt icon-location"></i>
-              <h3>Venue</h3>
-              <p>Main & Mini CCF, WCE</p>
-            </div>
-          </div>
-        </div>
+            <!-- Banner -->
+            <tr>
+              <td>
+                <img src="https://res.cloudinary.com/dakz3a0zq/image/upload/v1754223086/LD_website_Images_txwfc2.png" alt="Banner" style="display:block;width:100%;height:auto;border:0;" />
+              </td>
+            </tr>
 
-        <p>Please don't hesitate to contact us if you have any questions about the event. We're happy to assist you!</p>
-        <p>🔗 <strong>LinuxDiary 6.0 Website:</strong> <a href="https://linuxdiary6.0.wcewlug.org">linuxdiary6.0.wcewlug.org</a></p>
-        <p>Share this with your friends and join us for an exciting Linux journey!</p>
-        
-        <p><i>We look forward to seeing you there!</i></p>
+            <!-- Main Content -->
+            <tr>
+              <td style="padding:35px 40px;color:#555;font-size:17px;line-height:1.6;text-align:center;">
+                <h1 style="font-size:26px;margin:0 0 25px;color:#2c3e50;font-weight:600;">Hola Linux Enthusiasts! 🐧</h1>
+                <div style="display:inline-block;background:linear-gradient(135deg,#3498db,#2c3e50);color:#fff;padding:8px 20px;border-radius:30px;font-weight:600;margin:15px 0;font-size:16px;box-shadow:0 4px 8px rgba(52, 152, 219, 0.3);">
+                  Registration Confirmed
+                </div>
+                <p>We are <strong style="color:#2c3e50;font-weight:600;">pleased to inform you</strong> that your registration for <strong style="color:#2c3e50;font-weight:600;"><br>LinuxDiary 6.0</strong> was successful! 🎉</p>
+                <p>The event will be held on <strong style="color:#2c3e50;font-weight:600;">16th &amp; 17th of August 2025</strong>, focusing on <strong style="color:#2c3e50;font-weight:600;">Linux Fundamentals</strong>.</p>
+                <p>You will have access to all sessions and activities as a registered participant.</p>
 
-        <p>Thanks and regards,<br>
-        <strong>Walchand Linux Users' Group</strong> <br> <strong>Community | Knowledge | Share</strong> </p>
-      </div>
+                <!-- Event Details -->
+                <div style="background:#f8f9fa;border-radius:10px;padding:25px;margin:30px 0;text-align:center;border:1px solid #eaeaea;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+                  <h2 style="font-size:22px;margin:0 0 20px;color:#2c3e50;position:relative;padding-bottom:12px;">Event Details</h2>
+                  <div style="width:60px;height:3px;margin:0 auto 20px;background:linear-gradient(90deg,#3498db,#2ecc71);border-radius:3px;"></div>
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+                    <tr>
+                      <td style="padding:20px 15px;background:#ffffff;border-radius:8px;border:1px solid #eee;box-shadow:0 4px 6px rgba(0,0,0,0.05);text-align:center;">
+                        <h3 style="margin:0 0 8px;font-size:20px;color:#2c3e50;">Date</h3>
+                        <p style="margin:0;font-size:16px;color:#7f8c8d;">16th & 17th August 2025</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:20px 15px;background:#ffffff;border-radius:8px;border:1px solid #eee;box-shadow:0 4px 6px rgba(0,0,0,0.05);text-align:center;margin-top:20px;">
+                        <h3 style="margin:0 0 8px;font-size:20px;color:#2c3e50;">Time</h3>
+                        <p style="margin:0;font-size:16px;color:#7f8c8d;">9:00 AM onwards</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:20px 15px;background:#ffffff;border-radius:8px;border:1px solid #eee;box-shadow:0 4px 6px rgba(0,0,0,0.05);text-align:center;margin-top:20px;">
+                        <h3 style="margin:0 0 8px;font-size:20px;color:#2c3e50;">Venue</h3>
+                        <p style="margin:0;font-size:16px;color:#7f8c8d;">Main & Mini CCF, WCE</p>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
 
-      <!-- FOOTER -->
-      <div class="footer">
-        
-        <div class="footer-links">
-          <a href="https://wcewlug.org">
-            <i class="fas fa-globe"></i> Website
-          </a>
-          <a href="https://linkedin.com/company/wlug-club">
-            <i class="fab fa-linkedin"></i> LinkedIn
-          </a>
-          <a href="https://instagram.com/wcewlug">
-            <i class="fab fa-instagram"></i> Instagram
-          </a>
-          <a href="https://twitter.com/wcewlug">
-            <i class="fab fa-twitter"></i> Twitter
-          </a>
-          <a href="mailto:contact@wcewlug.org">
-            <i class="fas fa-envelope"></i> Email
-          </a>
-        </div>
-        
-        <p class="copyright">© 2025 WCE WLUG • Walchand College of Engineering, Sangli</p>
-      </div>
-    </div>
-  </div>
-</body>
+                <p>Please don't hesitate to contact us if you have any questions about the event. We're happy to assist you!</p>
+                <p>🔗 <strong style="color:#2c3e50;font-weight:600;">LinuxDiary 6.0 Website:</strong> <a href="https://linuxdiary6.0.wcewlug.org" style="color:#3498db;text-decoration:none;font-weight:600;">linuxdiary6.0.wcewlug.org</a></p>
+                <p>Share this with your friends and join us for an exciting Linux journey!</p>
+                <p><i>We look forward to seeing you there!</i></p>
+                <p>Thanks and regards,<br />
+                  <strong style="color:#2c3e50;">Walchand Linux Users' Group</strong><br />
+                  <strong style="color:#2c3e50;">Community | Knowledge | Share</strong>
+                </p>
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td style="background:#2c3e50;padding:25px 30px;font-size:14px;color:#ecf0f1;text-align:center;border-top:4px solid #3498db;">
+                <div style="margin:20px 0;">
+                  <a href="https://wcewlug.org" style="color:#3498db;text-decoration:none;margin:0 10px;">Website</a>
+                  <a href="https://linkedin.com/company/wlug-club" style="color:#3498db;text-decoration:none;margin:0 10px;">LinkedIn</a>
+                  <a href="https://instagram.com/wcewlug" style="color:#3498db;text-decoration:none;margin:0 10px;">Instagram</a>
+                  <a href="https://twitter.com/wcewlug" style="color:#3498db;text-decoration:none;margin:0 10px;">Twitter</a>
+                  <a href="mailto:contact@wcewlug.org" style="color:#3498db;text-decoration:none;margin:0 10px;">Email</a>
+                </div>
+                <p style="margin:5px 0;">© 2025 WCE WLUG • Walchand College of Engineering, Sangli</p>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
 </html>
+
 `
 }
 

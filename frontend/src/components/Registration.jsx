@@ -226,7 +226,7 @@ const Register = () => {
             }
         } catch (err) {
             Swal.close();
-            showAlert("error", "Failed to register", "Please try again later");
+            showAlert("error", "Failed to register", "Please try again later, Contact: 9579047160");
         }
 
         setIsLoading(false);
