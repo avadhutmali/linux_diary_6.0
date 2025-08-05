@@ -12,28 +12,28 @@ const timelineData = [
   {
     id: "one",
     frontTitle: "Session 1:\nBorn to Boot",
-    description: `New to Linux or Open Source? Don’t worry—we’re starting from scratch! This session covers the basics of open-source software, OS vs Kernel, system calls and Linux distributions. Perfect for beginners looking to build a solid foundation.`,
+    description: ` Scared of being an absolute beginner in Linux? Don’t worry—we’ll start with this beginner-friendly session. You’ll learn the basics of Open-Source and Linux, understand OS vs. Kernel and see real-life applications that make Linux so powerful.`,
     imagePrimary: img1,
     imageSecondary: img5,
   },
   {
     id: "two",
     frontTitle: "Session 2:\nCommand Quest",
-    description: `Dive deeper into the Linux system with a hands-on session covering essential commands, the booting process, and process management. Learn how Linux starts, the role of BIOS/UEFI, explore powerful text editors, and master concepts like forking, zombies and pipelining—equipping you with practical skills to navigate Linux like a pro.`,
+    description: `With your foundation set, it’s time to go deeper. This session covers essential commands, the booting process, text editors and process management—including forking, zombies and pipelining—so you can confidently navigate and control Linux.`,
     imagePrimary: img2,
     imageSecondary: img6,
   },
   {
     id: "three",
     frontTitle: "Session 3:\nFile Forge",
-    description: `This session offers a clear dive into Linux’s file systems, directory structure, and user management. You'll learn about different file system types, how Linux organizes its directories, manages multiple users-groups and controls access through file permissions—essential skills for any aspiring Linux user.`,
+    description: `Now that you can move around Linux, let’s explore its structure. Learn how files are stored, directories are organized and how user and group permissions keep systems secure. These skills are a must for managing Linux like a pro.`,
     imagePrimary: img3,
     imageSecondary: img7,
   },
   {
     id: "four",
     frontTitle: "Session 4:\nNet Navigators",
-    description: `Dive into a power-packed session on Linux networking starting from core concepts like network components and protocols to essential commands, Nmap, SSH, and UFW. A live demo ties it all together, making it ideal for building both foundational and hands-on skills.`,
+    description: `Finally, we’ll connect Linux to the world. Understand networking concepts, key protocols and tools like Metasploit, SSH and UFW. With a live demo, you’ll see these in action—building both your networking knowledge and practical skills.`,
     imagePrimary: img4,
     imageSecondary: img8,
   }
@@ -130,7 +130,7 @@ export default function Roadmap() {
                     </div>
                     {/* Back */}
                     <div className="absolute w-full h-full backface-hidden rotate-y-180 overflow-auto p-6">
-                      <p className="text-white text-sm leading-relaxed">
+                      <p className="text-white text-2xl leading-relaxed text-center">
                         {item.description}
                       </p>
                     </div>
