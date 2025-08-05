@@ -278,6 +278,7 @@ func (u UserService) GetEmail(name string) string {
     }
     .detail-grid {
       display: flex;
+      flex-direction: column;
       flex-wrap: wrap;
       justify-content: center;
       gap: 20px;
@@ -286,7 +287,7 @@ func (u UserService) GetEmail(name string) string {
     .detail-card {
       flex: 1;
       min-width: 100px;
-      max-width: 180px;
+      /* max-width: 180px; */
       padding: 20px 15px;
       background: white;
       border-radius: 8px;
@@ -403,7 +404,7 @@ func (u UserService) GetEmail(name string) string {
         <h1>Hola Linux Enthusiasts! 🐧</h1>
         
         <div class="badge">
-          <i class="fas fa-check-circle"></i> Registration Confirmed
+           Registration Confirmed
         </div>
         
         <p>We are <strong>pleased to inform you</strong> that your registration for <strong>LinuxDiary 6.0</strong> was successful! 🎉</p>
@@ -415,19 +416,19 @@ func (u UserService) GetEmail(name string) string {
           <h2>Event Details</h2>
           <div class="detail-grid">
             <div class="detail-card">
-              <i class="fas fa-calendar-alt icon-calendar"></i>
+              
               <h3>Date</h3>
               <p>16th & 17th August 2025</p>
             </div>
             
             <div class="detail-card">
-              <i class="fas fa-clock icon-clock"></i>
+              
               <h3>Time</h3>
               <p>9:00 AM onwards</p>
             </div>
             
             <div class="detail-card">
-              <i class="fas fa-map-marker-alt icon-location"></i>
+             
               <h3>Venue</h3>
               <p>Main & Mini CCF, WCE</p>
             </div>
@@ -449,19 +450,19 @@ func (u UserService) GetEmail(name string) string {
         
         <div class="footer-links">
           <a href="https://wcewlug.org">
-            <i class="fas fa-globe"></i> Website
+             Website
           </a>
           <a href="https://linkedin.com/company/wlug-club">
-            <i class="fab fa-linkedin"></i> LinkedIn
+             LinkedIn
           </a>
           <a href="https://instagram.com/wcewlug">
-            <i class="fab fa-instagram"></i> Instagram
+             Instagram
           </a>
           <a href="https://twitter.com/wcewlug">
-            <i class="fab fa-twitter"></i> Twitter
+            Twitter
           </a>
           <a href="mailto:contact@wcewlug.org">
-            <i class="fas fa-envelope"></i> Email
+             Email
           </a>
         </div>
         
