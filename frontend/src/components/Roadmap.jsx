@@ -162,7 +162,7 @@ export default function Roadmap() {
                       alt={`${item.frontTitle} details`}
                       className={`w-full h-full object-contain transition-opacity duration-300 ${
                         isImageFlipped ? 'block' : 'hidden'
-                      } hidden group-hover:block`}
+                      } group-hover:block`}
                     />
                   </div>
                 </div>
