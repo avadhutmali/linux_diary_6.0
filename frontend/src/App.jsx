@@ -15,6 +15,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Snowfall from "react-snowfall";
 import loaderimg from "/images/12.png"
+import RegistrationClosed from "./components/RegistrationClosed";
 
 const App = () => {
   const [showContent, setShowContent] = useState(false);
@@ -114,6 +115,7 @@ const App = () => {
           <TreasureBox />
           <ImageGallary />
           <Register />
+          {/* <RegistrationClosed/> */}
           <Footer />
         </div>
       )}
