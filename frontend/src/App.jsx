@@ -114,8 +114,8 @@ const App = () => {
           {/* <PrizeSection /> */}
           <TreasureBox />
           <ImageGallary />
-          <Register />
-          {/* <RegistrationClosed/> */}
+{/*           <Register /> */}
+          <RegistrationClosed/>
           <Footer />
         </div>
       )}
@@ -124,4 +124,5 @@ const App = () => {
 };
 
 export default App;
+
 
